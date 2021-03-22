@@ -1,9 +1,44 @@
-h1.game-display {
+.game-display div {
+    background-color: white;
+}
+.game-display.dark-mode, .game-display.dark-mode * {
+    background-color: gray;
+    color: white;
+    border-color: black!important;
+}
+
+.game-display p {
+    font-size: 0.85em;
+}
+.game-display .screenshots {
+    background-color: rgb(231, 231, 231);
+}
+.game-display h1 {
     font-size: 2em;
 }
-h2.game-display {
+.game-display h2 {
     font-size: 1.25em;
 }
-span.game-version {
+.game-version span {
     font-size: 0.33em;
+}
+.game-display .game-version {
+    font-size: 0.5em;
+}
+.game-display .checked {
+    color: orange;
+}
+.game-display .btn-download {
+    background-color: orange;
+}
+.game-display .btn-download:hover {
+    background-color: orangered;
+}
+/* Social Media */
+.game-display.dark-mode .twitter:hover {
+    fill: cyan;
+}
+.game-display svg {
+    width: 1.5em;
+    height: 1.5em;
 }

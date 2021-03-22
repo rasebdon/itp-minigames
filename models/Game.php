@@ -10,8 +10,9 @@ class Game {
     /** Associative bool array with keys: `windows`, `linux`, `mac` */
     private $plattforms;
     private $version;
+    private $rating;
 
-    function __construct(int $id, string $name, User $author, string $description, array $plattforms, string $version)
+    function __construct(int $id, string $name, User $author, string $description, array $plattforms, string $version, float $rating)
     {
         $this->id = $id;
         $this->name = $name;
@@ -19,6 +20,7 @@ class Game {
         $this->description = $description;
         $this->plattforms = $plattforms;
         $this->version = $version;
+        $this->rating = $rating;
     }
 
     /**
@@ -83,5 +85,13 @@ class Game {
     public function getVersion()
     {
             return $this->version;
+    }
+
+    /**
+     * Get the value of rating
+     */ 
+    public function getRating()
+    {
+        return $this->rating;
     }
 }
