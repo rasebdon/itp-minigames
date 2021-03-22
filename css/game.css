@@ -1,0 +1,9 @@
+h1.game-display {
+    font-size: 2em;
+}
+h2.game-display {
+    font-size: 1.25em;
+}
+span.game-version {
+    font-size: 0.33em;
+}
