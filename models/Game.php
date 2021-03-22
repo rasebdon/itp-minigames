@@ -11,8 +11,10 @@ class Game {
     private $plattforms;
     private $version;
     private $rating;
+    /** Array with all screenshot paths */
+    private $screenshots;
 
-    function __construct(int $id, string $name, User $author, string $description, array $plattforms, string $version, float $rating)
+    function __construct(int $id, string $name, User $author, string $description, array $plattforms, string $version, float $rating, array $screenshots)
     {
         $this->id = $id;
         $this->name = $name;
@@ -21,6 +23,7 @@ class Game {
         $this->plattforms = $plattforms;
         $this->version = $version;
         $this->rating = $rating;
+        $this->screenshots = $screenshots;
     }
 
     /**
@@ -93,5 +96,13 @@ class Game {
     public function getRating()
     {
         return $this->rating;
+    }
+
+    /**
+     * Get the value of screenshots
+     */ 
+    public function getScreenshots()
+    {
+        return $this->screenshots;
     }
 }

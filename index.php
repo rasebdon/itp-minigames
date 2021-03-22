@@ -29,7 +29,7 @@ require "utility/GameRenderer.php";
 </head>
 <body>
     <div class="container">
-        <?php GameRenderer::RenderGame(null) ?>
+        <?php GameRenderer::RenderGame(null, true) ?>
     </div>
 </body>
 </html>

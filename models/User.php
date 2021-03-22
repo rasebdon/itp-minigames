@@ -60,4 +60,31 @@ class User {
             return $this->socialMedia['twitter'];
         return false;
     }
+    /**
+     * @return string|false Returns the link if it is set and false if it is not set
+     */ 
+    public function getPatreon()
+    {
+        if(isset($this->socialMedia['patreon']) && $this->socialMedia['patreon'] != "")
+            return $this->socialMedia['patreon'];
+        return false;
+    }
+    /**
+     * @return string|false Returns the link if it is set and false if it is not set
+     */ 
+    public function getInstagram()
+    {
+        if(isset($this->socialMedia['instagram']) && $this->socialMedia['instagram'] != "")
+            return $this->socialMedia['instagram'];
+        return false;
+    }
+    /**
+     * @return string|false Returns the link if it is set and false if it is not set
+     */ 
+    public function getFacebook()
+    {
+        if(isset($this->socialMedia['facebook']) && $this->socialMedia['facebook'] != "")
+            return $this->socialMedia['facebook'];
+        return false;
+    }
 }
