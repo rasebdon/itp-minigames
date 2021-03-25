@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 5.0.3
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 22, 2021 at 11:34 PM
+-- Generation Time: Mar 25, 2021 at 04:01 PM
 -- Server version: 10.4.14-MariaDB
--- PHP Version: 7.4.10
+-- PHP Version: 7.4.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -124,6 +124,39 @@ CREATE TABLE `picture` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `picture_comment`
+--
+
+CREATE TABLE `picture_comment` (
+  `FK_CommentID` int(11) NOT NULL,
+  `FK_PictureID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `picture_game`
+--
+
+CREATE TABLE `picture_game` (
+  `FK_GameID` int(11) NOT NULL,
+  `FK_PictureID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `picture_post`
+--
+
+CREATE TABLE `picture_post` (
+  `FK_PostID` int(11) NOT NULL,
+  `FK_PictureID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `platform`
 --
 
@@ -183,6 +216,7 @@ CREATE TABLE `user` (
   `UserID` int(11) NOT NULL,
   `FirstName` varchar(25) NOT NULL,
   `LastName` varchar(25) NOT NULL,
+  `Username` varchar(40) NOT NULL,
   `Email` varchar(80) NOT NULL,
   `Usertype` varchar(20) NOT NULL,
   `Password` varchar(100) NOT NULL,
@@ -275,6 +309,27 @@ ALTER TABLE `picture`
   ADD PRIMARY KEY (`PictureID`);
 
 --
+-- Indexes for table `picture_comment`
+--
+ALTER TABLE `picture_comment`
+  ADD PRIMARY KEY (`FK_CommentID`,`FK_PictureID`),
+  ADD KEY `picture_comment_picture_PictureID_fk` (`FK_PictureID`);
+
+--
+-- Indexes for table `picture_game`
+--
+ALTER TABLE `picture_game`
+  ADD PRIMARY KEY (`FK_GameID`,`FK_PictureID`),
+  ADD KEY `picture_game_picture_PictureID_fk` (`FK_PictureID`);
+
+--
+-- Indexes for table `picture_post`
+--
+ALTER TABLE `picture_post`
+  ADD PRIMARY KEY (`FK_PostID`,`FK_PictureID`),
+  ADD KEY `picture_post_picture_PictureID_fk` (`FK_PictureID`);
+
+--
 -- Indexes for table `platform`
 --
 ALTER TABLE `platform`
@@ -309,6 +364,7 @@ ALTER TABLE `social`
 ALTER TABLE `user`
   ADD PRIMARY KEY (`UserID`),
   ADD UNIQUE KEY `user_Email_uindex` (`Email`),
+  ADD UNIQUE KEY `user_Username_uindex` (`Username`),
   ADD KEY `user_picture_PictureID_fk` (`FK_PictureID`);
 
 --
@@ -421,6 +477,27 @@ ALTER TABLE `game_genre`
 ALTER TABLE `game_platform`
   ADD CONSTRAINT `game_platform_game_GameID_fk` FOREIGN KEY (`FK_GameID`) REFERENCES `game` (`GameID`) ON DELETE CASCADE,
   ADD CONSTRAINT `game_platform_platform_PlatformID_fk` FOREIGN KEY (`FK_PlatformID`) REFERENCES `platform` (`PlatformID`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `picture_comment`
+--
+ALTER TABLE `picture_comment`
+  ADD CONSTRAINT `picture_comment_comment_CommentID_fk` FOREIGN KEY (`FK_CommentID`) REFERENCES `comment` (`CommentID`) ON DELETE CASCADE,
+  ADD CONSTRAINT `picture_comment_picture_PictureID_fk` FOREIGN KEY (`FK_PictureID`) REFERENCES `picture` (`PictureID`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `picture_game`
+--
+ALTER TABLE `picture_game`
+  ADD CONSTRAINT `picture_game_game_GameID_fk` FOREIGN KEY (`FK_GameID`) REFERENCES `game` (`GameID`) ON DELETE CASCADE,
+  ADD CONSTRAINT `picture_game_picture_PictureID_fk` FOREIGN KEY (`FK_PictureID`) REFERENCES `picture` (`PictureID`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `picture_post`
+--
+ALTER TABLE `picture_post`
+  ADD CONSTRAINT `picture_post_picture_PictureID_fk` FOREIGN KEY (`FK_PictureID`) REFERENCES `picture` (`PictureID`) ON DELETE CASCADE,
+  ADD CONSTRAINT `picture_post_post_PostID_fk` FOREIGN KEY (`FK_PostID`) REFERENCES `post` (`PostID`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `post`
