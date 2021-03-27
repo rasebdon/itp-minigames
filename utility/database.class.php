@@ -4,7 +4,7 @@
 
 class Database
 {
-
+    public static $instance;
 	protected $connection;
 	protected $query;
 	protected $show_errors = TRUE;
@@ -105,7 +105,7 @@ class Database
 		}
 		$this->query->close();
 		$this->query_closed = TRUE;
-		return $result;
+		return $result != null ? $result : false;
 	}
 
 	public function close()
@@ -145,4 +145,5 @@ class Database
 	}
 }
 
-$database = new Database('localhost', 'root', '', 'social_network');
+// INIT DB
+Database::$instance = new Database('localhost', 'itp_minigames_admin', 'pr0j3Ct_m1n1G4M3s', 'itp_minigames');

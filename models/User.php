@@ -9,14 +9,16 @@ class User {
     private $lastname;
     /** Associative string array with keys: `twitter`, `facebook`, `patreon`, `instagram` */
     private $socialMedia;
+    private $userType;
 
-    function __construct(int $id, string $username, string $firstname, string $lastname, array $socialMedia)
+    function __construct(int $id, string $username, string $firstname, string $lastname, array $socialMedia, string $usertype = "anonymus")
     {
         $this->id = $id;
         $this->username = $username;
         $this->firstname = $firstname;
         $this->lastname = $lastname;
         $this->socialMedia = $socialMedia;
+        $this->usertype = $usertype;
     }
 
     /**
@@ -38,7 +40,7 @@ class User {
     /**
      * Get the value of firstname
      */ 
-    public function getFirstname()
+    public function getFirstName()
     {
         return $this->firstname;
     }
@@ -46,7 +48,7 @@ class User {
     /**
      * Get the value of lastname
      */ 
-    public function getLastname()
+    public function getLastName()
     {
         return $this->lastname;
     }

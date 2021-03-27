@@ -1,10 +1,18 @@
 <?php
 // Initialization
 // REQUIREMENTS
+require "utility/database.class.php";
 require "models/Game.php";
 require "models/User.php";
+require "services/UserService.class.php";
+require "services/GameService.class.php";
 require "utility/GameRenderer.php";
+require "utility/UserAdministration.php";
+
 // GET/SET session
+session_set_cookie_params(0, "/", $_SERVER['HTTP_HOST'], (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'on'), true);
+session_start();
+
 // GET LOGIN STATUS
 ?>
 <!DOCTYPE html>
@@ -22,6 +30,7 @@ require "utility/GameRenderer.php";
     <!-- IMPORT CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://use.fontawesome.com/d95cfc3de4.js"></script>
+    <link rel="stylesheet" href="css/userAdministration.css">
     <link rel="stylesheet" href="css/game.css">
 
     <!-- IMPORT JS -->
@@ -29,7 +38,9 @@ require "utility/GameRenderer.php";
 </head>
 <body>
     <div class="container">
-        <?php GameRenderer::RenderGame(null, true) ?>
+        <?php 
+            UserAdministration::ShowUsers($_GET['position'], $_GET['loaded'], $_GET['amount']);
+        ?>
     </div>
 </body>
 </html>

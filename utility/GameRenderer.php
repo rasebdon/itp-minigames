@@ -47,6 +47,10 @@ class GameRenderer {
                     </span>
                 </h1>
             </div>
+            <div class="col-12">
+                <!-- AUTHOR -->
+                <span class="author">Author: <?= $game->getAuthor()->getUsername(); ?></span>
+            </div>
             <div class="col-12 pb-2">
                 <!-- RATING -->
                 <?php 
