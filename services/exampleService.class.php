@@ -1,6 +1,7 @@
 <?php
-class UserService
+class ExampleService
 {
+    public static $instance;
     protected $db;
     function __construct(Database $database)
     {
@@ -232,4 +233,4 @@ class UserService
     }
 }
 
-$userService = new UserService($database);
+ExampleService::$instance = new ExampleService(Database::$instance);

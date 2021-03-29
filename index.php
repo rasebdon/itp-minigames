@@ -1,10 +1,16 @@
 <?php
 // Initialization
 // REQUIREMENTS
-require "models/Game.php";
-require "models/User.php";
-require "utility/GameRenderer.php";
+require_once "utility/database.class.php";
+require_once "models/Game.php";
+require_once "models/User.php";
+require_once "services/UserService.class.php";
+require_once "services/GameService.class.php";
+
 // GET/SET session
+session_set_cookie_params(0, "/", $_SERVER['HTTP_HOST'], (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'on'), true);
+session_start();
+
 // GET LOGIN STATUS
 ?>
 <!DOCTYPE html>
@@ -22,14 +28,25 @@ require "utility/GameRenderer.php";
     <!-- IMPORT CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://use.fontawesome.com/d95cfc3de4.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/userAdministration.css">
     <link rel="stylesheet" href="css/game.css">
 
     <!-- IMPORT JS -->
     
 </head>
 <body>
+    <!-- Testing ground -->
+    <div>
+        <a href="http://localhost/?action=showUsers&amount=20&offset=0" class="btn btn-success">User List</a>
+        <a href="http://localhost/?action=viewGame&id=1" class="btn btn-success">View Game</a>
+    </div>
     <div class="container">
-        <?php GameRenderer::RenderGame(null, true) ?>
+        <?php
+            // Load in components
+            require_once "utility/GameRenderer.php";
+            require_once "utility/UserAdministration.php";
+        ?>
     </div>
 </body>
 </html>
