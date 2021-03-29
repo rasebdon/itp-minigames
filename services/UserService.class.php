@@ -51,6 +51,27 @@ class UserService
         return $userObjs;
     }
 
+    public function searchUser($username) {
+        $this->db->query("SELECT * from user WHERE Username LIKE \"%$username%\" ORDER BY UserID ASC");
+        // Null reference catch
+        if(!($userData = $this->db->fetchAll()))
+            return null;
+
+        $userObjs = array();
+        
+        for ($i = 0; $i < sizeof($userData); $i++) {
+            $userObjs[$i] = new User(
+                $userData[$i]['UserID'],
+                $userData[$i]['Username'],
+                $userData[$i]['FirstName'],
+                $userData[$i]['LastName'],
+                array(),
+                $this->getUsertype($userData[$i]['Usertype'])
+            );
+        }
+        return $userObjs;
+    }
+
     public function getUsertype($usertype) {
         // echo 'Warning: getUsertype() function from class UserService not implemented yet! Using default value "admin"';
         return "admin";

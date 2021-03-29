@@ -16,11 +16,15 @@ class UserAdministration {
         switch($_GET['action']) {
             case "showUsers":
                 if(isset($_GET['offset']) && isset($_GET['amount']))
-                    $this->ShowUsers($_GET['offset'], $_GET['amount']);
+                    $this->showUsers($_GET['offset'], $_GET['amount']);
                 break;
             case "showUser":
                 if(isset($_GET['id']))
-                    $this->ShowUser($_GET['id']);
+                    $this->showUser($_GET['id']);
+                break;
+            case "searchUsers":
+                if(isset($_GET['username']))
+                    $this->searchUsers($_GET['username']);
                 break;
         }
     }
@@ -28,7 +32,7 @@ class UserAdministration {
     /**
      * Shows the next set of users from the offset and amount given
      */
-    public function ShowUsers($offset = 0, $amount = 20) {
+    public function showUsers($offset = 0, $amount = 20) {
         // Check if users can be loaded (users amount > 0)
         if(($usersAmount = UserService::$instance->getUserCount()) == 0)
             return;
@@ -37,6 +41,17 @@ class UserAdministration {
         <div class="row user-administration-list">
             <div class="mb-3 col-12 text-center">
             <h1 class="display-3">User Administration System</h1>
+            </div>
+            <div class="user-administration-search mb-5 mt-3">
+                <form class="d-flex row justify-content-center">
+                    <div class="mt-3 row col-6">
+                        <div class="col-10">
+                            <input class="d-block form-control me-2" name="username" id="search-id" type="search" placeholder="Search Username" aria-label="Search">
+                        </div>
+                        <input type="hidden" name="action" value="searchUsers">
+                        <button class="btn btn-outline-success col-2" type="submit">Search</button>
+                    </div>
+                </form>
             </div>
             <div class="user-box col-12 row user-administration-list-item">
                 <div class="col-2 fw-bold">ID</div>
@@ -107,7 +122,84 @@ class UserAdministration {
         <?php
     }
 
-    public function ShowUser($uid) {
+    /**
+     * Shows all users that are meeting the searched criteria
+     */
+    public function searchUsers($searchName) {
+        // Check if users can be loaded (users amount > 0)
+        if(($usersAmount = UserService::$instance->getUserCount()) == 0)
+            return;
+
+        ?>
+        <div class="row user-administration-list">
+            <div class="mb-3 col-12 text-center">
+            <h1 class="display-3">User Administration System</h1>
+            </div>
+            <div class="user-administration-search mb-4 mt-3">
+                <form class="d-flex row justify-content-center">
+                    <div class="mt-3 row col-6">
+                        <div class="col-10">
+                            <input class="d-block form-control me-2" name="username" id="search-id" type="search" placeholder="Search Username" aria-label="Search">
+                        </div>
+                        <input type="hidden" name="action" value="searchUsers">
+                        <button class="btn btn-outline-success col-2" type="submit">Search</button>
+                    </div>
+                </form>
+            </div>
+            <div class="user-administration-search mb-2 text-center">
+                <a class="btn btn-success" type="button" href="/?action=showUsers&offset=0&amount=20">Show all</a>
+            </div>
+            <div class="user-administration-search mb-5 mt-3 text-center">
+                <h2>Showing results for "<?= $searchName?>"</h2>
+            </div>
+            <div class="user-box col-12 row user-administration-list-item">
+                <div class="col-2 fw-bold">ID</div>
+                <div class="col-2 fw-bold">Username</div>
+                <div class="col-2 fw-bold">First Name</div>
+                <div class="col-2 fw-bold">Last Name</div>
+                <div class="col-2 fw-bold">Role</div>
+                <div class="col-1 fw-bold">Delete</div>
+                <div class="col-1 fw-bold">View</div>
+            </div>
+        <?php
+
+        // Load the users from the service class
+        $users = UserService::$instance->searchUser($searchName);
+
+        if($users == null || sizeof($users) == 0) {
+            ?>
+            <div class="user-box col-12 text-center">
+                <p class="h4 mt-5">No results found</p>
+            </div>
+            <?php
+            return;
+        }
+
+        // Render all users that were loaded
+        foreach($users as $user) {
+            ?>
+            <div class="user-box col-12 row user-administration-list-item">
+                <div class="col-2"><?= $user->getId()?></div>
+                <div class="col-2"><?= $user->getUsername() ?></div>
+                <div class="col-2"><?= $user->getLastName()?></div>
+                <div class="col-2"><?= $user->getFirstName()?></div>
+                <div class="col-2">user</div>
+                <div class="col-1">
+                    <a href="<?= "?action=searchUsers&username=" . $searchName . "&delete=" . $user->getId() ?>" class="btn btn-danger">X</a>
+                </div>
+                <div class="col-1">
+                    <a href="<?= "?action=showUser&id=" . $user->getId() ?>" class="btn btn-primary"><i class="bi bi-search"></i></a>
+                </div>
+            </div>
+            <?php
+        }
+        ?>
+        </div>
+        </div>
+        <?php
+    }
+
+    public function showUser($uid) {
         // Get user or quit
         if(($user = UserService::$instance->getUser($uid)) === null) {
             return;
