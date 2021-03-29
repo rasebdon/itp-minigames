@@ -33,8 +33,6 @@ class UserAdministration {
         if(($usersAmount = UserService::$instance->getUserCount()) == 0)
             return;
 
-        // Loaded important to know for offset management
-        $loaded = 0;
         ?>
         <div class="row user-administration-list">
             <div class="mb-3 col-12 text-center">
@@ -71,20 +69,19 @@ class UserAdministration {
                 </div>
             </div>
             <?php
-            $loaded++;
         }
 
         // Add buttons
         ?>
         <div class="mt-5 col-12 row p-0">
-        <div class="mt-2 mb-2 col-12"><p>Showing users <?=$offset + 1?> - <?=$offset + $loaded?> ( <?=$usersAmount?> total )</p></div>
+        <div class="mt-2 mb-2 col-12"><p>Showing users <?=$offset + 1?> - <?=$offset + sizeof($users)?> ( <?=$usersAmount?> total )</p></div>
         <div class="d-flex col-6 justify-content-start p-0">
         <?php
         // If there are any users left that can be loaded before ( > amount ) then show button
-        if($loaded + $offset > $amount) {
+        if($offset - $amount >= 0) {
             // Add load last amount
             ?>
-            <a type="button" class="btn btn-primary" href="/?action=showUsers&amount=<?= $amount ?>&offset=<?=$offset - $loaded > 0 ? $offset - $loaded : 0?>">
+            <a type="button" class="btn btn-primary" href="/?action=showUsers&amount=<?= $amount ?>&offset=<?=$offset - $amount > 0 ? $offset - $amount : 0?>">
                 Last <?= $amount ?> Users
             </a>
             <?php
@@ -95,10 +92,10 @@ class UserAdministration {
         <div class="d-flex col-6 justify-content-end p-0">
         <?php
         // If there are any users left that can be loaded after ( < total users in db ) then show button
-        if($loaded + $offset < $usersAmount) {
+        if($amount + $offset < $usersAmount) {
             // Add load next amount
             ?>
-            <a type="button" class="btn btn-primary" href="/?action=showUsers&amount=<?= $amount ?>&offset=<?= $offset + $loaded?>">
+            <a type="button" class="btn btn-primary" href="/?action=showUsers&amount=<?= $amount ?>&offset=<?= $offset + $amount?>">
                 Next <?= $amount ?> Users
             </a>
             <?php

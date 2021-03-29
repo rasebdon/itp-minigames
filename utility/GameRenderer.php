@@ -4,10 +4,26 @@
  */
 class GameRenderer {
 
+    /** @var GameRenderer */
+    public static $instance;
+
+    function __construct()
+    {
+        if(!isset($_GET['action'])) 
+            return;
+     
+        switch($_GET['action']) {
+            case "viewGame":
+                // GET THE GAME WITH GAME SERVICE CLASS
+                $this->RenderGame(null, true);
+                break;
+        }
+    }
+
     /**
      * Renders game as HTML
      */
-    static function RenderGame($game = null, $debug = false) {
+    function RenderGame($game = null, $debug = false) {
         // DEBUG -> Game should be given as variable
         if($debug) {
             echo "DEBUG VERSION - DISABLE ON RELEASE";
@@ -49,6 +65,7 @@ class GameRenderer {
             </div>
             <div class="col-12">
                 <!-- AUTHOR -->
+                <!-- TODO: Hyperlink to profile -->
                 <span class="author">Author: <?= $game->getAuthor()->getUsername(); ?></span>
             </div>
             <div class="col-12 pb-2">
@@ -199,4 +216,5 @@ class GameRenderer {
         <?php
     }
 }
-?>
+
+GameRenderer::$instance = new GameRenderer();

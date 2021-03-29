@@ -36,12 +36,16 @@ session_start();
     
 </head>
 <body>
+    <!-- Testing ground -->
+    <div>
+        <a href="http://localhost/?action=showUsers&amount=20&offset=0" class="btn btn-success">User List</a>
+        <a href="http://localhost/?action=viewGame&id=1" class="btn btn-success">View Game</a>
+    </div>
     <div class="container">
         <?php
             // Load in components
             require_once "utility/GameRenderer.php";
             require_once "utility/UserAdministration.php";
-
         ?>
     </div>
 </body>
