@@ -11,14 +11,14 @@ class User {
     private $socialMedia;
     private $userType;
 
-    function __construct(int $id, string $username, string $firstname, string $lastname, array $socialMedia, string $usertype = "anonymus")
+    function __construct(int $id, string $username, string $firstname, string $lastname, array $socialMedia, UserType $userType)
     {
         $this->id = $id;
         $this->username = $username;
         $this->firstname = $firstname;
         $this->lastname = $lastname;
         $this->socialMedia = $socialMedia;
-        $this->usertype = $usertype;
+        $this->userType = $userType;
     }
 
     /**
@@ -88,5 +88,15 @@ class User {
         if(isset($this->socialMedia['facebook']) && $this->socialMedia['facebook'] != "")
             return $this->socialMedia['facebook'];
         return false;
+    }
+
+    /**
+     * Get the value of userType
+     * 
+     * @return UserType
+     */ 
+    public function getUserType()
+    {
+        return $this->userType;
     }
 }

@@ -23,7 +23,25 @@ class UserService
             $user['FirstName'],
             $user['LastName'],
             array(),
-            $this->getUsertype($user['Usertype'])
+            new UserType($user['Usertype'])
+        );
+
+        return $userObj;
+    }
+
+    public function getUserSession($sessionid) {
+        $this->db->query("SELECT * from user where SessionID = ?", $sessionid);
+        // Null reference catch
+        if(!($user = $this->db->fetchArray()))
+            return null;
+
+        $userObj = new User(
+            $user['UserID'],
+            $user['Username'],
+            $user['FirstName'],
+            $user['LastName'],
+            array(),
+            new UserType($user['Usertype'])
         );
 
         return $userObj;
@@ -45,7 +63,7 @@ class UserService
                 $userData[$i]['FirstName'],
                 $userData[$i]['LastName'],
                 array(),
-                $this->getUsertype($userData[$i]['Usertype'])
+                new UserType($userData[$i]['Usertype'])
             );
         }
         return $userObjs;
@@ -66,7 +84,7 @@ class UserService
                 $userData[$i]['FirstName'],
                 $userData[$i]['LastName'],
                 array(),
-                $this->getUsertype($userData[$i]['Usertype'])
+                new UserType($userData[$i]['Usertype'])
             );
         }
         return $userObjs;

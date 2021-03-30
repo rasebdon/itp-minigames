@@ -146,4 +146,4 @@ class Database
 }
 
 // INIT DB
-Database::$instance = new Database('localhost', 'itp_minigames_admin', 'pr0j3Ct_m1n1G4M3s', 'itp_minigames');
+Database::$instance = new Database('localhost', 'itp_minigames_admin', 'pr0j3Ct_m1n1G4M3s', 'itp-minigames');
