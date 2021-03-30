@@ -218,7 +218,7 @@ CREATE TABLE `user` (
   `LastName` varchar(25) NOT NULL,
   `Username` varchar(40) NOT NULL,
   `Email` varchar(80) NOT NULL,
-  `Usertype` varchar(20) NOT NULL,
+  `Usertype` varchar(20) NOT NULL DEFAULT 'User',
   `Password` varchar(100) NOT NULL,
   `SessionID` int(11) DEFAULT NULL,
   `FK_PictureID` int(11) DEFAULT NULL

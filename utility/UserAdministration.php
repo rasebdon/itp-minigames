@@ -68,6 +68,7 @@ class UserAdministration {
         $users = UserService::$instance->getUsers($offset, $amount);
 
         // Render all users that were loaded
+        /** @var User $user */
         foreach($users as $user) {
             ?>
             <div class="user-box col-12 row user-administration-list-item">
@@ -75,7 +76,7 @@ class UserAdministration {
                 <div class="col-2"><?= $user->getUsername() ?></div>
                 <div class="col-2"><?= $user->getLastName()?></div>
                 <div class="col-2"><?= $user->getFirstName()?></div>
-                <div class="col-2">user</div>
+                <div class="col-2"><?= $user->getUserType()->getTypeString()?></div>
                 <div class="col-1">
                     <a href="<?= "?action=showUsers&amount=$amount&offset=$offset&delete=" . $user->getId() ?>" class="btn btn-danger">X</a>
                 </div>

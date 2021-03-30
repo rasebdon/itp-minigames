@@ -2,6 +2,7 @@
 // Initialization
 // REQUIREMENTS
 require_once "utility/database.class.php";
+require_once "models/UserType.php";
 require_once "models/Game.php";
 require_once "models/User.php";
 require_once "services/UserService.class.php";
@@ -12,6 +13,30 @@ session_set_cookie_params(0, "/", $_SERVER['HTTP_HOST'], (isset($_SERVER['HTTPS'
 session_start();
 
 // GET LOGIN STATUS
+$loggedIn = false;
+/** @var UserType */
+$userType = null;
+if(isset($_SESSION['SessionID'])) {
+    // Search for set session id and get user
+    if(($user = UserService::$instance->getUserSession($_SESSION['SessionID'])) == null)
+        return;
+    
+    $loggedIn = true;
+    $userType = $user->getUserType();
+}
+
+// DEBUG USER ADMIN
+echo "DEBUGGIN ENABLED - LOGGED IN AND ROLE VIA SESSION PARAMETER";
+$loggedIn = true;
+if(isset($_GET['debugRole'])) {
+    $_SESSION['debugRole'] = $_GET['debugRole'];
+}
+if(isset($_SESSION['debugRole'])) {
+    $userType = new UserType($_SESSION['debugRole']);
+}
+else {
+    $userType = UserType::User();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -37,15 +62,42 @@ session_start();
 </head>
 <body>
     <!-- Testing ground -->
-    <div>
+    <div class="ps-3 mt-3 pt-2 border-top">
+        <p class="h5">Components</p>
         <a href="http://localhost/?action=showUsers&amount=20&offset=0" class="btn btn-success">User List</a>
         <a href="http://localhost/?action=viewGame&id=1" class="btn btn-success">View Game</a>
     </div>
+    <div class="ps-3 mt-2 mb-3 pb-3 border-bottom">
+        <p class="h5">Roles</p>
+        <a href="http://localhost/?debugRole=user" class="btn btn-success">User Role</a>
+        <a href="http://localhost/?debugRole=creator" class="btn btn-success">Creator Role</a>
+        <a href="http://localhost/?debugRole=admin" class="btn btn-success">Admin Role</a>
+    </div>
+    <!-- Main container -->
     <div class="container">
         <?php
-            // Load in components
+            /// Load components
+            // Check which sites can be seen
+            // Load public components
             require_once "utility/GameRenderer.php";
-            require_once "utility/UserAdministration.php";
+
+            // Load logged in components
+            if($loggedIn) {
+                $accessStrength = $userType->getAccessStrength();
+                // Normal user components
+                if($accessStrength >= UserType::User()->getAccessStrength()) {
+
+                }
+                // Game creator components
+                if($accessStrength >= UserType::Creator()->getAccessStrength()) {
+
+                }
+                // Admin components
+                if($accessStrength >= UserType::Admin()->getAccessStrength()) {
+                    require_once "utility/UserAdministration.php";
+                }
+                
+            }
         ?>
     </div>
 </body>
