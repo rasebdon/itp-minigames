@@ -10,11 +10,13 @@ class UserService
         $this->db = $database;
     }
 
+
+
     public function getUser($uid)
     {
         $this->db->query("SELECT * from user where UserID = ?", $uid);
         // Null reference catch
-        if(!($user = $this->db->fetchArray()))
+        if (!($user = $this->db->fetchArray()))
             return null;
 
         $userObj = new User(
@@ -29,10 +31,11 @@ class UserService
         return $userObj;
     }
 
-    public function getUserSession($sessionid) {
+    public function getUserSession($sessionid)
+    {
         $this->db->query("SELECT * from user where SessionID = ?", $sessionid);
         // Null reference catch
-        if(!($user = $this->db->fetchArray()))
+        if (!($user = $this->db->fetchArray()))
             return null;
 
         $userObj = new User(
@@ -51,11 +54,11 @@ class UserService
     {
         $this->db->query("SELECT * from user ORDER BY UserID ASC LIMIT ?, ?", $offset, $amount);
         // Null reference catch
-        if(!($userData = $this->db->fetchAll()))
+        if (!($userData = $this->db->fetchAll()))
             return null;
 
         $userObjs = array();
-        
+
         for ($i = 0; $i < sizeof($userData); $i++) {
             $userObjs[$i] = new User(
                 $userData[$i]['UserID'],
@@ -69,14 +72,15 @@ class UserService
         return $userObjs;
     }
 
-    public function searchUser($username) {
+    public function searchUser($username)
+    {
         $this->db->query("SELECT * from user WHERE Username LIKE \"%$username%\" ORDER BY UserID ASC");
         // Null reference catch
-        if(!($userData = $this->db->fetchAll()))
+        if (!($userData = $this->db->fetchAll()))
             return null;
 
         $userObjs = array();
-        
+
         for ($i = 0; $i < sizeof($userData); $i++) {
             $userObjs[$i] = new User(
                 $userData[$i]['UserID'],
@@ -90,18 +94,36 @@ class UserService
         return $userObjs;
     }
 
-    public function getUsertype($usertype) {
+    public function getUsertype($usertype)
+    {
         // echo 'Warning: getUsertype() function from class UserService not implemented yet! Using default value "admin"';
         return "admin";
     }
 
-    public function getUserCount() {
+    public function getUserCount()
+    {
         $this->db->query("SELECT COUNT(UserID) as Amount FROM user ");
         return $this->db->fetchArray()['Amount'];
     }
 
-    public function deleteUser($uid) {
+    public function deleteUser($uid)
+    {
         $this->db->query("DELETE FROM user WHERE UserID = ?", $uid);
+    }
+
+    public function insertUserData($userData)
+    {
+        $this->db->query(
+            "INSERT INTO user 
+        (FirstName, LastName, Username, Email, Usertype, Password, SessionID, FK_PictureID)
+         VALUES (?, ?, ?, ?, 'user', ?, ?, 1)",
+            $userData['FirstName'],
+            $userData['LastName'],
+            $userData['Username'],
+            $userData['Email'],
+            password_hash($userData['Password'], PASSWORD_DEFAULT),
+            session_id()
+        );
     }
 }
 
