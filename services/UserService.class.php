@@ -122,7 +122,7 @@ class UserService
             $userData['Username'],
             $userData['Email'],
             password_hash($userData['Password'], PASSWORD_DEFAULT),
-            session_id()
+            session_id() . time()
         );
     }
 }

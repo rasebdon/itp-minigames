@@ -4,75 +4,45 @@ if (isset($_GET['action'])) {
 ?>
         <h1>Registration</h1>
 
-        <form action="" method="POST">
-
-
-            <div class="row">
-                <div class="col-md-4">
-                    <label for="FirstName">Firstname:</label>
+        <h1>Register</h1>
+        <form action="" method="post">
+            <div class="form-row">
+                <div class="form-group col-6">
+                    <label for="Email">Email</label>
+                    <input type="email" class="form-control" name="Email" id="" aria-describedby="emailHelpId" placeholder="" value="<?= $_SESSION['register']['Email'] ?? "" ?>">
+                    <small id="emailHelpId" class="form-text text-muted"><?= $_SESSION['registerErrors']['Email'] ?? '' ?></small>
                 </div>
-                <div class="col-md-8">
-                    <input type="text" class="form-control" name="FirstName" />
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-4">
-                    <label for="LastName">Lastname:</label>
-                </div>
-                <div class="col-md-8">
-                    <input type="text" class="form-control" name="LastName" />
+                <div class="form-group col-6">
+                    <label for="Username">Username</label>
+                    <input type="text" class="form-control" name="Username" id="" aria-describedby="helpId" placeholder="" value="<?= $_SESSION['register']['Username'] ?? "" ?>">
+                    <small id="helpId" class="form-text text-muted"><?= $_SESSION['registerErrors']['Username'] ?? '' ?></small>
                 </div>
             </div>
-
-
-            <div class="row">
-                <div class="col-md-4">
-                    <label for="Username">Username:</label>
+            <div class="form-row">
+                <div class="form-group col-6">
+                    <label for="FirstName">FirstName</label>
+                    <input type="text" class="form-control" name="FirstName" id="" aria-describedby="helpId" placeholder="" value="<?= $_SESSION['register']['FirstName'] ?? "" ?>">
+                    <small id="helpId" class="form-text text-muted"><?= $_SESSION['registerErrors']['FirstName'] ?? '' ?></small>
                 </div>
-                <div class="col-md-8">
-                    <input type="text" class="form-control" name="Username">
-                </div>
-            </div>
-
-
-            <div class="row">
-                <div class="col-md-4">
-                    <label for="Email">E-Mail:</label>
-                </div>
-                <div class="col-md-8">
-                    <input type="email" class="form-control" placeholder="example@mail.com" name="Email" />
+                <div class="form-group col-6">
+                    <label for="LastName">LastName</label>
+                    <input type="text" class="form-control" name="LastName" id="" aria-describedby="helpId" placeholder="" value="<?= $_SESSION['register']['LastName'] ?? "" ?>">
+                    <small id="helpId" class="form-text text-muted"><?= $_SESSION['registerErrors']['LastName'] ?? '' ?></small>
                 </div>
             </div>
-
-
-            <div class="row">
-                <div class="col-md-4">
-                    <label for="Password">Password:</label>
+            <div class="form-row">
+                <div class="form-group col-6">
+                    <label for="Password">Password</label>
+                    <input type="password" class="form-control" name="Password" id="" placeholder="" value="<?= $_SESSION['register']['Password'] ?? "" ?>">
+                    <small id="helpId" class="form-text text-muted"><?= $_SESSION['registerErrors']['Password'] ?? '' ?></small>
                 </div>
-                <div class="col-md-8">
-                    <input type="password" class="form-control" placeholder="password" name="Password" />
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-4">
-                    <label for="PasswordRep">Repeat password:</label>
-                </div>
-                <div class="col-md-8">
-                    <input type="password" class="form-control" placeholder="repeat password" name="PasswordRep" />
+                <div class="form-group col-6">
+                    <label for="ConfirmPassword">ConfirmPassword</label>
+                    <input type="password" class="form-control" name="ConfirmPassword" id="" placeholder="" value="<?= $_SESSION['register']['ConfirmPassword'] ?? "" ?>">
+                    <small id="helpId" class="form-text text-muted"><?= $_SESSION['registerErrors']['ConfirmPassword'] ?? '' ?></small>
                 </div>
             </div>
-
-
-            <div class="senden">
-                <label for="submit">
-                    <input type="submit" name="registerSubmit" value="Send" />
-                </label>
-                <label for="reset">
-                    <input type="reset" name="reset" value="Cancel" name="reset" />
-                </label>
-            </div>
+            <button type="submit" name="RegisterSubmit" class="btn btn-primary">Submit</button>
         </form>
 <?php
     }
