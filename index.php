@@ -7,39 +7,41 @@ require_once "models/Game.php";
 require_once "models/User.php";
 require_once "services/UserService.class.php";
 require_once "services/GameService.class.php";
+require_once "utility/Validation.class.php";
 
 // GET/SET session
 session_set_cookie_params(0, "/", $_SERVER['HTTP_HOST'], (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'on'), true);
 session_start();
 
+
 // GET LOGIN STATUS
 $loggedIn = false;
 /** @var UserType */
 $userType = null;
-if(isset($_SESSION['SessionID'])) {
+if (isset($_SESSION['SessionID'])) {
     // Search for set session id and get user
-    if(($user = UserService::$instance->getUserSession($_SESSION['SessionID'])) == null)
+    if (($user = UserService::$instance->getUserSession($_SESSION['SessionID'])) == null)
         return;
-    
+
     $loggedIn = true;
     $userType = $user->getUserType();
 }
 
 // DEBUG USER ADMIN
 echo "DEBUGGIN ENABLED - LOGGED IN AND ROLE VIA SESSION PARAMETER";
-$loggedIn = true;
-if(isset($_GET['debugRole'])) {
+$loggedIn = false;
+if (isset($_GET['debugRole'])) {
     $_SESSION['debugRole'] = $_GET['debugRole'];
 }
-if(isset($_SESSION['debugRole'])) {
+if (isset($_SESSION['debugRole'])) {
     $userType = new UserType($_SESSION['debugRole']);
-}
-else {
+} else {
     $userType = UserType::User();
 }
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -58,14 +60,16 @@ else {
     <link rel="stylesheet" href="css/game.css">
 
     <!-- IMPORT JS -->
-    
+
 </head>
+
 <body>
     <!-- Testing ground -->
     <div class="ps-3 mt-3 pt-2 border-top">
         <p class="h5">Components</p>
         <a href="http://localhost/?action=showUsers&amount=20&offset=0" class="btn btn-success">User List</a>
         <a href="http://localhost/?action=viewGame&id=1" class="btn btn-success">View Game</a>
+        <a href="http://localhost/?action=register" class="btn btn-success">Registration</a>
     </div>
     <div class="ps-3 mt-2 mb-3 pb-3 border-bottom">
         <p class="h5">Roles</p>
@@ -76,29 +80,32 @@ else {
     <!-- Main container -->
     <div class="container">
         <?php
-            /// Load components
-            // Check which sites can be seen
-            // Load public components
-            require_once "utility/GameRenderer.php";
+        require_once "forms/formHandler.php";
 
-            // Load logged in components
-            if($loggedIn) {
-                $accessStrength = $userType->getAccessStrength();
-                // Normal user components
-                if($accessStrength >= UserType::User()->getAccessStrength()) {
+        /// Load components
+        // Check which sites can be seen
+        // Load public components
+        require_once "utility/GameRenderer.php";
 
-                }
-                // Game creator components
-                if($accessStrength >= UserType::Creator()->getAccessStrength()) {
-
-                }
-                // Admin components
-                if($accessStrength >= UserType::Admin()->getAccessStrength()) {
-                    require_once "utility/UserAdministration.php";
-                }
-                
+        // Load logged in components
+        if ($loggedIn) {
+            $accessStrength = $userType->getAccessStrength();
+            // Normal user components
+            if ($accessStrength >= UserType::User()->getAccessStrength()) {
             }
+            // Game creator components
+            if ($accessStrength >= UserType::Creator()->getAccessStrength()) {
+            }
+            // Admin components
+            if ($accessStrength >= UserType::Admin()->getAccessStrength()) {
+                require_once "utility/UserAdministration.php";
+            }
+        } else {
+            // if someone isn´t logged in
+            require_once "utility/Registration.php";
+        }
         ?>
     </div>
 </body>
+
 </html>
