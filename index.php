@@ -27,17 +27,26 @@ if (isset($_SESSION['SessionID'])) {
     $userType = $user->getUserType();
 }
 
-// DEBUG USER ADMIN
-echo "DEBUGGIN ENABLED - LOGGED IN AND ROLE VIA SESSION PARAMETER";
-$loggedIn = false;
-if (isset($_GET['debugRole'])) {
-    $_SESSION['debugRole'] = $_GET['debugRole'];
+/// DEBUGGING
+// Debug login
+if (isset($_GET['debugLogin'])) {
+    $_SESSION['debugLogin'] = $_GET['debugLogin'];
 }
-if (isset($_SESSION['debugRole'])) {
-    $userType = new UserType($_SESSION['debugRole']);
-} else {
-    $userType = UserType::User();
+if (isset($_SESSION['debugLogin'])) {
+    $loggedIn = $_SESSION['debugLogin'];
+    // Debug role (Only available if user is logged in)
+    if ($loggedIn) {
+        if (isset($_GET['debugRole'])) {
+            $_SESSION['debugRole'] = $_GET['debugRole'];
+        }
+        if (isset($_SESSION['debugRole'])) {
+            $userType = new UserType($_SESSION['debugRole']);
+        }
+    }
 }
+// Print debugging status
+echo "DEBUGGING ENABLED<br>LOGGED IN: <b>" . ($loggedIn ? "YES" : "NO") . "</b><br>ROLE: <b>" . (($userType != null) ? $userType->getTypeString() : "none") . "</b>";
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -70,9 +79,11 @@ if (isset($_SESSION['debugRole'])) {
         <a href="http://localhost/?action=showUsers&amount=20&offset=0" class="btn btn-success">User List</a>
         <a href="http://localhost/?action=viewGame&id=1" class="btn btn-success">View Game</a>
         <a href="http://localhost/?action=register" class="btn btn-success">Registration</a>
+        <a href="http://localhost/?action=login" class="btn btn-success">Login</a>
     </div>
     <div class="ps-3 mt-2 mb-3 pb-3 border-bottom">
         <p class="h5">Roles</p>
+        <a href="http://localhost/?debugLogin=<?= !$loggedIn ?>" class="btn btn-success">Toggle Login</a>
         <a href="http://localhost/?debugRole=user" class="btn btn-success">User Role</a>
         <a href="http://localhost/?debugRole=creator" class="btn btn-success">Creator Role</a>
         <a href="http://localhost/?debugRole=admin" class="btn btn-success">Admin Role</a>
@@ -103,6 +114,7 @@ if (isset($_SESSION['debugRole'])) {
         } else {
             // if someone isn´t logged in
             require_once "utility/Registration.php";
+            require_once "utility/Login.php";
         }
         ?>
     </div>

@@ -15,3 +15,15 @@ if (isset($_POST['RegisterSubmit'])) {
         $_SESSION['registerErrors'] = Validation::$instance->getReturnErrors();
     }
 }
+
+if (isset($_POST['LoginSubmit'])) {
+    if (Validation::$instance->login($_POST)) {
+        if (isset($_SESSION['loginErrors']))
+            unset($_SESSION['loginErrors']);
+
+
+        var_dump(UserService::$instance->getUserByUsername($_POST['Username']));
+    } else {
+        $_SESSION['loginErrors'] = Validation::$instance->getReturnErrors();
+    }
+}

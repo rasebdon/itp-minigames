@@ -2,8 +2,6 @@
 if (isset($_GET['action'])) {
     if ($_GET['action'] == 'register') {
 ?>
-        <h1>Registration</h1>
-
         <h1>Register</h1>
         <form action="" method="post">
             <div class="form-row">
