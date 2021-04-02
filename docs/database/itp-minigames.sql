@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.3
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 25, 2021 at 04:01 PM
+-- Generation Time: Apr 02, 2021 at 05:14 PM
 -- Server version: 10.4.14-MariaDB
--- PHP Version: 7.4.11
+-- PHP Version: 7.4.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -121,6 +121,13 @@ CREATE TABLE `picture` (
   `ThumbnailPath` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `picture`
+--
+
+INSERT INTO `picture` (`PictureID`, `SourcePath`, `ThumbnailPath`) VALUES
+(1, NULL, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -214,15 +221,23 @@ CREATE TABLE `social` (
 
 CREATE TABLE `user` (
   `UserID` int(11) NOT NULL,
+  `Usertype` varchar(30) NOT NULL,
   `FirstName` varchar(25) NOT NULL,
   `LastName` varchar(25) NOT NULL,
   `Username` varchar(40) NOT NULL,
   `Email` varchar(80) NOT NULL,
-  `Usertype` varchar(20) NOT NULL DEFAULT 'User',
   `Password` varchar(100) NOT NULL,
-  `SessionID` int(11) DEFAULT NULL,
+  `SessionID` varchar(255) DEFAULT NULL,
   `FK_PictureID` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`UserID`, `Usertype`, `FirstName`, `LastName`, `Username`, `Email`, `Password`, `SessionID`, `FK_PictureID`) VALUES
+(2, 'user', 'Michael', 'Duskanich', 'duskanichduskanich', 'michael.duskanich@gmail.coma', '$2y$10$c0.7HhVxibJVHm3dgK4GReyy72Fzxl1kxtLy06HnZP5Zi0DzKC4MC', '426el4f7j046gn83h6ulrm5oqq1617372620', 1),
+(3, 'user', 'Michael', 'Duskanich', 'duskanichduskanichl', 'michael.duskanich@gmail.comal', '$2y$10$MI7Oiu6X7u3GPPQ5vVK.nOI3NmndP39mpjS0Q8TkWDBVA8jk0/qpq', '426el4f7j046gn83h6ulrm5oqq1617373523', 1);
 
 -- --------------------------------------------------------
 
@@ -413,7 +428,7 @@ ALTER TABLE `genre`
 -- AUTO_INCREMENT for table `picture`
 --
 ALTER TABLE `picture`
-  MODIFY `PictureID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `PictureID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `platform`
@@ -437,7 +452,7 @@ ALTER TABLE `social`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
