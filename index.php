@@ -27,17 +27,26 @@ if (isset($_SESSION['SessionID'])) {
     $userType = $user->getUserType();
 }
 
-// DEBUG USER ADMIN
-echo "DEBUGGIN ENABLED - LOGGED IN AND ROLE VIA SESSION PARAMETER";
-$loggedIn = false;
-if (isset($_GET['debugRole'])) {
-    $_SESSION['debugRole'] = $_GET['debugRole'];
+/// DEBUGGING
+// Debug login
+if(isset($_GET['debugLogin'])) {
+    $_SESSION['debugLogin'] = $_GET['debugLogin'];
 }
-if (isset($_SESSION['debugRole'])) {
-    $userType = new UserType($_SESSION['debugRole']);
-} else {
-    $userType = UserType::User();
+if (isset($_SESSION['debugLogin'])) {
+    $loggedIn = $_SESSION['debugLogin'];
+    // Debug role (Only available if user is logged in)
+    if($loggedIn) {
+        if (isset($_GET['debugRole'])) {
+            $_SESSION['debugRole'] = $_GET['debugRole'];
+        }
+        if (isset($_SESSION['debugRole'])) {
+            $userType = new UserType($_SESSION['debugRole']);
+        }
+    }
 }
+// Print debugging status
+echo "DEBUGGING ENABLED<br>LOGGED IN: <b>" . ($loggedIn ? "YES" : "NO") . "</b><br>ROLE: <b>" . (($userType != null) ? $userType->getTypeString() : "none") . "</b>";
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -73,6 +82,7 @@ if (isset($_SESSION['debugRole'])) {
     </div>
     <div class="ps-3 mt-2 mb-3 pb-3 border-bottom">
         <p class="h5">Roles</p>
+        <a href="http://localhost/?debugLogin=<?=!$loggedIn?>" class="btn btn-success">Toggle Login</a>
         <a href="http://localhost/?debugRole=user" class="btn btn-success">User Role</a>
         <a href="http://localhost/?debugRole=creator" class="btn btn-success">Creator Role</a>
         <a href="http://localhost/?debugRole=admin" class="btn btn-success">Admin Role</a>
