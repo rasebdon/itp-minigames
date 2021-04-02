@@ -232,16 +232,6 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `user`
---
-
-INSERT INTO `user` (`UserID`, `Usertype`, `FirstName`, `LastName`, `Username`, `Email`, `Password`, `SessionID`, `FK_PictureID`) VALUES
-(2, 'user', 'Michael', 'Duskanich', 'duskanichduskanich', 'michael.duskanich@gmail.coma', '$2y$10$c0.7HhVxibJVHm3dgK4GReyy72Fzxl1kxtLy06HnZP5Zi0DzKC4MC', '426el4f7j046gn83h6ulrm5oqq1617372620', 1),
-(3, 'user', 'Michael', 'Duskanich', 'duskanichduskanichl', 'michael.duskanich@gmail.comal', '$2y$10$MI7Oiu6X7u3GPPQ5vVK.nOI3NmndP39mpjS0Q8TkWDBVA8jk0/qpq', '426el4f7j046gn83h6ulrm5oqq1617373523', 1);
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `vote_comment`
 --
 
