@@ -47,6 +47,9 @@ if (isset($_SESSION['debugLogin'])) {
 // Print debugging status
 echo "DEBUGGING ENABLED<br>LOGGED IN: <b>" . ($loggedIn ? "YES" : "NO") . "</b><br>ROLE: <b>" . (($userType != null) ? $userType->getTypeString() : "none") . "</b>";
 
+//manually put in my local path to the index.php
+$localpath = "itproject/itp-minigames/index.php";
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -76,16 +79,17 @@ echo "DEBUGGING ENABLED<br>LOGGED IN: <b>" . ($loggedIn ? "YES" : "NO") . "</b><
     <!-- Testing ground -->
     <div class="ps-3 mt-3 pt-2 border-top">
         <p class="h5">Components</p>
-        <a href="http://localhost/?action=showUsers&amount=20&offset=0" class="btn btn-success">User List</a>
-        <a href="http://localhost/?action=viewGame&id=1" class="btn btn-success">View Game</a>
-        <a href="http://localhost/?action=register" class="btn btn-success">Registration</a>
+        <a href="http://localhost/<?= $localpath ?>?action=showUsers&amount=20&offset=0" class="btn btn-success">User List</a>
+        <a href="http://localhost/<?= $localpath ?>?action=viewGame&id=1" class="btn btn-success">View Game</a>
+        <a href="http://localhost/<?= $localpath ?>?action=register" class="btn btn-success">Registration</a>
+        <a href="http://localhost/<?= $localpath ?>?action=forum" class="btn btn-success">Forum</a>
     </div>
     <div class="ps-3 mt-2 mb-3 pb-3 border-bottom">
         <p class="h5">Roles</p>
-        <a href="http://localhost/?debugLogin=<?=!$loggedIn?>" class="btn btn-success">Toggle Login</a>
-        <a href="http://localhost/?debugRole=user" class="btn btn-success">User Role</a>
-        <a href="http://localhost/?debugRole=creator" class="btn btn-success">Creator Role</a>
-        <a href="http://localhost/?debugRole=admin" class="btn btn-success">Admin Role</a>
+        <a href="http://localhost/<?= $localpath ?>?debugLogin=<?=!$loggedIn?>" class="btn btn-success">Toggle Login</a>
+        <a href="http://localhost/<?= $localpath ?>?debugRole=user" class="btn btn-success">User Role</a>
+        <a href="http://localhost/<?= $localpath ?>?debugRole=creator" class="btn btn-success">Creator Role</a>
+        <a href="http://localhost/<?= $localpath ?>?debugRole=admin" class="btn btn-success">Admin Role</a>
     </div>
     <!-- Main container -->
     <div class="container">
@@ -97,11 +101,14 @@ echo "DEBUGGING ENABLED<br>LOGGED IN: <b>" . ($loggedIn ? "YES" : "NO") . "</b><
         // Load public components
         require_once "utility/GameRenderer.php";
 
+        //make this for users only, this is public for debugg only
+        require_once "utility/ForumMainPage.php";
+
         // Load logged in components
         if ($loggedIn) {
             $accessStrength = $userType->getAccessStrength();
             // Normal user components
-            if ($accessStrength >= UserType::User()->getAccessStrength()) {
+            if ($accessStrength >= UserType::User()->getAccessStrength()) {                
             }
             // Game creator components
             if ($accessStrength >= UserType::Creator()->getAccessStrength()) {
