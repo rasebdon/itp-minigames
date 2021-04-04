@@ -160,6 +160,42 @@ class Validation
         // 5. return success bool
         return $this->success;
     }
+
+    public function matchPassword($username, $password)
+    {
+        $this->db->query("SELECT * FROM user WHERE username = ?", $username);
+
+        $user = $this->db->fetchArray();
+
+        if ($user === false) {
+            return false;
+        }
+
+        return password_verify($password, $user['Password']);
+    }
+
+    public function login($loginData)
+    {
+        $this->clearErrors();
+        $this->removeSubmit($loginData);
+        $this->checkEmpty($loginData);
+
+        if (!isset($this->returnErrors['Username']))
+            if (!$this->valueExists("user", "Username", $loginData['Username'])) {
+                $this->returnErrors['Username'] = Validation::error['USERNAME_WRONG'];
+                $this->success = false;
+            }
+
+        if (!isset($this->returnErrors['Username'])) {
+            if (!$this->matchPassword($loginData['Username'], $loginData['Password'])) {
+                $this->returnErrors['Password'] = Validation::error['PASSWORD_WRONG'];
+                $this->success = false;
+            }
+        }
+
+        $this->fillSuccessful($loginData);
+        return $this->success;
+    }
 }
 
 Validation::$instance = new Validation(Database::$instance);

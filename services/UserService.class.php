@@ -94,6 +94,22 @@ class UserService
         return $userObjs;
     }
 
+    public function getUserByUsername($username)
+    {
+        $this->db->query("SELECT * from user WHERE Username = ?", $username);
+
+        $userArray = $this->db->fetchArray();
+
+        return new User(
+            $userArray['UserID'],
+            $userArray['Username'],
+            $userArray['FirstName'],
+            $userArray['LastName'],
+            array(),
+            new UserType($userArray['Usertype'])
+        );
+    }
+
     public function getUsertype($usertype)
     {
         // echo 'Warning: getUsertype() function from class UserService not implemented yet! Using default value "admin"';
@@ -124,6 +140,11 @@ class UserService
             password_hash($userData['Password'], PASSWORD_DEFAULT),
             session_id() . time()
         );
+    }
+
+    public function updateSessionID($sessionID, $userID)
+    {
+        $this->db->query("UPDATE user SET SessionID = ? WHERE UserID = ?", $sessionID, $userID);
     }
 }
 
