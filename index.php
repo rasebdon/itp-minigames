@@ -41,6 +41,7 @@ if (isset($_COOKIE['sessionCookie'])) {
 
 /// DEBUGGING
 // Debug login
+
 if (isset($_GET['debugLogin'])) {
     $_SESSION['debugLogin'] = $_GET['debugLogin'];
 }
@@ -58,6 +59,7 @@ if (isset($_SESSION['debugLogin'])) {
 }
 // Print debugging status
 echo "DEBUGGING ENABLED<br>LOGGED IN: <b>" . ($loggedIn ? "YES" : "NO") . "</b><br>ROLE: <b>" . (($userType != null) ? $userType->getTypeString() : "none") . "</b>";
+
 //print current user 
 if (isset($user)) {
     echo "<br>" . $user->getUsername();
@@ -100,7 +102,7 @@ if (isset($user)) {
     </div>
     <div class="ps-3 mt-2 mb-3 pb-3 border-bottom">
         <p class="h5">Roles</p>
-        <a href="http://localhost/?debugLogin=<?= !$loggedIn ?>" class="btn btn-success">Toggle Login</a>
+        <a href="http://localhost/?debugLogin=<?=!$loggedIn?>" class="btn btn-success">Toggle Login</a>
         <a href="http://localhost/?debugRole=user" class="btn btn-success">User Role</a>
         <a href="http://localhost/?debugRole=creator" class="btn btn-success">Creator Role</a>
         <a href="http://localhost/?debugRole=admin" class="btn btn-success">Admin Role</a>
