@@ -141,6 +141,11 @@ class UserService
             session_id() . time()
         );
     }
+
+    public function updateSessionID($sessionID, $userID)
+    {
+        $this->db->query("UPDATE user SET SessionID = ? WHERE UserID = ?", $sessionID, $userID);
+    }
 }
 
 // INIT SERVICE

@@ -18,9 +18,21 @@ session_start();
 $loggedIn = false;
 /** @var UserType */
 $userType = null;
-if (isset($_SESSION['SessionID'])) {
-    // Search for set session id and get user
-    if (($user = UserService::$instance->getUserSession($_SESSION['SessionID'])) == null)
+
+//check if cookie is set
+if (isset($_COOKIE['sessionCookie'])) {
+    $user = UserService::$instance->getUserSession($_COOKIE['sessionCookie']);
+
+    //if user doesn´t exist
+    if ($user == null)
+        return;
+
+    $loggedIn = true;
+    $userType = $user->getUserType();
+    $_SESSION['UserID'] = $user->getId();
+} else if (isset($_SESSION['UserID'])) {
+    // Search for set user id and get user
+    if (($user = UserService::$instance->getUser($_SESSION['UserID'])) == null)
         return;
 
     $loggedIn = true;
@@ -46,6 +58,10 @@ if (isset($_SESSION['debugLogin'])) {
 }
 // Print debugging status
 echo "DEBUGGING ENABLED<br>LOGGED IN: <b>" . ($loggedIn ? "YES" : "NO") . "</b><br>ROLE: <b>" . (($userType != null) ? $userType->getTypeString() : "none") . "</b>";
+//print current user 
+if (isset($user)) {
+    echo "<br>" . $user->getUsername();
+}
 
 ?>
 <!DOCTYPE html>
@@ -80,6 +96,7 @@ echo "DEBUGGING ENABLED<br>LOGGED IN: <b>" . ($loggedIn ? "YES" : "NO") . "</b><
         <a href="http://localhost/?action=viewGame&id=1" class="btn btn-success">View Game</a>
         <a href="http://localhost/?action=register" class="btn btn-success">Registration</a>
         <a href="http://localhost/?action=login" class="btn btn-success">Login</a>
+        <a href="http://localhost/?action=logout" class="btn btn-success">Logout</a>
     </div>
     <div class="ps-3 mt-2 mb-3 pb-3 border-bottom">
         <p class="h5">Roles</p>

@@ -21,8 +21,17 @@ if (isset($_POST['LoginSubmit'])) {
         if (isset($_SESSION['loginErrors']))
             unset($_SESSION['loginErrors']);
 
+        $user =  UserService::$instance->getUserByUsername($_POST['Username']);
 
-        var_dump(UserService::$instance->getUserByUsername($_POST['Username']));
+        if (isset($_POST['rememberme'])) {
+            $sessionID = session_id() . time();
+            setcookie("sessionCookie", $sessionID, time() + 60 * 60 * 24, "/");
+            UserService::$instance->updateSessionID($sessionID, $user->getId());
+        }
+
+        $_SESSION['UserID'] = $user->getId();
+        header("Location: index.php");
+        exit;
     } else {
         $_SESSION['loginErrors'] = Validation::$instance->getReturnErrors();
     }

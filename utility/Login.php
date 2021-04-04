@@ -17,9 +17,14 @@ if (isset($_GET['action'])) {
                 <small id="helpId" class="form-text text-muted"><?= $_SESSION['loginErrors']['Password'] ?? '' ?></small>
             </div>
 
+            <div class="checkbox">
+                <input type="checkbox" name="rememberme">
+                <label>remember me</label>
+                <?= $_SESSION['loginErrors']['rememberme'] ?? '' ?>
+            </div>
+
             <button type="submit" name="LoginSubmit" class="btn btn-primary">login</button>
         </form>
-
 <?php
     }
 }
