@@ -74,7 +74,7 @@ class UserService
 
     public function searchUser($username)
     {
-        $this->db->query("SELECT * from user WHERE Username LIKE \"%$username%\" ORDER BY UserID ASC");
+        $this->db->query("SELECT * from user WHERE Username LIKE ? ORDER BY UserID ASC", "%" . $username . "%");
         // Null reference catch
         if (!($userData = $this->db->fetchAll()))
             return null;

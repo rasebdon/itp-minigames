@@ -1,6 +1,6 @@
 <?php
 /**
- * Static class that holds game rendering functions
+ * Class that holds game rendering functions
  */
 class GameRenderer {
 

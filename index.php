@@ -52,12 +52,10 @@ if (isset($_SESSION['debugLogin'])) {
         if (isset($_GET['debugRole'])) {
             $_SESSION['debugRole'] = $_GET['debugRole'];
         }
-        else 
-        {
-            $_SESSION['debugRole'] = "user";
-        }
         if (isset($_SESSION['debugRole'])) {
             $userType = new UserType($_SESSION['debugRole']);
+        } else {
+            $userType = new UserType("user");
         }
     }
 }
@@ -98,18 +96,18 @@ if (isset($user)) {
     <!-- Testing ground -->
     <div class="ps-3 mt-3 pt-2 border-top">
         <p class="h5">Components</p>
-        <a href="http://localhost/?action=showUsers&amount=20&offset=0" class="btn btn-success">User List</a>
-        <a href="http://localhost/?action=viewGame&id=1" class="btn btn-success">View Game</a>
-        <a href="http://localhost/?action=register" class="btn btn-success">Registration</a>
-        <a href="http://localhost/?action=login" class="btn btn-success">Login</a>
-        <a href="http://localhost/?action=logout" class="btn btn-success">Logout</a>
+        <a href="index.php?action=showUsers&amount=20&offset=0" class="btn btn-success">User List</a>
+        <a href="index.php?action=viewGame&id=1" class="btn btn-success">View Game</a>
+        <a href="index.php?action=register" class="btn btn-success">Registration</a>
+        <a href="index.php?action=login" class="btn btn-success">Login</a>
+        <a href="index.php?action=logout" class="btn btn-success">Logout</a>
     </div>
     <div class="ps-3 mt-2 mb-3 pb-3 border-bottom">
         <p class="h5">Roles</p>
-        <a href="http://localhost/?debugLogin=<?=!$loggedIn?>" class="btn btn-success">Toggle Login</a>
-        <a href="http://localhost/?debugRole=user" class="btn btn-success">User Role</a>
-        <a href="http://localhost/?debugRole=creator" class="btn btn-success">Creator Role</a>
-        <a href="http://localhost/?debugRole=admin" class="btn btn-success">Admin Role</a>
+        <a href="index.php?debugLogin=<?=!$loggedIn?>" class="btn btn-success">Toggle Login</a>
+        <a href="index.php?debugRole=user" class="btn btn-success">User Role</a>
+        <a href="index.php?debugRole=creator" class="btn btn-success">Creator Role</a>
+        <a href="index.php?debugRole=admin" class="btn btn-success">Admin Role</a>
     </div>
     <!-- Main container -->
     <div class="container">
