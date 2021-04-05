@@ -52,6 +52,10 @@ if (isset($_SESSION['debugLogin'])) {
         if (isset($_GET['debugRole'])) {
             $_SESSION['debugRole'] = $_GET['debugRole'];
         }
+        else 
+        {
+            $_SESSION['debugRole'] = "user";
+        }
         if (isset($_SESSION['debugRole'])) {
             $userType = new UserType($_SESSION['debugRole']);
         }
