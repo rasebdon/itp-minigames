@@ -183,12 +183,14 @@ class Validation
         if (!isset($this->returnErrors['Username']))
             if (!$this->valueExists("user", "Username", $loginData['Username'])) {
                 $this->returnErrors['Username'] = Validation::error['USERNAME_WRONG'];
+                $this->returnErrors['Password'] = Validation::error['USERNAME_WRONG'];
                 $this->success = false;
             }
 
         if (!isset($this->returnErrors['Username'])) {
             if (!$this->matchPassword($loginData['Username'], $loginData['Password'])) {
-                $this->returnErrors['Password'] = Validation::error['PASSWORD_WRONG'];
+                $this->returnErrors['Username'] = Validation::error['USERNAME_WRONG'];
+                $this->returnErrors['Password'] = Validation::error['USERNAME_WRONG'];
                 $this->success = false;
             }
         }

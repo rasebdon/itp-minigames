@@ -8,7 +8,6 @@ if (isset($_GET['action'])) {
             <div class="form-group">
                 <label for="Username"></label>
                 <input type="text" class="form-control" name="Username" id="" aria-describedby="helpId" placeholder="username">
-                <small id="helpId" class="form-text text-muted"><?= $_SESSION['loginErrors']['Username'] ?? '' ?></small>
             </div>
 
             <div class="form-group">
