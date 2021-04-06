@@ -1,5 +1,5 @@
 <?php
-
+//handle forum concerning trafic to the database 
 class ForumService
 {
     public static $instance;
@@ -9,7 +9,7 @@ class ForumService
         $this->db = $database;
     }
 
-    //get the posts belonging to a game
+    //get the posts belonging to a forum
     public function getPosts(int  $forumid){
         
         $this->db->query("SELECT * FROM post WHERE FK_ForumID = ?", $forumid);
@@ -34,6 +34,7 @@ class ForumService
 
     }
 
+    //get number of upvotes a specivic post has
     public function getUpvotesFromPost(int $postid){
 
         $this->db->query("SELECT COUNT(*) FROM vote_post WHERE FK_PostID = ? AND Vote = 1", $postid);
