@@ -1,0 +1,19 @@
+.forum-banner {
+    cursor: pointer;
+    min-height: 7em;
+    position: relative;
+}
+
+.forum-banner-author{
+    font-size: 0.50em;
+}
+
+.upvote-display {
+    
+    right: 0px;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
