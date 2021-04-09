@@ -63,7 +63,7 @@ class Game {
      */ 
     public function hasWindows()
     {
-        return isset($this->plattforms['windows']) && $this->plattforms['windows'] === true;
+        return isset($this->plattforms['Windows']) && $this->plattforms['Windows'] === true;
     }
 
     /**
@@ -71,7 +71,7 @@ class Game {
      */ 
     public function hasLinux()
     {
-        return isset($this->plattforms['linux']) && $this->plattforms['linux'] === true;
+        return isset($this->plattforms['Linux']) && $this->plattforms['Linux'] === true;
     }
 
     /**
@@ -79,7 +79,7 @@ class Game {
      */ 
     public function hasMac()
     {
-        return isset($this->plattforms['mac']) && $this->plattforms['mac'] === true;
+        return isset($this->plattforms['Mac']) && $this->plattforms['Mac'] === true;
     }
 
     /**
