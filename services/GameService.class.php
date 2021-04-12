@@ -78,7 +78,7 @@ class GameService
         $this->db->query("SELECT platform.Name FROM platform
         LEFT JOIN game_platform ON game_platform.FK_PlatformID = platform.PlatformID
         LEFT JOIN game ON game_platform.FK_GameID = game.GameID
-        WHERE game.GameID = 2");
+        WHERE game.GameID = $gameID");
         // Null reference catch -> Return empty array
         if (!($platformsData = $this->db->fetchAll()))
             return array();
