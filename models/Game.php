@@ -11,10 +11,11 @@ class Game {
     private $plattforms;
     private $version;
     private $rating;
+    private $playCount;
     /** Array with all screenshot paths */
     private $screenshots;
 
-    function __construct(int $id, string $name, User $author, string $description, array $plattforms, string $version, float $rating, array $screenshots)
+    function __construct(int $id, string $name, User $author, string $description, array $plattforms, string $version, float $rating, array $screenshots, int $playCount)
     {
         $this->id = $id;
         $this->name = $name;
@@ -24,6 +25,7 @@ class Game {
         $this->version = $version;
         $this->rating = $rating;
         $this->screenshots = $screenshots;
+        $this->playCount = $playCount;
     }
 
     /**
@@ -104,5 +106,13 @@ class Game {
     public function getScreenshots()
     {
         return $this->screenshots;
+    }
+
+    /**
+     * Get the value of playCount
+     */ 
+    public function getPlayCount()
+    {
+        return $this->playCount;
     }
 }

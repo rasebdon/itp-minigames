@@ -49,7 +49,7 @@ class GameList {
                 <div class="col-3"><img src="<?=$thumbnail?>" width="100%"></div>
                 <div class="col-9 row">
                     <a class="no-hyperlink" href="index.php?action=viewGame&id=<?=$game->getId()?>"><div class="col-8 h2"><?=$game->getName()?></div></a>
-                    <div class="col-4">
+                    <div class="col-12">
                     <?php 
                     for ($i=0; $i < 5; $i++) { 
                         echo '<span class="fa fa-star';
@@ -59,6 +59,9 @@ class GameList {
                     }
                     ?>
                     <span class="rating"><?php printf("%.2f/5", $game->getRating()); ?></span>
+                    </div>
+                    <div class="col-12">
+                        <span class="playcount">Played times: <?= $game->getPlayCount(); ?></span>
                     </div>
                     <div class="col-12">
                         <a class="btn btn-primary" href="index.php?action=editGame&id=<?=$game->getId()?>">Edit</a>

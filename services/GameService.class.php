@@ -39,14 +39,11 @@ class GameService
                 $platforms,
                 $gamesData[$i]['Version'],
                 $gamesData[$i]['Rating'],
-                array() // TODO !
+                array(), // TODO !
+                $gamesData[$i]['PlayCount']
             );
         }
         return $games;
-    }
-
-    function getGameRating($gameID) {
-
     }
 
     function getGame($gameID) {
@@ -70,7 +67,8 @@ class GameService
             $platforms,
             $gameData['Version'],
             $gameData['Rating'],
-            array() // TODO !
+            array(), // TODO !
+            $gameData['PlayCount']
         );
     }
 
