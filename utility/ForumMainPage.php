@@ -14,7 +14,10 @@ if (isset($_GET['action'])) {
                         <?= $game->getAuthor()->getUsername(); ?>
                     </span>                    
                 </h1>
-                <h4 class="m-0"><span class="d-inline-block d-none d-md-block">some forum info</span></h2>
+                <h4 class="m-0"><span class="d-inline-block d-none d-md-block">
+                    Posts:
+                    <?= ForumService::$instance->getNumberOfPosts(GameService::$instance->getForumID($game))?>
+                </span></h2>
             </div>
         
             <?php

@@ -10,9 +10,19 @@ class ForumService
     }
 
     //get the posts belonging to a forum
-    public function getPosts(int  $forumid){
+    public function getPosts(int  $forumid, string $sort = "new"){
+
+        switch ($sort){
+            case "new": 
+                $sortsql = " ORDER BY Date ";
+                break;            
+            default:
+                $sortsql = " ORDER BY Date ";
+                break;
+
+        }
         
-        $this->db->query("SELECT * FROM post WHERE FK_ForumID = ?", $forumid);
+        $this->db->query("SELECT * FROM post WHERE FK_ForumID = ?" .$sortsql , $forumid);
         $posts_array = $this->db->fetchAll();
         $posts = array();
         foreach ($posts_array as $post) {
@@ -39,7 +49,14 @@ class ForumService
 
         $this->db->query("SELECT COUNT(*) FROM vote_post WHERE FK_PostID = ? AND Vote = 1", $postid);
 
-        return count($this->db->fetchAll());
+        return $this->db->fetchAll()[0]['COUNT(*)']; 
+       
+    }
+
+    public function getNumberOfPosts(int $forumid){
+
+        $this->db->query("SELECT COUNT(*) FROM post WHERE FK_ForumID = ? ", $forumid);
+        return $this->db->fetchAll()[0]['COUNT(*)'];       
 
     }
 }

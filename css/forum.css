@@ -9,11 +9,51 @@
 }
 
 .upvote-display {
-    
+    text-align: center;
     right: 0px;
-    margin: 0;
+    margin: 0;    
     position: absolute;
     top: 50%;
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
+}
+
+.post-text-preview{
+    font-size: 0.90em;
+}
+
+.post-banner{
+    cursor: pointer;
+    min-height: 7em;
+    position: relative;
+    max-height: 8em;
+    overflow:hidden
+}
+
+.forum-header{
+    height: 10em;
+    position: relative;   
+    font-size: 20px;
+    
+}
+
+.custom-shadow{
+    color: white;
+    text-shadow:
+        0.07em 0 black,
+        0 0.07em black,
+        -0.07em 0 black,
+        0 -0.07em black;
+}
+
+.forum-linktogame{
+    position: absolute;
+    bottom: 0em;
+    left: 0;
+}
+
+.forum-center-backround{
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
 }

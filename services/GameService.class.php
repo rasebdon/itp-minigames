@@ -40,6 +40,29 @@ class GameService
         return $gameObjs; 
     }
 
+    public function getGameByForumId(int $forumid)
+    {   
+        $this->db->query("SELECT * from game WHERE FK_ForumID = ?", $forumid);
+
+        if (!($gameData = $this->db->fetchAll()))
+            return null;
+
+        $gameObj = new Game(
+
+            $gameData[0]['GameID'],
+            $gameData[0]['Name'],
+            UserService::$instance->getUser($gameData[0]['FK_UserID']),
+            $gameData[0]['Description'],
+            array(),
+            $gameData[0]['Version'],
+            0,
+            array()
+        );
+
+        return $gameObj;
+
+    }
+
     public function getForumID(Game $game){
         $this->db->query("SELECT FK_ForumID from game where GameID = ?", $game->getId());
         return $this->db->fetchArray()['FK_ForumID'];
