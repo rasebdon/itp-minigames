@@ -10,8 +10,6 @@ class UserService
         $this->db = $database;
     }
 
-
-
     public function getUser($uid)
     {
         $this->db->query("SELECT * from user where UserID = ?", $uid);

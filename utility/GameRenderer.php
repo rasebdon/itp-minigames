@@ -14,14 +14,16 @@ class GameRenderer {
      
         switch($_GET['action']) {
             case "viewGame":
-                // GET THE GAME WITH GAME SERVICE CLASS
-                $this->RenderGame(null, true);
+                $game = GameService::$instance->getGame($_GET['id']);
+                $this->RenderGame($game);
                 break;
         }
     }
 
     /**
      * Renders game as HTML
+     * 
+     * @param Game|null $game
      */
     function RenderGame($game = null, $debug = false) {
         // DEBUG -> Game should be given as variable
@@ -95,6 +97,13 @@ class GameRenderer {
                             </div>
                             <?php
                         }
+                        if(sizeof($screenshots) == 0) {
+                            ?>
+                            <div class="carousel-item<?= $i === 0 ? " active" : ""?>">
+                                <img src="resources/images/placeholder/placeholder_thumb.jpg" class="d-block w-100" alt="screenshot<?= $i ?>">
+                            </div>
+                            <?php
+                        }
                         ?>
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"  data-bs-slide="prev">
@@ -119,7 +128,7 @@ class GameRenderer {
                 // If Windows:
                 if($game->hasWindows()) {
                     ?>
-                    <div class="row">
+                    <div class="row mb-3">
                         <div class="col-4 d-flex align-content-center flex-wrap">
                             <span>
                                 Windows
@@ -136,7 +145,7 @@ class GameRenderer {
                 // If MAC-OS:
                 if($game->hasMac()) {
                     ?>
-                    <div class="row">
+                    <div class="row mb-3">
                         <div class="col-4 d-flex align-content-center flex-wrap">
                             <span>
                                 Mac
@@ -153,7 +162,7 @@ class GameRenderer {
                 // If Linux:
                 if($game->hasLinux()) {
                     ?>
-                    <div class="row">
+                    <div class="row mb-3">
                         <div class="col-4 d-flex align-content-center flex-wrap">
                             <span>
                                 Linux
