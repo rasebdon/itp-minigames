@@ -20,9 +20,21 @@ session_start();
 $loggedIn = false;
 /** @var UserType */
 $userType = null;
-if (isset($_SESSION['SessionID'])) {
-    // Search for set session id and get user
-    if (($user = UserService::$instance->getUserSession($_SESSION['SessionID'])) == null)
+
+//check if cookie is set
+if (isset($_COOKIE['sessionCookie'])) {
+    $user = UserService::$instance->getUserSession($_COOKIE['sessionCookie']);
+
+    //if user doesn´t exist
+    if ($user == null)
+        return;
+
+    $loggedIn = true;
+    $userType = $user->getUserType();
+    $_SESSION['UserID'] = $user->getId();
+} else if (isset($_SESSION['UserID'])) {
+    // Search for set user id and get user
+    if (($user = UserService::$instance->getUser($_SESSION['UserID'])) == null)
         return;
 
     $loggedIn = true;
@@ -31,26 +43,33 @@ if (isset($_SESSION['SessionID'])) {
 
 /// DEBUGGING
 // Debug login
-if(isset($_GET['debugLogin'])) {
+
+if (isset($_GET['debugLogin'])) {
     $_SESSION['debugLogin'] = $_GET['debugLogin'];
 }
 if (isset($_SESSION['debugLogin'])) {
     $loggedIn = $_SESSION['debugLogin'];
     // Debug role (Only available if user is logged in)
-    if($loggedIn) {
+    if ($loggedIn) {
         if (isset($_GET['debugRole'])) {
             $_SESSION['debugRole'] = $_GET['debugRole'];
         }
         if (isset($_SESSION['debugRole'])) {
             $userType = new UserType($_SESSION['debugRole']);
+        } else {
+            $userType = new UserType("user");
         }
     }
 }
 // Print debugging status
 echo "DEBUGGING ENABLED<br>LOGGED IN: <b>" . ($loggedIn ? "YES" : "NO") . "</b><br>ROLE: <b>" . (($userType != null) ? $userType->getTypeString() : "none") . "</b>";
 
-//manually put in my local path to the index.php
-$localpath = "itproject/itp-minigames/index.php";
+
+//print current user 
+if (isset($user)) {
+    echo "<br>" . $user->getUsername();
+}
+
 
 ?>
 <!DOCTYPE html>
@@ -67,12 +86,19 @@ $localpath = "itproject/itp-minigames/index.php";
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
 
     <!-- IMPORT CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://use.fontawesome.com/d95cfc3de4.js"></script>
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="css/userAdministration.css">
-    <link rel="stylesheet" href="css/game.css">
-    <link rel="stylesheet" href="css/forum.css">
+    <link rel="stylesheet" type="text/css" href="css/game.css">
+    <link rel="stylesheet" type="text/css" href="css/forum.css">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
+    
+    <link rel="stylesheet" type="text/css" href="css/userAdministration.css"/>
+    <link rel="stylesheet" type="text/css" href="css/game.css"/>
+
 
     <!-- IMPORT JS -->
 
@@ -84,8 +110,14 @@ $localpath = "itproject/itp-minigames/index.php";
         <p class="h5">Components</p>
         <a href="index.php?action=showUsers&amount=20&offset=0" class="btn btn-success">User List</a>
         <a href="index.php?action=viewGame&id=1" class="btn btn-success">View Game</a>
-        <a href="index.php?action=register" class="btn btn-success">Registration</a>
+
+       
         <a href="index.php?action=forum" class="btn btn-success">Forum</a>
+        <a href="index.php?action=listCreatedGames" class="btn btn-success">Created Games List</a>
+        <a href="index.php?action=register" class="btn btn-success">Registration</a>
+        <a href="index.php?action=login" class="btn btn-success">Login</a>
+        <a href="index.php?action=logout" class="btn btn-success">Logout</a>
+
     </div>
     <div class="ps-3 mt-2 mb-3 pb-3 border-bottom">
         <p class="h5">Roles</p>
@@ -115,6 +147,7 @@ $localpath = "itproject/itp-minigames/index.php";
             }
             // Game creator components
             if ($accessStrength >= UserType::Creator()->getAccessStrength()) {
+                require_once "utility/GameList.php";
             }
             // Admin components
             if ($accessStrength >= UserType::Admin()->getAccessStrength()) {
@@ -123,6 +156,7 @@ $localpath = "itproject/itp-minigames/index.php";
         } else {
             // if someone isn´t logged in
             require_once "utility/Registration.php";
+            require_once "utility/Login.php";
         }
         ?>
     </div>

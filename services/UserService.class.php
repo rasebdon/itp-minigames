@@ -10,8 +10,6 @@ class UserService
         $this->db = $database;
     }
 
-
-
     public function getUser($uid)
     {
         $this->db->query("SELECT * from user where UserID = ?", $uid);
@@ -74,7 +72,7 @@ class UserService
 
     public function searchUser($username)
     {
-        $this->db->query("SELECT * from user WHERE Username LIKE \"%$username%\" ORDER BY UserID ASC");
+        $this->db->query("SELECT * from user WHERE Username LIKE ? ORDER BY UserID ASC", "%" . $username . "%");
         // Null reference catch
         if (!($userData = $this->db->fetchAll()))
             return null;
@@ -92,6 +90,22 @@ class UserService
             );
         }
         return $userObjs;
+    }
+
+    public function getUserByUsername($username)
+    {
+        $this->db->query("SELECT * from user WHERE Username = ?", $username);
+
+        $userArray = $this->db->fetchArray();
+
+        return new User(
+            $userArray['UserID'],
+            $userArray['Username'],
+            $userArray['FirstName'],
+            $userArray['LastName'],
+            array(),
+            new UserType($userArray['Usertype'])
+        );
     }
 
     public function getUsertype($usertype)
@@ -124,6 +138,11 @@ class UserService
             password_hash($userData['Password'], PASSWORD_DEFAULT),
             session_id() . time()
         );
+    }
+
+    public function updateSessionID($sessionID, $userID)
+    {
+        $this->db->query("UPDATE user SET SessionID = ? WHERE UserID = ?", $sessionID, $userID);
     }
 }
 

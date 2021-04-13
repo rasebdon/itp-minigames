@@ -1,5 +1,7 @@
 <?php
 if ($loggedIn) {
+    require_once "forms/formUserUpdate.php";
+
     $accessStrength = $userType->getAccessStrength();
     // Normal user components
     if ($accessStrength >= UserType::User()->getAccessStrength()) {

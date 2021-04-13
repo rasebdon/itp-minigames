@@ -1,6 +1,6 @@
 <?php
 /**
- * Static class that holds game rendering functions
+ * Class that holds game rendering functions
  */
 class GameRenderer {
 
@@ -14,14 +14,16 @@ class GameRenderer {
      
         switch($_GET['action']) {
             case "viewGame":
-                // GET THE GAME WITH GAME SERVICE CLASS
-                $this->RenderGame(null, true);
+                $game = GameService::$instance->getGame($_GET['id']);
+                $this->RenderGame($game);
                 break;
         }
     }
 
     /**
      * Renders game as HTML
+     * 
+     * @param Game|null $game
      */
     function RenderGame($game = null, $debug = false) {
         // DEBUG -> Game should be given as variable
@@ -35,7 +37,7 @@ class GameRenderer {
                     "Notch",
                     "Markus",
                     "Persson",
-                array(  "twitter" => "https://twitter.com/notch/",
+                    array(  "twitter" => "https://twitter.com/notch/",
                         "instagram" => "https://instagram.com/notchite/"),
                     UserType::Creator()),
                 "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. 
@@ -47,8 +49,8 @@ class GameRenderer {
                 "RTX Windows 10 Beta",
                 4.722415,
                 array(  0 => "https://news.xbox.com/de-de/wp-content/uploads/sites/3/2020/04/Minecraft-RTX-Beta_Hero.jpg?fit=1920%2C1080",
-                        1 => "https://i1.wp.com/www.minecraftrocket.com/wp-content/uploads/2015/03/LikeMinecraft-Shaders-Screenshot-1.png")
-                );
+                        1 => "https://i1.wp.com/www.minecraftrocket.com/wp-content/uploads/2015/03/LikeMinecraft-Shaders-Screenshot-1.png"),
+                275);
         }
         // Do not render if function is called without game
         if(!$debug && $game === null) {
@@ -95,6 +97,13 @@ class GameRenderer {
                             </div>
                             <?php
                         }
+                        if(sizeof($screenshots) == 0) {
+                            ?>
+                            <div class="carousel-item<?= $i === 0 ? " active" : ""?>">
+                                <img src="resources/images/placeholder/placeholder_thumb.jpg" class="d-block w-100" alt="screenshot<?= $i ?>">
+                            </div>
+                            <?php
+                        }
                         ?>
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"  data-bs-slide="prev">
@@ -119,7 +128,7 @@ class GameRenderer {
                 // If Windows:
                 if($game->hasWindows()) {
                     ?>
-                    <div class="row">
+                    <div class="row mb-3">
                         <div class="col-4 d-flex align-content-center flex-wrap">
                             <span>
                                 Windows
@@ -136,7 +145,7 @@ class GameRenderer {
                 // If MAC-OS:
                 if($game->hasMac()) {
                     ?>
-                    <div class="row">
+                    <div class="row mb-3">
                         <div class="col-4 d-flex align-content-center flex-wrap">
                             <span>
                                 Mac
@@ -153,7 +162,7 @@ class GameRenderer {
                 // If Linux:
                 if($game->hasLinux()) {
                     ?>
-                    <div class="row">
+                    <div class="row mb-3">
                         <div class="col-4 d-flex align-content-center flex-wrap">
                             <span>
                                 Linux

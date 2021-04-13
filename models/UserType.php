@@ -7,13 +7,13 @@ class UserType
 
     function __construct($type)
     {
-        if (preg_match("/(?i)user/", $type)) {
+        if (preg_match("/^user$/i", $type)) {
             $this->typeString = "User";
             $this->accessStrength = 1;
-        } else if (preg_match("/(?i)admin/", $type)) {
+        } else if (preg_match("/^admin$/i", $type)) {
             $this->typeString = "Admin";
             $this->accessStrength = 10;
-        } else if (preg_match("/(?i)creator/", $type)) {
+        } else if (preg_match("/^creator$/i", $type)) {
             $this->typeString = "Creator";
             $this->accessStrength = 5;
         } else {
