@@ -98,6 +98,7 @@ if (isset($user)) {
         <p class="h5">Components</p>
         <a href="index.php?action=showUsers&amount=20&offset=0" class="btn btn-success">User List</a>
         <a href="index.php?action=viewGame&id=1" class="btn btn-success">View Game</a>
+        <a href="index.php?action=viewFrontPage" class="btn btn-success">View Front Page</a>
         <a href="index.php?action=register" class="btn btn-success">Registration</a>
         <a href="index.php?action=login" class="btn btn-success">Login</a>
         <a href="index.php?action=logout" class="btn btn-success">Logout</a>
@@ -118,6 +119,8 @@ if (isset($user)) {
         // Check which sites can be seen
         // Load public components
         require_once "utility/GameRenderer.php";
+
+        require_once "utility/frontPage.php";
 
         // Load logged in components
         if ($loggedIn) {
