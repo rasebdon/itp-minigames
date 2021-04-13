@@ -24,7 +24,8 @@ if (isset($_GET['action'])) {
                 4.722415,
                 array(  0 => "https://news.xbox.com/de-de/wp-content/uploads/sites/3/2020/04/Minecraft-RTX-Beta_Hero.jpg?fit=1920%2C1080",
                         1 => "https://i1.wp.com/www.minecraftrocket.com/wp-content/uploads/2015/03/LikeMinecraft-Shaders-Screenshot-1.png")
-                );
+                ,
+                25);
             $game2 = new Game(
                 0,
                 "Minecraft2",
@@ -46,7 +47,8 @@ if (isset($_GET['action'])) {
                 4.722415,
                 array(  0 => "https://news.xbox.com/de-de/wp-content/uploads/sites/3/2020/04/Minecraft-RTX-Beta_Hero.jpg?fit=1920%2C1080",
                         1 => "https://i1.wp.com/www.minecraftrocket.com/wp-content/uploads/2015/03/LikeMinecraft-Shaders-Screenshot-1.png")
-                );
+                ,
+                25);
             $game3 = new Game(
                 0,
                 "Minecraft3",
@@ -68,7 +70,8 @@ if (isset($_GET['action'])) {
                 4.722415,
                 array(  0 => "https://news.xbox.com/de-de/wp-content/uploads/sites/3/2020/04/Minecraft-RTX-Beta_Hero.jpg?fit=1920%2C1080",
                         1 => "https://i1.wp.com/www.minecraftrocket.com/wp-content/uploads/2015/03/LikeMinecraft-Shaders-Screenshot-1.png")
-                );
+                ,
+                25);
             $game4 = new Game(
                 0,
                 "Minecraft4",
@@ -90,7 +93,8 @@ if (isset($_GET['action'])) {
                 4.722415,
                 array(  0 => "https://news.xbox.com/de-de/wp-content/uploads/sites/3/2020/04/Minecraft-RTX-Beta_Hero.jpg?fit=1920%2C1080",
                         1 => "https://i1.wp.com/www.minecraftrocket.com/wp-content/uploads/2015/03/LikeMinecraft-Shaders-Screenshot-1.png")
-                );
+                ,
+                25);
             $games_debug = array($game1, $game2, $game3, $game4, $game1, $game2, $game3, $game4);
         //--HTML--
     ?>
