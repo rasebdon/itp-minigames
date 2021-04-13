@@ -113,7 +113,7 @@ if (isset($_GET['action'])) {
                     echo '<div class="col-3 border game-display mt-2 mb-2" >
                             <div class="sm-3 mb-2">
                                 <h5 class="m-0">
-                                    <span class="d-inline-block">'. $game->getName() .'</span>
+                                    <a href="index.php?action=viewGame&id=1" class="d-inline-block">'. $game->getName() .'</a>
                                     <span class="d-inline-block game-version">
                                         '. $game->getVersion() .'
                                     </span>
@@ -154,7 +154,8 @@ if (isset($_GET['action'])) {
                 </div>
                     
 
+               <!-- <span class="d-inline-block">'. $game->getName() .'</span> **backup**-->
+                  
     <?php
-            
     }
 }
