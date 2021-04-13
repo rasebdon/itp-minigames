@@ -5,8 +5,10 @@ require_once "utility/database.class.php";
 require_once "models/UserType.php";
 require_once "models/Game.php";
 require_once "models/User.php";
+require_once "models/Post.php";
 require_once "services/UserService.class.php";
 require_once "services/GameService.class.php";
+require_once "services/ForumService.class.php";
 require_once "utility/Validation.class.php";
 
 // GET/SET session
@@ -62,10 +64,12 @@ if (isset($_SESSION['debugLogin'])) {
 // Print debugging status
 echo "DEBUGGING ENABLED<br>LOGGED IN: <b>" . ($loggedIn ? "YES" : "NO") . "</b><br>ROLE: <b>" . (($userType != null) ? $userType->getTypeString() : "none") . "</b>";
 
+
 //print current user 
 if (isset($user)) {
     echo "<br>" . $user->getUsername();
 }
+
 
 ?>
 <!DOCTYPE html>
@@ -77,17 +81,24 @@ if (isset($user)) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ITP-Minigames</title>
 
-    <!-- IMPORT BOOTSTRAP -->
+    <!-- IMPORT BOOTSTRAP -->    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
 
     <!-- IMPORT CSS -->
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://use.fontawesome.com/d95cfc3de4.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/userAdministration.css">
+    <link rel="stylesheet" type="text/css" href="css/game.css">
+    <link rel="stylesheet" type="text/css" href="css/forum.css">
+
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
     
     <link rel="stylesheet" type="text/css" href="css/userAdministration.css"/>
     <link rel="stylesheet" type="text/css" href="css/game.css"/>
+
 
     <!-- IMPORT JS -->
 
@@ -99,10 +110,14 @@ if (isset($user)) {
         <p class="h5">Components</p>
         <a href="index.php?action=showUsers&amount=20&offset=0" class="btn btn-success">User List</a>
         <a href="index.php?action=viewGame&id=1" class="btn btn-success">View Game</a>
+
+       
+        <a href="index.php?action=forum" class="btn btn-success">Forum</a>
         <a href="index.php?action=listCreatedGames" class="btn btn-success">Created Games List</a>
         <a href="index.php?action=register" class="btn btn-success">Registration</a>
         <a href="index.php?action=login" class="btn btn-success">Login</a>
         <a href="index.php?action=logout" class="btn btn-success">Logout</a>
+
     </div>
     <div class="ps-3 mt-2 mb-3 pb-3 border-bottom">
         <p class="h5">Roles</p>
@@ -121,11 +136,14 @@ if (isset($user)) {
         // Load public components
         require_once "utility/GameRenderer.php";
 
+        //make this for users only, this is public for debugg only
+        require_once "utility/ForumMainPage.php";
+
         // Load logged in components
         if ($loggedIn) {
             $accessStrength = $userType->getAccessStrength();
             // Normal user components
-            if ($accessStrength >= UserType::User()->getAccessStrength()) {
+            if ($accessStrength >= UserType::User()->getAccessStrength()) {                
             }
             // Game creator components
             if ($accessStrength >= UserType::Creator()->getAccessStrength()) {
