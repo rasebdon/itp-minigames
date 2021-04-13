@@ -11,10 +11,11 @@ class Game {
     private $plattforms;
     private $version;
     private $rating;
+    private $playCount;
     /** Array with all screenshot paths */
     private $screenshots;
 
-    function __construct(int $id, string $name, User $author, string $description, array $plattforms, string $version, float $rating, array $screenshots)
+    function __construct(int $id, string $name, User $author, string $description, array $plattforms, string $version, float $rating, array $screenshots, int $playCount)
     {
         $this->id = $id;
         $this->name = $name;
@@ -24,6 +25,7 @@ class Game {
         $this->version = $version;
         $this->rating = $rating;
         $this->screenshots = $screenshots;
+        $this->playCount = $playCount;
     }
 
     /**
@@ -63,7 +65,7 @@ class Game {
      */ 
     public function hasWindows()
     {
-        return isset($this->plattforms['windows']) && $this->plattforms['windows'] === true;
+        return isset($this->plattforms['Windows']) && $this->plattforms['Windows'] === true;
     }
 
     /**
@@ -71,7 +73,7 @@ class Game {
      */ 
     public function hasLinux()
     {
-        return isset($this->plattforms['linux']) && $this->plattforms['linux'] === true;
+        return isset($this->plattforms['Linux']) && $this->plattforms['Linux'] === true;
     }
 
     /**
@@ -79,7 +81,7 @@ class Game {
      */ 
     public function hasMac()
     {
-        return isset($this->plattforms['mac']) && $this->plattforms['mac'] === true;
+        return isset($this->plattforms['Mac']) && $this->plattforms['Mac'] === true;
     }
 
     /**
@@ -104,5 +106,13 @@ class Game {
     public function getScreenshots()
     {
         return $this->screenshots;
+    }
+
+    /**
+     * Get the value of playCount
+     */ 
+    public function getPlayCount()
+    {
+        return $this->playCount;
     }
 }

@@ -20,9 +20,9 @@
     font-size: 1.25em;
 }
 span.game-version {
-    font-size: 0.33em;
+    font-size: 0.33em!important;
 }
-.game-display .checked {
+.checked {
     color: orange;
 }
 .game-display .btn-download {
@@ -64,3 +64,20 @@ span.game-version {
     width: 1.5em;
     height: 1.5em;
 }
+
+
+.created-game {
+    padding-top: 1em;
+    padding-bottom: 1em;
+    border: 1px solid rgb(185, 185, 185);
+}
+
+.no-hyperlink {
+    text-decoration: none;
+    color: black;
+}
+.no-hyperlink:hover {
+    text-decoration: none;
+    color: black;
+}
+
