@@ -37,7 +37,7 @@ class GameRenderer {
                     "Notch",
                     "Markus",
                     "Persson",
-                array(  "twitter" => "https://twitter.com/notch/",
+                    array(  "twitter" => "https://twitter.com/notch/",
                         "instagram" => "https://instagram.com/notchite/"),
                     UserType::Creator()),
                 "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. 
@@ -49,8 +49,8 @@ class GameRenderer {
                 "RTX Windows 10 Beta",
                 4.722415,
                 array(  0 => "https://news.xbox.com/de-de/wp-content/uploads/sites/3/2020/04/Minecraft-RTX-Beta_Hero.jpg?fit=1920%2C1080",
-                        1 => "https://i1.wp.com/www.minecraftrocket.com/wp-content/uploads/2015/03/LikeMinecraft-Shaders-Screenshot-1.png")
-                );
+                        1 => "https://i1.wp.com/www.minecraftrocket.com/wp-content/uploads/2015/03/LikeMinecraft-Shaders-Screenshot-1.png"),
+                275);
         }
         // Do not render if function is called without game
         if(!$debug && $game === null) {
