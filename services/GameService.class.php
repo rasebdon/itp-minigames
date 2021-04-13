@@ -16,10 +16,6 @@ class GameService
     function getGamesFromUser(int $userID) {
         // Get the author
         $user = UserService::$instance->GetUser($userID);
-
-
-    
-
         $games = array();
 
         $this->db->query(
@@ -152,7 +148,6 @@ class GameService
 
         return $platforms;
     }
-
 }
 
 GameService::$instance = new GameService(Database::$instance);

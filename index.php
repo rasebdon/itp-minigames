@@ -110,8 +110,7 @@ if (isset($user)) {
         <p class="h5">Components</p>
         <a href="index.php?action=showUsers&amount=20&offset=0" class="btn btn-success">User List</a>
         <a href="index.php?action=viewGame&id=1" class="btn btn-success">View Game</a>
-
-       
+        <a href="index.php?action=viewFrontPage" class="btn btn-success">View Front Page</a>
         <a href="index.php?action=forum" class="btn btn-success">Forum</a>
         <a href="index.php?action=listCreatedGames" class="btn btn-success">Created Games List</a>
         <a href="index.php?action=register" class="btn btn-success">Registration</a>
@@ -136,8 +135,11 @@ if (isset($user)) {
         // Load public components
         require_once "utility/GameRenderer.php";
 
+        require_once "utility/frontPage.php";
+
         //make this for users only, this is public for debugg only
         require_once "utility/ForumMainPage.php";
+
 
         // Load logged in components
         if ($loggedIn) {
