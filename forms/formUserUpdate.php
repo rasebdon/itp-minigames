@@ -33,3 +33,11 @@ if (isset($_POST['SubmitSettings'])) {
         $_SESSION['editProfileErrors'] = Validation::$instance->getReturnErrors();
     }
 }
+
+if (isset($_POST['SubmitPassword'])) {
+    if (Validation::$instance->changePassword($_POST, $user->getUsername())) {
+        UserService::$instance->updatePassword($_POST['ConfirmPassword'], $user->getId());
+    } else {
+        $_SESSION['passwordErrors'] = Validation::$instance->getReturnErrors();
+    }
+}

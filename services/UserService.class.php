@@ -155,6 +155,10 @@ class UserService
             $uid
         );
     }
+
+    public function updatePassword($password, $uid){
+        $this->db->query("UPDATE user SET Password =? WHERE UserID = ?", password_hash($password, PASSWORD_DEFAULT), $uid);
+    }
 }
 
 // INIT SERVICE

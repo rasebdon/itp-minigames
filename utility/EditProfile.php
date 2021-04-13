@@ -26,6 +26,27 @@ if (isset($_GET['action'])) {
             </div>
             <button type="submit" name="SubmitSettings" class="btn btn-primary">Save</button>
         </form>
+
+        <form action="" method="post">
+            <div class="form-row">
+                <div class="form-group col-6">
+                    <label for="CurrentPassword">Current Password</label>
+                    <input type="password" class="form-control" name="CurrentPassword" id="" placeholder="">
+                    <small id="helpId" class="form-text text-muted"><?= $_SESSION['passwordErrors']['CurrentPassword'] ?? '' ?></small>
+                </div>
+                <div class="form-group col-6">
+                    <label for="Password">Password</label>
+                    <input type="password" class="form-control" name="Password" id="" placeholder="">
+                    <small id="helpId" class="form-text text-muted"><?= $_SESSION['passwordErrors']['Password'] ?? '' ?></small>
+                </div>
+                <div class="form-group col-6">
+                    <label for="ConfirmPassword">ConfirmPassword</label>
+                    <input type="password" class="form-control" name="ConfirmPassword" id="" placeholder="">
+                    <small id="helpId" class="form-text text-muted"><?= $_SESSION['passwordErrors']['ConfirmPassword'] ?? '' ?></small>
+                </div>
+            </div>
+            <button type="submit" name="SubmitPassword" class="btn btn-primary">Save</button>
+        </form>
 <?php
     }
 }

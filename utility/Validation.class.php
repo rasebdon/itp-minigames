@@ -223,6 +223,35 @@ class Validation
         $this->fillSuccessful($profileData);
         return $this->success;
     }
+
+    public function changePassword($userData, $username)
+    {
+        $this->clearErrors();
+        $this->removeSubmit($userData);
+        $this->checkEmpty($userData);
+
+        if (!isset($this->returnErrors['CurrentPassword'])) {
+            if (!$this->matchPassword($username, $userData['CurrentPassword'])) {
+                $this->returnErrors['CurrentPassword'] = Validation::error['PASSWORD_MATCH'];
+                $this->success = false;
+            } else {
+                if (!isset($this->returnErrors['Password']))
+                    if (strlen($userData['Password']) < 8) {
+                        $this->returnErrors['Password'] = Validation::error['PASSWORD_FORMAT'];
+                        $this->returnErrors['ConfirmPassword'] = Validation::error['PASSWORD_FORMAT'];
+                        $this->success = false;
+                    }
+
+                if (!isset($this->returnErrors['Password']))
+                    if ($userData['Password'] !== $userData['ConfirmPassword']) {
+                        $this->returnErrors['ConfirmPassword'] = Validation::error['PASSWORD_MATCH'];
+                        $this->success = false;
+                    }
+            }
+        }
+        $this->fillSuccessful($userData);
+        return $this->success;
+    }
 }
 
 Validation::$instance = new Validation(Database::$instance);
