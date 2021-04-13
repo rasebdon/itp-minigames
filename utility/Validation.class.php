@@ -198,6 +198,31 @@ class Validation
         $this->fillSuccessful($loginData);
         return $this->success;
     }
+
+    public function editProfile($profileData, $uid)
+    {
+        $this->clearErrors();
+        $this->removeSubmit($profileData);
+        $this->checkEmpty($profileData);
+
+        if (!isset($this->returnErrors['Username']))
+            if (preg_match('/^[a-z\d_-]{5,30}$/i', $profileData['Username']) === 0) {
+                $this->returnErrors['Username'] = Validation::error['USERNAME_FORMAT'];
+                $this->success = false;
+            }
+
+        if (!isset($this->returnErrors['Username'])) {
+
+            $this->db->query("SELECT * FROM user WHERE Username = ? AND UserID != ? ", $profileData['Username'], $uid);
+
+            if ($this->db->numRows() > 0) {
+                $this->returnErrors['Username'] = Validation::error['USERNAME_EXISTS'];
+                $this->success = false;
+            }
+        }
+        $this->fillSuccessful($profileData);
+        return $this->success;
+    }
 }
 
 Validation::$instance = new Validation(Database::$instance);

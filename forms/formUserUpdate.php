@@ -21,3 +21,15 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
     header("Location: index.php#");
     exit;
 }
+
+
+if (isset($_POST['SubmitSettings'])) {
+    if (Validation::$instance->editProfile($_POST, $user->getId())) {
+        UserService::$instance->updateProfileData($_POST, $user->getId());
+
+        header("Location: index.php?action=editProfile");
+        exit;
+    } else {
+        $_SESSION['editProfileErrors'] = Validation::$instance->getReturnErrors();
+    }
+}

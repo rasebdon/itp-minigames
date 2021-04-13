@@ -85,9 +85,9 @@ if (isset($user)) {
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://use.fontawesome.com/d95cfc3de4.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
-    
-    <link rel="stylesheet" type="text/css" href="css/userAdministration.css"/>
-    <link rel="stylesheet" type="text/css" href="css/game.css"/>
+
+    <link rel="stylesheet" type="text/css" href="css/userAdministration.css" />
+    <link rel="stylesheet" type="text/css" href="css/game.css" />
 
     <!-- IMPORT JS -->
 
@@ -103,10 +103,11 @@ if (isset($user)) {
         <a href="index.php?action=register" class="btn btn-success">Registration</a>
         <a href="index.php?action=login" class="btn btn-success">Login</a>
         <a href="index.php?action=logout" class="btn btn-success">Logout</a>
+        <a href="index.php?action=editProfile" class="btn btn-success">EditProfile</a>
     </div>
     <div class="ps-3 mt-2 mb-3 pb-3 border-bottom">
         <p class="h5">Roles</p>
-        <a href="index.php?debugLogin=<?=!$loggedIn?>" class="btn btn-success">Toggle Login</a>
+        <a href="index.php?debugLogin=<?= !$loggedIn ?>" class="btn btn-success">Toggle Login</a>
         <a href="index.php?debugRole=user" class="btn btn-success">User Role</a>
         <a href="index.php?debugRole=creator" class="btn btn-success">Creator Role</a>
         <a href="index.php?debugRole=admin" class="btn btn-success">Admin Role</a>
@@ -126,6 +127,7 @@ if (isset($user)) {
             $accessStrength = $userType->getAccessStrength();
             // Normal user components
             if ($accessStrength >= UserType::User()->getAccessStrength()) {
+                require_once "utility/EditProfile.php";
             }
             // Game creator components
             if ($accessStrength >= UserType::Creator()->getAccessStrength()) {

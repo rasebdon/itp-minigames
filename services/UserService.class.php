@@ -144,6 +144,17 @@ class UserService
     {
         $this->db->query("UPDATE user SET SessionID = ? WHERE UserID = ?", $sessionID, $userID);
     }
+
+    public function updateProfileData($userData, $uid)
+    {
+        $this->db->query(
+            "UPDATE user SET FirstName = ?, LastName = ?, Username = ? WHERE UserID = ?",
+            $userData['FirstName'],
+            $userData['LastName'],
+            $userData['Username'],
+            $uid
+        );
+    }
 }
 
 // INIT SERVICE
