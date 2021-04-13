@@ -98,7 +98,8 @@ class GameService
                 array(),
                 $gameData[$i]['Version'],
                 0,
-                array()
+                array(), 
+                0
             );
         }
         return $gameObjs; 
@@ -120,7 +121,8 @@ class GameService
             array(),
             $gameData[0]['Version'],
             0,
-            array()
+            array(), 
+            0
         );
 
         return $gameObj;
