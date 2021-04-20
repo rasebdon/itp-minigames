@@ -169,8 +169,46 @@ class GameService
         $userID = $_SESSION['UserID'];
 
         // Upload game
-        // TODO
-        $sourcePath = "games/xyz/game_version_123.zip";
+        if(!isset($_FILES["game-file"])) // Quit if there is no game attached
+            return;
+
+        $sourcePath = "resources/games/" . str_replace(' ', '',$_POST['game-title']);
+        mkdir($sourcePath);
+        $sourcePath .= "/";
+        $pathInfo = pathinfo($_FILES["game-file"]["name"]);
+        $target_file = $sourcePath . $_POST['game-version'] . "." . $pathInfo['extension'];
+        $uploadOk = 1;
+        $mimeType = mime_content_type($_FILES["game-file"]["tmp_name"]);
+
+        // Check if file already exists
+        if (file_exists($target_file)) {
+            echo "Sorry, file already exists.";
+            $uploadOk = 0;
+        }
+
+        // Check file size
+        if ($_FILES["game-file"]["size"] > 500000) {
+            echo "Sorry, your file is too large.";
+            $uploadOk = 0;
+        }
+
+        // Allow certain file formats
+        if($mimeType != 'application/zip' && $mimeType != 'application/x-rar-compressed') {
+            echo "Sorry, only zip or rar files are allowed.";
+            $uploadOk = 0;
+        }
+
+        // Check if $uploadOk is set to 0 by an error
+        if ($uploadOk == 0) {
+            echo "Sorry, your file was not uploaded.";
+        // if everything is ok, try to upload file
+        } else {
+            if (move_uploaded_file($_FILES["game-file"]["tmp_name"], $target_file)) {
+                echo "The file ". htmlspecialchars( basename( $_FILES["game-file"]["name"])). " has been uploaded.";
+            } else {
+                echo "Sorry, there was an error uploading your file.";
+            }
+        }
 
         // Create forum
         $this->db->query("INSERT INTO forum VALUES (NULL)");
@@ -187,7 +225,7 @@ class GameService
             `PlayCount`, `Verified`, `SourcePath`)
             VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ", $userID, $forumID, $_POST['game-title'], $_POST['game-description'],
-        $_POST['game-version'], $now, $now, 0, 0, $sourcePath);
+        $_POST['game-version'], $now, $now, 0, 0, $target_file);
 
         $gameID = $this->db->lastInsertID();
 

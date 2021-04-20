@@ -58,13 +58,11 @@ class GameUploadInterface {
                 <div class="mb-3">
                     <label for="game-platforms" class="form-label">Platforms</label>
                     <div id="game-platforms" class="dropdown-check-list" tabindex="100">
-                        <span onclick='$("#platforms").toggle();' class="anchor">Select Genres</span>
+                        <span onclick='$("#platforms").toggle();' class="anchor">Select Platforms</span>
                         <ul class="items show" id="platforms">
                             <?php
                                 // Get platforms from database and print selection
                                 $platforms = GameService::$instance->getAllPlatforms();
-                                var_dump($platforms);
-
                                 for ($i = 0; $i < sizeof($platforms); $i++) { 
                                     $platform = $platforms[$i];
                                     echo '<li><input id="platform-' . $platform['Name'] . '" class="form-check-input" type="checkbox" name="game-platforms[]" value="' . $platform['PlatformID'] . '"><label  class="form-check-label ms-2" for="platform-' . $platform['Name'] . '">' . $platform['Name'] . '</label></li>';
@@ -74,8 +72,8 @@ class GameUploadInterface {
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label for="formFile" class="form-label">Upload Game as .zip or .rar file</label>
-                    <input class="form-control" type="file" id="formFile">
+                    <label for="game-file" class="form-label">Upload Game as .zip or .rar file</label>
+                    <input class="form-control" type="file" id="game-file" name="game-file">
                 </div>
                 <button type="submit" class="btn btn-primary">Create</button>
             </form>
