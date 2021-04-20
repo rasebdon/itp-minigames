@@ -20,8 +20,8 @@ class GameService
 
         $this->db->query(
             "SELECT *,
-            (SELECT AVG(Rating) FROM rating WHERE GameID = g1.GameID) as Rating
-            FROM game g1
+            (SELECT AVG(Rating) FROM rating WHERE  rating.FK_GameID = GameID) as Rating
+            FROM game
             WHERE FK_UserID = ?;", $userID);
         // Null reference catch -> Return empty array
         if (!($gamesData = $this->db->fetchAll()))
@@ -37,7 +37,7 @@ class GameService
                 $gamesData[$i]['Description'],
                 $platforms,
                 $gamesData[$i]['Version'],
-                $gamesData[$i]['Rating'],
+                $gamesData[$i]['Rating'] == null ? 0 : $gamesData[$i]['Rating'],
                 array(), // TODO !
                 $gamesData[$i]['PlayCount']
             );
@@ -48,7 +48,7 @@ class GameService
     function getGame($gameID) {
         $this->db->query(
             "SELECT *,
-            (SELECT AVG(Rating) FROM rating WHERE GameID = g1.GameID) as Rating
+            (SELECT AVG(Rating) FROM rating WHERE rating.FK_GameID = GameID) as Rating
             FROM game g1
             WHERE GameID = ?;", $gameID);
         // Null reference catch -> Return empty array
@@ -65,7 +65,7 @@ class GameService
             $gameData['Description'],
             $platforms,
             $gameData['Version'],
-            $gameData['Rating'],
+            $gameData['Rating'] == null ? 0 : $gameData['Rating'],
             array(), // TODO !
             $gameData['PlayCount']
         );
@@ -73,8 +73,6 @@ class GameService
   
   //function with dummy data to test stuff
     public function getAllGames(){
-
-
         $this->db->query("SELECT * from game");
 
         // Null reference catch
@@ -101,8 +99,7 @@ class GameService
         return $gameObjs; 
     }
 
-    public function getGameByForumId(int $forumid)
-    {   
+    public function getGameByForumId(int $forumid) {   
         $this->db->query("SELECT * from game WHERE FK_ForumID = ?", $forumid);
 
         if (!($gameData = $this->db->fetchAll()))
@@ -130,7 +127,6 @@ class GameService
         return $this->db->fetchArray()['FK_ForumID'];
     }
 
-
     function getPlatforms($gameID) {
         $this->db->query("SELECT platform.Name FROM platform
         LEFT JOIN game_platform ON game_platform.FK_PlatformID = platform.PlatformID
@@ -147,6 +143,69 @@ class GameService
         }
 
         return $platforms;
+    }
+
+    function getAllPlatforms() {
+        $this->db->query("SELECT * FROM platform ORDER BY PlatformID ASC;");
+        return $this->db->fetchAll();
+    }
+
+    /**
+     * Returns all game genres in the following format (ASC by ID):
+     * 
+     * array
+     *   X =>
+     *      array (size=2)
+     *          'GenreID' => int
+     *          'Name' => string
+     *
+     */
+    function getAllGenres() {
+        $this->db->query("SELECT * FROM genre ORDER BY GenreID ASC;");
+        return $this->db->fetchAll();
+    }
+
+    function uploadGame() {
+        $userID = $_SESSION['UserID'];
+
+        // Upload game
+        // TODO
+        $sourcePath = "games/xyz/game_version_123.zip";
+
+        // Create forum
+        $this->db->query("INSERT INTO forum VALUES (NULL)");
+        $forumID = $this->db->lastInsertID();
+
+        $now = new DateTime('now');
+        $now = $now->format("Y-m-d H:m:s");
+
+        // Insert data into database
+        $this->db->query(
+            "INSERT INTO `game` 
+            (`GameID`, `FK_UserID`, `FK_ForumID`, `Name`,
+            `Description`, `Version`, `UpdateDate`, `UploadDate`,
+            `PlayCount`, `Verified`, `SourcePath`)
+            VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ", $userID, $forumID, $_POST['game-title'], $_POST['game-description'],
+        $_POST['game-version'], $now, $now, 0, 0, $sourcePath);
+
+        $gameID = $this->db->lastInsertID();
+
+        // Insert genres
+        if(isset($_POST['game-genres'])) {
+            $genres = $_POST['game-genres'];
+            for ($i=0; $i < sizeof($genres); $i++) { 
+                $this->db->query("INSERT INTO game_genre VALUES ( ? , ? )", $gameID, $genres[$i]);
+            }
+        }
+
+        // Insert platforms
+        if(isset($_POST['game-platforms'])) {
+            $platforms = $_POST['game-platforms'];
+            for ($i=0; $i < sizeof($platforms); $i++) { 
+                $this->db->query("INSERT INTO game_platform VALUES ( ? , ? )", $gameID, $platforms[$i]);
+            }
+        }
     }
 }
 

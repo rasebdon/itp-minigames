@@ -98,10 +98,12 @@ if (isset($user)) {
     
     <link rel="stylesheet" type="text/css" href="css/userAdministration.css"/>
     <link rel="stylesheet" type="text/css" href="css/game.css"/>
+    <link rel="stylesheet" type="text/css" href="css/gameUploadInterface.css"/>
 
 
     <!-- IMPORT JS -->
-
+    <!-- JQUERY -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -113,6 +115,7 @@ if (isset($user)) {
         <a href="index.php?action=viewFrontPage" class="btn btn-success">View Front Page</a>
         <a href="index.php?action=forum" class="btn btn-success">Forum</a>
         <a href="index.php?action=listCreatedGames" class="btn btn-success">Created Games List</a>
+        <a href="index.php?action=uploadGameInterface" class="btn btn-success">Upload Game</a>
         <a href="index.php?action=register" class="btn btn-success">Registration</a>
         <a href="index.php?action=login" class="btn btn-success">Login</a>
         <a href="index.php?action=logout" class="btn btn-success">Logout</a>
@@ -149,6 +152,7 @@ if (isset($user)) {
             }
             // Game creator components
             if ($accessStrength >= UserType::Creator()->getAccessStrength()) {
+                require_once "utility/GameUploadInterface.php";
                 require_once "utility/GameList.php";
             }
             // Admin components
