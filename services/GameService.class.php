@@ -169,8 +169,11 @@ class GameService
         $userID = $_SESSION['UserID'];
 
         // Upload game
-        if(!isset($_FILES["game-file"])) // Quit if there is no game attached
+        if(!isset($_FILES["game-file"])) { // Quit if there is no game attached 
+            echo "Please attach your game file and try again.";
             return;
+        }
+
 
         $sourcePath = "resources/games/" . str_replace(' ', '',$_POST['game-title']);
         mkdir($sourcePath);
@@ -182,13 +185,13 @@ class GameService
 
         // Check if file already exists
         if (file_exists($target_file)) {
-            echo "Sorry, file already exists.";
+            echo "Sorry, game version already exists.";
             $uploadOk = 0;
         }
 
         // Check file size
         if ($_FILES["game-file"]["size"] > 500000) {
-            echo "Sorry, your file is too large.";
+            echo "Sorry, your game is too large.";
             $uploadOk = 0;
         }
 
@@ -200,14 +203,10 @@ class GameService
 
         // Check if $uploadOk is set to 0 by an error
         if ($uploadOk == 0) {
-            echo "Sorry, your file was not uploaded.";
+            echo "Sorry, your game was not uploaded.";
         // if everything is ok, try to upload file
-        } else {
-            if (move_uploaded_file($_FILES["game-file"]["tmp_name"], $target_file)) {
-                echo "The file ". htmlspecialchars( basename( $_FILES["game-file"]["name"])). " has been uploaded.";
-            } else {
-                echo "Sorry, there was an error uploading your file.";
-            }
+        } else if (!move_uploaded_file($_FILES["game-file"]["tmp_name"], $target_file)) {
+            echo "Sorry, there was an error uploading your file.";
         }
 
         // Create forum
@@ -244,6 +243,9 @@ class GameService
                 $this->db->query("INSERT INTO game_platform VALUES ( ? , ? )", $gameID, $platforms[$i]);
             }
         }
+
+        // Also auto redirect possible
+        echo "<h3>Game upload succesful!</h3><a class='btn btn-primary' href='index.php?action=viewGame&id=$gameID'>View Game</a>";
     }
 }
 
