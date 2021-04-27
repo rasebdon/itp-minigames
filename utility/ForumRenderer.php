@@ -23,9 +23,15 @@ class ForumRenderer {
 
         $posts = ForumService::$instance->getPosts($forumid);
         $game = GameService::$instance->getGameByForumId($forumid);
+        $screenshots = $game->getScreenshots();
+        if(sizeof($screenshots) == 0){
+            $banner = "resources/images/placeholder/placeholder_big.jpg";
+        }else{
+            $banner = $screenshots[0];
+        }
         ?>
         <div class="p-4 p-md-5 mb-4 rounded forum-center-backround" 
-            style="background-image: url('https://news.xbox.com/de-de/wp-content/uploads/sites/3/2020/04/Minecraft-RTX-Beta_Hero.jpg?fit=1920%2C1080');
+            style="background-image: url('<?= $banner?>');
                     background-repeat: no-repeat;
                     background-position: center;">
         <div class="forum-header custom-shadow col-md-6 px-0">
