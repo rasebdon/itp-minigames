@@ -11,21 +11,34 @@ class FavoriteService {
         $this->db = $database;
     }
     
-    public function insertFavoriteGame(){
+    public function insertFavorite($gameid, $userid){
         $this->db->query(
             "INSERT INTO  favorite 
             (FK_UserID, FK_GameID)
             VALUES (?, ?)",
-            $_SESSION["User_ID"],
-            $_GET["id"]
+            $userid,
+            $gameid
         );
+    }
+
+    public function removeFavorite($gameid, $userid){
+        
+        $this->db->query("DELETE FROM favorite WHERE FK_UserID = ? AND FK_GameID = ?", $userid, $gameid);
     }
 
     public function getFavorites(){
         $result = $this->db->query(
-            "SELECT * from favorite WHERE FK_UserID = ? AND FK_GameID = ?", $_SESSION["User_ID"], $_GET["id"]
+            "SELECT * from favorite WHERE FK_UserID = ? AND FK_GameID = ?", $_SESSION["UserID"], $_GET["id"]
         );
         return $result;
+    }
+
+    public function isFavorite($gameid, $userid){
+        $this->db->query(
+            "SELECT * from favorite WHERE FK_UserID = ? AND FK_GameID = ?", $userid, $gameid
+        );
+        if (!($data = $this->db->fetchArray()))return false;
+        return true;
     }
     
 }

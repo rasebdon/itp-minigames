@@ -84,9 +84,29 @@ class GameRenderer {
                 }
                 ?>
                 <span class="rating"><?php printf("%.2f/5", $game->getRating()); ?></span>
-                <form action="" method="GET" class="mb-1 mt-1">
-                    <button>Add to Favorites</button>
-                </form>
+
+                 <!-- Favorites Buton-->
+                <?php
+                if(isset($_SESSION['UserID']) &&  $_SESSION['UserID'] != null){  
+                    if(FavoriteService::$instance->isFavorite($_GET['id'],  $_SESSION['UserID'])){
+                    ?>
+                        <form action="index.php?action=viewGame&id=<?= $_GET['id'] ?>" method="POST" class="mb-1 mt-1">
+                            <button type="submit" class="btn btn-warning" value="<?= $_SESSION['UserID'] ?>"name="removeFavorite">Remove from Favorites</button>  
+                        </form>
+                    <?php
+                    }else{                             
+                    ?>
+                        <form action="index.php?action=viewGame&id=<?= $_GET['id'] ?>" method="POST" class="mb-1 mt-1">
+                            <button type="submit" class="btn btn-primary" value="<?= $_SESSION['UserID'] ?>"name="addFavorite">Add to Favorites</button>                            
+                        </form>
+                <?php
+                    }
+                }  
+                ?> 
+                
+                
+               
+                
             </div>
             <div class="col-12 border-top border-bottom pb-3 pt-3 screenshots">
                 <!-- SCREENSHOTS -->
