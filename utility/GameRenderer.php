@@ -135,9 +135,9 @@ class GameRenderer {
                             </span>
                         </div>
                         <div class="col-6 text-end">
-                            <button class="btn btn-download" onclick="download(<?= $game->getId() ?>)">
+                            <a class="btn btn-download" href="<?= "resources/games/" . urlencode(str_replace(' ', '', $game->getName())) . "/" . $game->getVersion() . ".zip"?>">
                                 Download
-                            </button>
+                            </a>
                         </div>
                     </div>
                     <?php
@@ -152,9 +152,9 @@ class GameRenderer {
                             </span>
                         </div>
                         <div class="col-6 text-end">
-                            <button class="btn btn-download" onclick="download(<?= $game->getId() ?>)">
+                        <a class="btn btn-download" href="<?= "resources/games/" . urlencode(str_replace(' ', '', $game->getName())) . "/" . $game->getVersion() . ".zip"?>">
                                 Download
-                            </button>
+                            </a>
                         </div>
                     </div>
                     <?php
@@ -169,9 +169,9 @@ class GameRenderer {
                             </span>
                         </div>
                         <div class="col-6 text-end">
-                            <button class="btn btn-download" onclick="download(<?= $game->getId() ?>)">
+                            <a class="btn btn-download" href="<?= "resources/games/" . urlencode(str_replace(' ', '', $game->getName())) . "/" . $game->getVersion() . ".zip"?>">
                                 Download
-                            </button>
+                            </a>
                         </div>
                     </div>
                     <?php
