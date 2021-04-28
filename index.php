@@ -7,9 +7,11 @@ require_once "models/Game.php";
 require_once "models/User.php";
 require_once "models/Post.php";
 require_once "services/UserService.class.php";
+require_once "services/FavoriteService.class.php";
 require_once "services/GameService.class.php";
 require_once "services/ForumService.class.php";
 require_once "utility/Validation.class.php";
+require_once "utility/favoritelogic.php";
 
 // GET/SET session
 session_set_cookie_params(0, "/", $_SERVER['HTTP_HOST'], (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'on'), true);
@@ -99,12 +101,16 @@ if (isset($user)) {
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
 
-    <link rel="stylesheet" type="text/css" href="css/userAdministration.css" />
-    <link rel="stylesheet" type="text/css" href="css/game.css" />
+    
+    <link rel="stylesheet" type="text/css" href="css/userAdministration.css"/>
+    <link rel="stylesheet" type="text/css" href="css/game.css"/>
+    <link rel="stylesheet" type="text/css" href="css/gameUploadInterface.css"/>
+
 
 
     <!-- IMPORT JS -->
-
+    <!-- JQUERY -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -113,7 +119,6 @@ if (isset($user)) {
 
         <a href="index.php?action=viewFrontPage" class="btn btn-success">View Front Page</a>
         <a href="index.php?action=forum" class="btn btn-success">Forum</a>
-
         <?php
         if ($loggedIn) {
             $accessStrength = $userType->getAccessStrength();
@@ -196,6 +201,7 @@ if (isset($user)) {
             }
             // Game creator components
             if ($accessStrength >= UserType::Creator()->getAccessStrength()) {
+                require_once "utility/GameUploadInterface.php";
                 require_once "utility/GameList.php";
             }
             // Admin components
