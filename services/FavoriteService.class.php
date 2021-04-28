@@ -11,7 +11,9 @@ class FavoriteService {
         $this->db = $database;
     }
     
+
     public function insertFavorite($gameid, $userid){
+
         $this->db->query(
             "INSERT INTO  favorite 
             (FK_UserID, FK_GameID)
@@ -40,7 +42,13 @@ class FavoriteService {
         if (!($data = $this->db->fetchArray()))return false;
         return true;
     }
-    
+
+    public function getFavorites(){
+        $result = $this->db->query(
+            "SELECT * from favorite WHERE FK_UserID = ? AND FK_GameID = ?", $_SESSION["User_ID"], $_GET["id"]
+        );
+        return $result;
+    }    
 }
 // INIT SERVICE
 

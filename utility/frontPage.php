@@ -1,7 +1,9 @@
 <?php
 if (isset($_GET['action'])) {
     if ($_GET['action'] == 'viewFrontPage') {
-       
+
+       /*
+
             echo "DEBUG VERSION - DISABLE ON RELEASE";
             $game1 = new Game(
                 0,
@@ -23,9 +25,9 @@ if (isset($_GET['action'])) {
                 "RTX Windows 10 Beta",
                 4.722415,
                 array(  0 => "https://news.xbox.com/de-de/wp-content/uploads/sites/3/2020/04/Minecraft-RTX-Beta_Hero.jpg?fit=1920%2C1080",
-                        1 => "https://i1.wp.com/www.minecraftrocket.com/wp-content/uploads/2015/03/LikeMinecraft-Shaders-Screenshot-1.png"),
-                1
-                );
+                        1 => "https://i1.wp.com/www.minecraftrocket.com/wp-content/uploads/2015/03/LikeMinecraft-Shaders-Screenshot-1.png")                ,
+                25);
+
             $game2 = new Game(
                 0,
                 "Minecraft2",
@@ -47,8 +49,8 @@ if (isset($_GET['action'])) {
                 4.722415,
                 array(  0 => "https://news.xbox.com/de-de/wp-content/uploads/sites/3/2020/04/Minecraft-RTX-Beta_Hero.jpg?fit=1920%2C1080",
                         1 => "https://i1.wp.com/www.minecraftrocket.com/wp-content/uploads/2015/03/LikeMinecraft-Shaders-Screenshot-1.png"),
-                1
-                );
+                25);
+
             $game3 = new Game(
                 0,
                 "Minecraft3",
@@ -70,8 +72,8 @@ if (isset($_GET['action'])) {
                 4.722415,
                 array(  0 => "https://news.xbox.com/de-de/wp-content/uploads/sites/3/2020/04/Minecraft-RTX-Beta_Hero.jpg?fit=1920%2C1080",
                         1 => "https://i1.wp.com/www.minecraftrocket.com/wp-content/uploads/2015/03/LikeMinecraft-Shaders-Screenshot-1.png"),
-                1
-                );
+                25);
+
             $game4 = new Game(
                 0,
                 "Minecraft4",
@@ -93,11 +95,13 @@ if (isset($_GET['action'])) {
                 4.722415,
                 array(  0 => "https://news.xbox.com/de-de/wp-content/uploads/sites/3/2020/04/Minecraft-RTX-Beta_Hero.jpg?fit=1920%2C1080",
                         1 => "https://i1.wp.com/www.minecraftrocket.com/wp-content/uploads/2015/03/LikeMinecraft-Shaders-Screenshot-1.png"),
-                1
-                );
+                25);
             $games_debug = array($game1, $game2, $game3, $game4, $game1, $game2, $game3, $game4);
+            */
+            $games = GameService::$instance->getAllGames();
         //--HTML--
-    ?>
+?>
+            
 
         
             <h1 class="headerfrontPage text-center shadow p-3 mb-5 bg-body rounded text-primary">ITP-Minigames</h1>
@@ -106,8 +110,9 @@ if (isset($_GET['action'])) {
                 <div class="row gamePreviewRow">
                     
                     <?php
-                    
-                    foreach($games_debug as $game){
+ 
+                    foreach($games as $game){
+
                         $screenshots = $game->getScreenshots();
                     
                         /*To-Do :
@@ -117,7 +122,9 @@ if (isset($_GET['action'])) {
                     echo '<div class="col-3 border game-display mt-2 mb-2" >
                             <div class="sm-3 mb-2">
                                 <h5 class="m-0">
-                                    <span class="d-inline-block">'. $game->getName() .'</span>
+
+                                    <a href="index.php?action=viewGame&id=1" class="d-inline-block">'. $game->getName() .'</a>
+
                                     <span class="d-inline-block game-version">
                                         '. $game->getVersion() .'
                                     </span>
@@ -145,7 +152,9 @@ if (isset($_GET['action'])) {
                                 <div class="col-12  mt-1 mb-1 ">
                                     <div class="thumbnail-container">
                                         
-                                        <img src="'.$screenshots[0].'" alt="Game Preview not loaded" class="img-fluid max-width: 100%">
+
+                                        <img src="'.$game->getFirstScreenshot().'" alt="Game Preview not loaded" class="img-fluid max-width: 100%">
+
                                     
                                     </div>
                                 </div>
@@ -158,7 +167,10 @@ if (isset($_GET['action'])) {
                 </div>
                     
 
+
+               <!-- <span class="d-inline-block">'. $game->getName() .'</span> **backup**-->
+                  
     <?php
-            
+
     }
 }

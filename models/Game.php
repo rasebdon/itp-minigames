@@ -109,6 +109,17 @@ class Game {
     }
 
     /**
+     * Get the path of the first screenshot
+     */
+    public function getFirstScreenshot()
+    {
+        if($this->screenshots == null){
+            return "./resources/images/placeholder/placeholder_thumb.jpg";
+        }else{
+            return $this->screenshots[0];
+        }
+    }
+    /**
      * Get the value of playCount
      */ 
     public function getPlayCount()
