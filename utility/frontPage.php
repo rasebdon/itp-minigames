@@ -1,7 +1,7 @@
 <?php
 if (isset($_GET['action'])) {
     if ($_GET['action'] == 'viewFrontPage') {
-       
+       /*
             echo "DEBUG VERSION - DISABLE ON RELEASE";
             $game1 = new Game(
                 0,
@@ -96,9 +96,11 @@ if (isset($_GET['action'])) {
                 ,
                 25);
             $games_debug = array($game1, $game2, $game3, $game4, $game1, $game2, $game3, $game4);
+            */
+            $games = GameService::$instance->getAllGames();
         //--HTML--
     ?>
-
+            
         
             <h1 class="headerfrontPage text-center shadow p-3 mb-5 bg-body rounded text-primary">ITP-Minigames</h1>
             <div class="container border gamePreviewContainer">
@@ -107,7 +109,7 @@ if (isset($_GET['action'])) {
                     
                     <?php
                     
-                    foreach($games_debug as $game){
+                    foreach($games as $game){
                         $screenshots = $game->getScreenshots();
                     
                         /*To-Do :
@@ -145,7 +147,7 @@ if (isset($_GET['action'])) {
                                 <div class="col-12  mt-1 mb-1 ">
                                     <div class="thumbnail-container">
                                         
-                                        <img src="'.$screenshots[0].'" alt="Game Preview not loaded" class="img-fluid max-width: 100%">
+                                        <img src="'.$game->getFirstScreenshot().'" alt="Game Preview not loaded" class="img-fluid max-width: 100%">
                                     
                                     </div>
                                 </div>
