@@ -25,7 +25,7 @@ class GameRenderer {
      * 
      * @param Game|null $game
      */
-    function RenderGame($game = null, $debug = true) {
+    function RenderGame($game = null, $debug = false) {
         // DEBUG -> Game should be given as variable
         if($debug) {
             echo "DEBUG VERSION - DISABLE ON RELEASE";
