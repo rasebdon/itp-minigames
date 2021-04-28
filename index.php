@@ -64,15 +64,15 @@ if ($showDebug) {
             } else {
                 $userType = new UserType("user");
             }
+
+            //print current user 
+            if (isset($user)) {
+                echo "<br>" . $user->getUsername();
+            }
         }
     }
     // Print debugging status
     echo "DEBUGGING ENABLED<br>LOGGED IN: <b>" . ($loggedIn ? "YES" : "NO") . "</b><br>ROLE: <b>" . (($userType != null) ? $userType->getTypeString() : "none") . "</b>";
-}
-
-//print current user 
-if (isset($user)) {
-    echo "<br>" . $user->getUsername();
 }
 
 
@@ -117,7 +117,7 @@ if (isset($user)) {
 
     <nav class="navbar navbar-dark bg-dark">
 
-        <a href="index.php?action=viewFrontPage" class="btn btn-success">View Front Page</a>
+        <a href="index.php" class="btn btn-success">View Front Page</a>
         <a href="index.php?action=forum" class="btn btn-success">Forum</a>
         <?php
         if ($loggedIn) {

@@ -26,6 +26,7 @@ class GameList {
         ?>
         <div id="created-games-list" class="row">
             <div class="col-12 h1 text-center mb-5">Creator Dashboard</div>
+            <a href="index.php?action=uploadGameInterface" class="btn btn-success mb-3">Upload game</a>
         <?php
 
         if(sizeof($games) == 0) {
