@@ -25,7 +25,7 @@ class GameRenderer {
      * 
      * @param Game|null $game
      */
-    function RenderGame($game = null, $debug = false) {
+    function RenderGame($game = null, $debug = true) {
         // DEBUG -> Game should be given as variable
         if($debug) {
             echo "DEBUG VERSION - DISABLE ON RELEASE";
@@ -50,7 +50,8 @@ class GameRenderer {
                 4.722415,
                 array(  0 => "https://news.xbox.com/de-de/wp-content/uploads/sites/3/2020/04/Minecraft-RTX-Beta_Hero.jpg?fit=1920%2C1080",
                         1 => "https://i1.wp.com/www.minecraftrocket.com/wp-content/uploads/2015/03/LikeMinecraft-Shaders-Screenshot-1.png"),
-                275);
+                      275);
+
         }
         // Do not render if function is called without game
         if(!$debug && $game === null) {
@@ -64,6 +65,7 @@ class GameRenderer {
                     <span class="d-inline-block game-version">
                         <?= $game->getVersion() ?>
                     </span>
+                   
                 </h1>
             </div>
             <div class="col-12">
@@ -77,11 +79,34 @@ class GameRenderer {
                 for ($i=0; $i < 5; $i++) { 
                     echo '<span class="fa fa-star';
                     if($i < (int)$game->getRating())
-                        echo ' checked';
+                    echo ' checked';
                     echo '"></span>';
                 }
                 ?>
                 <span class="rating"><?php printf("%.2f/5", $game->getRating()); ?></span>
+
+                 <!-- Favorites Buton-->
+                <?php
+                if(isset($_SESSION['UserID']) &&  $_SESSION['UserID'] != null){  
+                    if(FavoriteService::$instance->isFavorite($_GET['id'],  $_SESSION['UserID'])){
+                    ?>
+                        <form action="index.php?action=viewGame&id=<?= $_GET['id'] ?>" method="POST" class="mb-1 mt-1">
+                            <button type="submit" class="btn btn-warning" value="<?= $_SESSION['UserID'] ?>"name="removeFavorite">Remove from Favorites</button>  
+                        </form>
+                    <?php
+                    }else{                             
+                    ?>
+                        <form action="index.php?action=viewGame&id=<?= $_GET['id'] ?>" method="POST" class="mb-1 mt-1">
+                            <button type="submit" class="btn btn-primary" value="<?= $_SESSION['UserID'] ?>"name="addFavorite">Add to Favorites</button>                            
+                        </form>
+                <?php
+                    }
+                }  
+                ?> 
+                
+                
+               
+                
             </div>
             <div class="col-12 border-top border-bottom pb-3 pt-3 screenshots">
                 <!-- SCREENSHOTS -->

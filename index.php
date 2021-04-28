@@ -7,9 +7,11 @@ require_once "models/Game.php";
 require_once "models/User.php";
 require_once "models/Post.php";
 require_once "services/UserService.class.php";
+require_once "services/FavoriteService.class.php";
 require_once "services/GameService.class.php";
 require_once "services/ForumService.class.php";
 require_once "utility/Validation.class.php";
+require_once "utility/favoritelogic.php";
 
 // GET/SET session
 session_set_cookie_params(0, "/", $_SERVER['HTTP_HOST'], (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'on'), true);
