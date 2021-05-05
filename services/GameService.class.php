@@ -165,23 +165,11 @@ class GameService
         return $this->db->fetchAll();
     }
 
-    function uploadGame() {
-        $userID = $_SESSION['UserID'];
-
-        // Upload game
-        if(!isset($_FILES["game-file"])) { // Quit if there is no game attached 
-            echo "Please attach your game file and try again.";
-            return;
-        }
-
-
-        $sourcePath = "resources/games/" . str_replace(' ', '',$_POST['game-title']);
-        mkdir($sourcePath);
-        $sourcePath .= "/";
-        $pathInfo = pathinfo($_FILES["game-file"]["name"]);
-        $target_file = $sourcePath . $_POST['game-version'] . "." . $pathInfo['extension'];
+    function uploadGameFile($file, string $sourcePath, string $gameVersion, Platform $platform) {
+        $pathInfo = pathinfo($file["name"]);
+        $target_file = $sourcePath . $gameVersion . "_" . $platform->name . "." . $pathInfo['extension'];
         $uploadOk = 1;
-        $mimeType = mime_content_type($_FILES["game-file"]["tmp_name"]);
+        $mimeType = mime_content_type($file["tmp_name"]);
 
         // Check if file already exists
         if (file_exists($target_file)) {
@@ -190,7 +178,7 @@ class GameService
         }
 
         // Check file size
-        if ($_FILES["game-file"]["size"] > 500000) {
+        if ($file["size"] > 500000) {
             echo "Sorry, your game is too large.";
             $uploadOk = 0;
         }
@@ -205,8 +193,43 @@ class GameService
         if ($uploadOk == 0) {
             echo "Sorry, your game was not uploaded.";
         // if everything is ok, try to upload file
-        } else if (!move_uploaded_file($_FILES["game-file"]["tmp_name"], $target_file)) {
+        } else if (!move_uploaded_file($file["tmp_name"], $target_file)) {
             echo "Sorry, there was an error uploading your file.";
+            exit();
+        }
+    }
+
+    function uploadGame() {
+        $userID = $_SESSION['UserID'];
+
+        // Upload game
+        // Check for platforms
+        $windowsFile = $_FILES["game-file-windows"];
+        $linuxFile = $_FILES["game-file-linux"];
+        $macFile = $_FILES["game-file-mac"];
+
+        // Quit if there is no game attached 
+        if((!isset($windowsFile) && !isset($linuxFile) && !isset($macFile)) || 
+        ($windowsFile['error'] != 0 && $linuxFile['error'] != 0 && $macFile['error'] != 0)) { 
+            echo "Please attach a game file and try again.";
+            return;
+        }
+
+        $sourcePath = "resources/games/" . str_replace(' ', '', $_POST['game-title']);
+        mkdir($sourcePath);
+        $sourcePath .= "/";
+
+        $platforms = array();
+
+        if(isset($windowsFile) && $windowsFile != null && $windowsFile['error'] == 0)
+            $this->uploadGameFile($windowsFile, $sourcePath, $_POST['game-version'], Platform::Windows());
+            $platforms[sizeof($platforms)] = Platform::Windows()->id;
+        if(isset($linuxFile) && $linuxFile != null && $linuxFile['error'] == 0)
+            $this->uploadGameFile($linuxFile, $sourcePath, $_POST['game-version'], Platform::Linux());
+            $platforms[sizeof($platforms)] = Platform::Linux()->id;
+        if(isset($macFile) && $macFile != null && $macFile['error'] == 0) {
+            $this->uploadGameFile($macFile, $sourcePath, $_POST['game-version'], Platform::Mac());
+            $platforms[sizeof($platforms)] = Platform::Mac()->id;
         }
 
         // Create forum
@@ -224,7 +247,7 @@ class GameService
             `PlayCount`, `Verified`, `SourcePath`)
             VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ", $userID, $forumID, $_POST['game-title'], $_POST['game-description'],
-        $_POST['game-version'], $now, $now, 0, 0, $target_file);
+        $_POST['game-version'], $now, $now, 0, 0, null);
 
         $gameID = $this->db->lastInsertID();
 
@@ -237,11 +260,8 @@ class GameService
         }
 
         // Insert platforms
-        if(isset($_POST['game-platforms'])) {
-            $platforms = $_POST['game-platforms'];
-            for ($i=0; $i < sizeof($platforms); $i++) { 
-                $this->db->query("INSERT INTO game_platform VALUES ( ? , ? )", $gameID, $platforms[$i]);
-            }
+        for ($i=0; $i < sizeof($platforms); $i++) { 
+            $this->db->query("INSERT INTO game_platform VALUES ( ? , ? )", $gameID, $platforms[$i]);
         }
 
         // Also auto redirect possible

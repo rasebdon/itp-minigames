@@ -2,6 +2,7 @@
 // Initialization
 // REQUIREMENTS
 require_once "utility/database.class.php";
+require_once "models/Platform.php";
 require_once "models/UserType.php";
 require_once "models/Game.php";
 require_once "models/User.php";
