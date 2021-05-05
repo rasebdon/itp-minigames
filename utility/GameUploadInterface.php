@@ -56,24 +56,13 @@ class GameUploadInterface {
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label for="game-platforms" class="form-label">Platforms</label>
-                    <div id="game-platforms" class="dropdown-check-list" tabindex="100">
-                        <span onclick='$("#platforms").toggle();' class="anchor">Select Platforms</span>
-                        <ul class="items show" id="platforms">
-                            <?php
-                                // Get platforms from database and print selection
-                                $platforms = GameService::$instance->getAllPlatforms();
-                                for ($i = 0; $i < sizeof($platforms); $i++) { 
-                                    $platform = $platforms[$i];
-                                    echo '<li><input id="platform-' . $platform['Name'] . '" class="form-check-input" type="checkbox" name="game-platforms[]" value="' . $platform['PlatformID'] . '"><label  class="form-check-label ms-2" for="platform-' . $platform['Name'] . '">' . $platform['Name'] . '</label></li>';
-                                }
-                            ?>
-                        </ul>
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <label for="game-file" class="form-label">Upload Game as .zip or .rar file</label>
-                    <input class="form-control" type="file" id="game-file" name="game-file">
+                    <h2>Upload Game as .zip or .rar file</h2>
+                    <label for="game-file-windows" class="form-label">Windows</label>
+                    <input class="form-control" type="file" id="game-file-windows" name="game-file-windows">
+                    <label for="game-file-linux" class="form-label">Linux</label>
+                    <input class="form-control" type="file" id="game-file-linux" name="game-file-linux">
+                    <label for="game-file-mac" class="form-label">Mac OS</label>
+                    <input class="form-control" type="file" id="game-file-mac" name="game-file-mac">
                 </div>
                 <button type="submit" class="btn btn-primary">Create</button>
             </form>

@@ -102,11 +102,7 @@ class GameRenderer {
                 <?php
                     }
                 }  
-                ?> 
-                
-                
-               
-                
+                ?>                
             </div>
             <div class="col-12 border-top border-bottom pb-3 pt-3 screenshots">
                 <!-- SCREENSHOTS -->
@@ -160,7 +156,7 @@ class GameRenderer {
                             </span>
                         </div>
                         <div class="col-6 text-end">
-                            <a class="btn btn-download" href="<?= "resources/games/" . urlencode(str_replace(' ', '', $game->getName())) . "/" . $game->getVersion() . ".zip"?>">
+                            <a class="btn btn-download" href="<?= "resources/games/" . urlencode(str_replace(' ', '', $game->getName())) . "/" . $game->getVersion() . "_" . Platform::Windows()->name . ".zip"?>">
                                 Download
                             </a>
                         </div>
@@ -177,7 +173,7 @@ class GameRenderer {
                             </span>
                         </div>
                         <div class="col-6 text-end">
-                        <a class="btn btn-download" href="<?= "resources/games/" . urlencode(str_replace(' ', '', $game->getName())) . "/" . $game->getVersion() . ".zip"?>">
+                        <a class="btn btn-download" href="<?= "resources/games/" . urlencode(str_replace(' ', '', $game->getName())) . "/" . $game->getVersion() . "_" . Platform::Mac()->name . ".zip"?>">
                                 Download
                             </a>
                         </div>
@@ -194,7 +190,7 @@ class GameRenderer {
                             </span>
                         </div>
                         <div class="col-6 text-end">
-                            <a class="btn btn-download" href="<?= "resources/games/" . urlencode(str_replace(' ', '', $game->getName())) . "/" . $game->getVersion() . ".zip"?>">
+                            <a class="btn btn-download" href="<?= "resources/games/" . urlencode(str_replace(' ', '', $game->getName())) . "/" . $game->getVersion() . "_" . Platform::Linux()->name . ".zip"?>">
                                 Download
                             </a>
                         </div>
