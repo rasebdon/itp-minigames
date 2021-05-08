@@ -60,9 +60,6 @@ class ForumRenderer
                     <i class="fa fa-arrow-circle-down"></i>
                 </div>
             </div>
-
-
-
 <?php
         }
     }

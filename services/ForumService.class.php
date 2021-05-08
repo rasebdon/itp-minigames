@@ -82,6 +82,45 @@ class ForumService
 
         return $postObj;
     }
+
+    public function insertComment($comment)
+    {
+        $this->db->query(
+            "INSERT INTO comment ( Text, FK_PostID, FK_UserID, Date)
+                VALUES (?,?,?,?)", //SQL Statement 
+
+            $comment->getText(),
+            $comment->getPost(),
+            $comment->getAuthor(),
+            $comment->getDate()
+        );
+    }
+
+    public function getComments($postid)
+    {
+
+        $result = $this->db->query("SELECT * from comment WHERE FK_PostID= ?", $postid);
+
+
+
+        if (!($commentData = $this->db->fetchAll()))
+            return null;
+
+        //var_dump($commentData);
+
+        foreach ($commentData as $key => $comment) {
+            $commentData[$key] = new Comment(
+
+                $comment['CommentID'],
+                $comment['Text'],
+                ForumService::$instance->getUpvotesFromPost($comment['FK_PostID']),
+                UserService::$instance->getUser($comment['FK_UserID']),
+                $comment['Date']
+            );
+        }
+
+        return $commentData;
+    }
 }
 
 ForumService::$instance = new ForumService(Database::$instance);
