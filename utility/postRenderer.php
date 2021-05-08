@@ -21,10 +21,74 @@ class PostRenderer
         }
     }
 
-    function renderPost($postid)
+    function renderPost($onePost)
     {
-        $post = ForumService::$instance->getPost($postid);
-        var_dump($post);
+
+        $post = ForumService::$instance->getPost($onePost);
+
+        //var_dump($post);
+
+        if (isset($_POST['commentText'])) {
+            //var_dump($_POST);
+            $commentObj = new Comment(
+                0,
+                $_POST['commentText'],
+                $post->getId(),
+                0,
+                date("Y-m-d H:i:s")
+            );
+
+            $comments = ForumService::$instance->insertComment($commentObj);
+        }
+
+        $allComment = ForumService::$instance->getComments($post->getId());
+        //var_dump($allComment);
+?>
+        <div id="thePost">
+            <h1 class="display-4"><?= $post->getTitle() ?></h1>
+            <h2><?= $post->getUser()->getUsername() ?></h2>
+            <p><?= $post->getText() ?></p>
+        </div>
+
+        <?php
+        //if ($loggedIn) {
+        ?> <div class"row">
+            <div class="col-md-12">
+                <form method="POST">
+                    <textarea name="commentText" id="mainComment" class="form-control" placeholder="add comment - be friendly" cols="40" rows="5"></textarea><br>
+                    <button class="btn-primary btn" id="addComment">Add comment</button>
+                </form>
+            </div>
+        </div>
+        <?php
+        //}
+
+        if (count($allComment) == 1) {
+        ?><h2>1 Comment </h2>
+        <?php
+        } else if (count($allComment) > 1) {
+        ?><h2><?= count($allComment) ?> Comments </h2>
+        <?php
+        } else {
+        ?><h2>No comments added</h2>
+        <?php
+        }
+
+        foreach ($allComment as $comment) {
+        ?>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <div class="userComments">
+                        <div class="comment">
+                            <div class="user">Author<span class="time"><?= $comment->getDate() ?></span></div>
+                            <div class="userComment"><?= $comment->getText() ?></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+<?php
+        }
     }
 }
 
