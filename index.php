@@ -102,10 +102,10 @@ if ($showDebug) {
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
 
-    
-    <link rel="stylesheet" type="text/css" href="css/userAdministration.css"/>
-    <link rel="stylesheet" type="text/css" href="css/game.css"/>
-    <link rel="stylesheet" type="text/css" href="css/gameUploadInterface.css"/>
+
+    <link rel="stylesheet" type="text/css" href="css/userAdministration.css" />
+    <link rel="stylesheet" type="text/css" href="css/game.css" />
+    <link rel="stylesheet" type="text/css" href="css/gameUploadInterface.css" />
 
 
 
@@ -192,6 +192,7 @@ if ($showDebug) {
 
         //make this for users only, this is public for debugg only
         require_once "utility/ForumMainPage.php";
+        require_once "utility/postRenderer.php";
 
 
         // Load logged in components
