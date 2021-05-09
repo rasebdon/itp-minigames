@@ -91,7 +91,7 @@ class ForumService
 
             $comment->getText(),
             $comment->getPost(),
-            $comment->getAuthor(),
+            $comment->getAuthor()->getId(),
             $comment->getDate()
         );
     }
@@ -99,13 +99,11 @@ class ForumService
     public function getComments($postid)
     {
 
-        $result = $this->db->query("SELECT * from comment WHERE FK_PostID= ?", $postid);
-
+        $this->db->query("SELECT * from comment WHERE FK_PostID= ?", $postid);
 
 
         if (!($commentData = $this->db->fetchAll()))
             return null;
-
         //var_dump($commentData);
 
         foreach ($commentData as $key => $comment) {
