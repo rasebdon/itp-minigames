@@ -15,7 +15,8 @@ class GameRenderer {
         switch($_GET['action']) {
             case "viewGame":
                 $game = GameService::$instance->getGame($_GET['id']);
-                $this->RenderGame($game);
+                if($game->isVerified() || (isset($_SESSION['AccessStrength']) && $_SESSION['AccessStrength'] >= UserType::Admin()->getAccessStrength()))
+                    $this->RenderGame($game);
                 break;
         }
     }
@@ -50,7 +51,8 @@ class GameRenderer {
                 4.722415,
                 array(  0 => "https://news.xbox.com/de-de/wp-content/uploads/sites/3/2020/04/Minecraft-RTX-Beta_Hero.jpg?fit=1920%2C1080",
                         1 => "https://i1.wp.com/www.minecraftrocket.com/wp-content/uploads/2015/03/LikeMinecraft-Shaders-Screenshot-1.png"),
-                      275);
+                      275,
+                    true);
 
         }
         // Do not render if function is called without game
@@ -61,11 +63,13 @@ class GameRenderer {
         <div class="row border game-display mt-5 mb-5">
             <div class="md-12 mb-2">
                 <h1 class="m-0">
-                    <span class="d-inline-block"><?= $game->getName() ?></span>
+                    <span class="d-inline-block"><?= $game->getTitle() ?></span>
                     <span class="d-inline-block game-version">
                         <?= $game->getVersion() ?>
                     </span>
-                   
+                    <span class="d-inline-block game-verified">
+                        <?= $game->isVerified() == 0 ? "Not verified" : "" ?>
+                    </span>
                 </h1>
             </div>
             <div class="col-12">
@@ -156,7 +160,7 @@ class GameRenderer {
                             </span>
                         </div>
                         <div class="col-6 text-end">
-                            <a class="btn btn-download" href="<?= "resources/games/" . urlencode(str_replace(' ', '', $game->getName())) . "/" . $game->getVersion() . "_" . Platform::Windows()->name . ".zip"?>">
+                            <a class="btn btn-download" href="<?= "resources/games/" . urlencode(str_replace(' ', '', $game->getTitle())) . "/" . $game->getVersion() . "_" . Platform::Windows()->name . ".zip"?>">
                                 Download
                             </a>
                         </div>
@@ -173,7 +177,7 @@ class GameRenderer {
                             </span>
                         </div>
                         <div class="col-6 text-end">
-                        <a class="btn btn-download" href="<?= "resources/games/" . urlencode(str_replace(' ', '', $game->getName())) . "/" . $game->getVersion() . "_" . Platform::Mac()->name . ".zip"?>">
+                        <a class="btn btn-download" href="<?= "resources/games/" . urlencode(str_replace(' ', '', $game->getTitle())) . "/" . $game->getVersion() . "_" . Platform::Mac()->name . ".zip"?>">
                                 Download
                             </a>
                         </div>
@@ -190,7 +194,7 @@ class GameRenderer {
                             </span>
                         </div>
                         <div class="col-6 text-end">
-                            <a class="btn btn-download" href="<?= "resources/games/" . urlencode(str_replace(' ', '', $game->getName())) . "/" . $game->getVersion() . "_" . Platform::Linux()->name . ".zip"?>">
+                            <a class="btn btn-download" href="<?= "resources/games/" . urlencode(str_replace(' ', '', $game->getTitle())) . "/" . $game->getVersion() . "_" . Platform::Linux()->name . ".zip"?>">
                                 Download
                             </a>
                         </div>

@@ -120,7 +120,7 @@ if (!isset($_GET['action'])) {
                             <div class="sm-3 mb-2">
                                 <h5 class="m-0">
 
-                                    <a href="index.php?action=viewGame&id=' . $game->getId() . '" class="d-inline-block">' . $game->getName() . '</a>
+                                    <a href="index.php?action=viewGame&id=' . $game->getId() . '" class="d-inline-block">' . $game->getTitle() . '</a>
 
                                     <span class="d-inline-block game-version">
                                         ' . $game->getVersion() . '
@@ -166,7 +166,7 @@ if (!isset($_GET['action'])) {
 
 
 
-        <!-- <span class="d-inline-block">'. $game->getName() .'</span> **backup**-->
+        <!-- <span class="d-inline-block">'. $game->getTitle() .'</span> **backup**-->
 
     <?php
 

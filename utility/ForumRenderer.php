@@ -35,7 +35,7 @@ class ForumRenderer {
                     background-repeat: no-repeat;
                     background-position: center;">
         <div class="forum-header custom-shadow col-md-6 px-0">
-            <h1 class="display-4"><?= $game->getName()?></h1>  
+            <h1 class="display-4"><?= $game->getTitle()?></h1>  
             <p class="mb-0 forum-linktogame">
                 <a href="index.php?action=viewGame&id=<?= $game->getId()?>" class="custom-shadow">visit site...</a>
             </p>   

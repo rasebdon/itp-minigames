@@ -39,7 +39,8 @@ class GameService
                 $gamesData[$i]['Version'],
                 $gamesData[$i]['Rating'] == null ? 0 : $gamesData[$i]['Rating'],
                 array(), // TODO !
-                $gamesData[$i]['PlayCount']
+                $gamesData[$i]['PlayCount'],
+                $gamesData[$i]['Verified']
             );
         }
         return $games;
@@ -67,19 +68,138 @@ class GameService
             $gameData['Version'],
             $gameData['Rating'] == null ? 0 : $gameData['Rating'],
             array(), // TODO !
-            $gameData['PlayCount']
+            $gameData['PlayCount'],
+            $gameData['Verified']
         );
     }
   
-  //function with dummy data to test stuff
-    public function getAllGames(){
-        $this->db->query("SELECT * from game");
+    function searchGames(string $title, bool $verified = true, bool $all = false) {
+        
+        if($all)
+            $this->db->query("SELECT * from game WHERE `Name` LIKE ? ORDER BY GameID ASC", "%" . $title . "%");
+        else if($verified)
+            $this->db->query("SELECT * from game WHERE `Name` LIKE ? AND Verified = 1 ORDER BY GameID ASC", "%" . $title . "%");
+        else
+            $this->db->query("SELECT * from game WHERE `Name` LIKE ? AND Verified = 0 ORDER BY GameID ASC", "%" . $title . "%");
+
+        // Null reference catch
+        if (!($gameData = $this->db->fetchAll()))
+        return null;
+
+        $gameObjs = array();
+
+        for ($i = 0; $i < sizeof($gameData); $i++) {
+        $gameObjs[$i] = new Game(
+            $gameData[$i]['GameID'],
+            $gameData[$i]['Name'],
+            UserService::$instance->getUser($gameData[$i]['FK_UserID']),
+            $gameData[$i]['Description'],
+            array(),
+            $gameData[$i]['Version'],
+            0,
+            array(), 
+            0,
+            $gameData[$i]['Verified']
+        );
+        }
+        return $gameObjs; 
+    }
+
+    function getGames(int $offset, int $amount, bool $verified = true, bool $all = false) {
+        if($all)
+            $this->db->query("SELECT * from game ORDER BY GameID ASC LIMIT ?, ?", $offset, $amount);
+        else if($verified)
+            $this->db->query("SELECT * from game WHERE Verified = 1 ORDER BY GameID ASC LIMIT ?, ?", $offset, $amount);
+        else
+            $this->db->query("SELECT * from game WHERE Verified = 0 ORDER BY GameID ASC LIMIT ?, ?", $offset, $amount);
+    
+        // Null reference catch
+        if (!($gameData = $this->db->fetchAll()))
+            return null;
+
+        $gameObjs = array();
+
+        for ($i = 0; $i < sizeof($gameData); $i++) {
+            $gameObjs[$i] = new Game(
+                $gameData[$i]['GameID'],
+                $gameData[$i]['Name'],
+                UserService::$instance->getUser($gameData[$i]['FK_UserID']),
+                $gameData[$i]['Description'],
+                array(),
+                $gameData[$i]['Version'],
+                0,
+                array(), 
+                0,
+                $gameData[$i]['Verified']
+            );
+        }
+        return $gameObjs; 
+    }
+
+    function deleteGame(int $id) {
+        $game = $this->getGame($id);
+
+        if($game == null)
+            return;
+
+        $dirPath = "resources/games/" . str_replace(' ', '', $game->getTitle());
+
+        // Delete Games
+        try {
+            $this->deleteGameFolder($dirPath);
+        }
+        catch(Exception $e) {
+            // echo $e->getMessage();
+        }
+
+        // Remove from Database
+        $this->db->query("DELETE FROM game WHERE GameID = ?", $id);
+    }
+
+    function deleteGameFolder(string $dirPath) {
+        if (!is_dir($dirPath)) {
+            throw new InvalidArgumentException("$dirPath must be a directory");
+        }
+        if (substr($dirPath, strlen($dirPath) - 1, 1) != '/') {
+            $dirPath .= '/';
+        }
+        $files = glob($dirPath . '*', GLOB_MARK);
+        foreach ($files as $file) {
+            if (is_dir($file)) {
+                $this->deleteGameFolder($file);
+            } else {
+                unlink($file);
+            }
+        }
+        rmdir($dirPath);
+    }
+
+    function verifyGame(int $id) {
+        $this->db->query("UPDATE game SET Verified = 1 WHERE GameID = ?", $id);
+    }
+
+    function getGamesCount(bool $verified = true, bool $all = false) {
+        if($all)
+            $this->db->query("SELECT COUNT(GameID) as Amount  from game");
+        else if($verified)
+            $this->db->query("SELECT COUNT(GameID) as Amount  from game WHERE Verified = 1");
+        else
+            $this->db->query("SELECT COUNT(GameID) as Amount from game WHERE Verified = 0");
+        return $this->db->fetchArray()['Amount'];
+    }
+
+    public function getAllGames(bool $verified = true, bool $all = false){
+        if($all)
+            $this->db->query("SELECT * from game");
+        else if($verified)
+            $this->db->query("SELECT * from game WHERE Verified = 1");
+        else
+            $this->db->query("SELECT * from game WHERE Verified = 0");
 
         // Null reference catch
         if (!($gameData = $this->db->fetchAll()))
             return null;
 
-        
         $gameObjs = array();
 
         for ($i = 0; $i < sizeof($gameData); $i++) {
@@ -93,7 +213,8 @@ class GameService
                 $gameData[$i]['Version'],
                 0,
                 array(), 
-                0
+                0,
+                $gameData[$i]['Verified']
             );
         }
         return $gameObjs; 
@@ -106,7 +227,6 @@ class GameService
             return null;
 
         $gameObj = new Game(
-
             $gameData[0]['GameID'],
             $gameData[0]['Name'],
             UserService::$instance->getUser($gameData[0]['FK_UserID']),
@@ -115,7 +235,8 @@ class GameService
             $gameData[0]['Version'],
             0,
             array(), 
-            0
+            0,
+            $gameData[0]['Verified']
         );
 
         return $gameObj;

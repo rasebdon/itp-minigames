@@ -9,7 +9,7 @@ if (isset($_GET['action'])) {
             ?>
             <div class="forum-banner md-12 mb-3 d-flex justify-content-between" onclick="location.href='index.php?action=forum&id=<?= GameService::$instance->getForumID($game)?>';">
                 <h1 class="m-0">
-                    <span class="d-inline-block"><?= $game->getName() ?></span>
+                    <span class="d-inline-block"><?= $game->getTitle() ?></span>
                     <span class="d-inline-block text-muted forum-banner-author">by
                         <?= $game->getAuthor()->getUsername(); ?>
                     </span>                    

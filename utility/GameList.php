@@ -49,7 +49,7 @@ class GameList {
             <div class="created-game col-12 row mb-3" id="created-game-<?=$game->getId()?>">
                 <div class="col-3"><img src="<?=$thumbnail?>" width="100%"></div>
                 <div class="col-9 row">
-                    <a class="no-hyperlink" href="index.php?action=viewGame&id=<?=$game->getId()?>"><div class="col-8 h2"><?=$game->getName()?></div></a>
+                    <a class="no-hyperlink" href="index.php?action=viewGame&id=<?=$game->getId()?>"><div class="col-8 h2"><?=$game->getTitle()?></div></a>
                     <div class="col-12">
                     <?php 
                     for ($j=0; $j < 5; $j++) { 
