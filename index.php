@@ -123,6 +123,7 @@ if ($showDebug) {
         <?php
         if ($loggedIn) {
             $accessStrength = $userType->getAccessStrength();
+            $_SESSION['AccessStrength'] = $accessStrength;
             // Normal user components
             if ($accessStrength >= UserType::User()->getAccessStrength()) {
         ?>
@@ -138,8 +139,9 @@ if ($showDebug) {
             }
             // Admin components
             if ($accessStrength >= UserType::Admin()->getAccessStrength()) {
-            ?> <a href="index.php?action=showUsers&amount=20&offset=0" class="btn btn-success">User List</a>
-
+            ?> 
+            <a href="index.php?action=showUsers&amount=20&offset=0" class="btn btn-success">User List</a>
+            <a href="index.php?action=listGamesToVerify&amount=20&offset=0" class="btn btn-success">Game Verification List</a>
             <?php
             }
         } else {
@@ -208,6 +210,7 @@ if ($showDebug) {
             // Admin components
             if ($accessStrength >= UserType::Admin()->getAccessStrength()) {
                 require_once "utility/UserAdministration.php";
+                require_once "utility/GameVerificationList.php";
             }
         } else {
             // if someone isn´t logged in
