@@ -46,10 +46,16 @@ class ForumService
     //get number of upvotes a specivic post has
     public function getUpvotesFromPost(int $postid)
     {
-
+        $result = 0;
         $this->db->query("SELECT COUNT(*) FROM vote_post WHERE FK_PostID = ? AND Vote = 1", $postid);
 
-        return $this->db->fetchAll()[0]['COUNT(*)'];
+        $result = $this->db->fetchAll()[0]['COUNT(*)'];
+
+        $this->db->query("SELECT COUNT(*) FROM vote_post WHERE FK_PostID = ? AND Vote = 0", $postid);
+
+        $result -= $this->db->fetchAll()[0]['COUNT(*)'];
+        return $result;
+
     }
 
     public function getNumberOfPosts(int $forumid)
@@ -119,6 +125,67 @@ class ForumService
 
         return $commentData;
     }
+
+    public function isPostRated($postid, $userid, $rating){
+
+        $this->db->query(
+            "SELECT * from vote_post WHERE FK_UserID = ? AND FK_PostID = ? AND Vote = ?", $userid, $postid, $rating
+        );
+        $data = $this->db->fetchAll();
+        if(empty($data)){          
+            return false;
+        }else{
+            return true;
+        }
+        
+    }
+
+    public function toggleLike($postid, $userid){
+        if(ForumService::$instance->isPostRated($postid, $userid, 1)){
+            $this->db->query(
+                "DELETE FROM vote_post WHERE FK_UserID = ? AND FK_PostID = ?", $userid, $postid
+            );
+        }else{
+            $this->db->query(
+                "REPLACE INTO vote_post (FK_UserID, FK_PostID, Vote) VALUES (?, ?, 1)", $userid, $postid
+            );
+        }
+       
+    }
+
+    public function toggleDislike($postid, $userid){
+        if(ForumService::$instance->isPostRated($postid, $userid, 0)){
+            $this->db->query(
+                "DELETE FROM vote_post WHERE FK_UserID = ? AND FK_PostID = ?", $userid, $postid
+            );
+        }else{
+            $this->db->query(
+                "REPLACE INTO vote_post (FK_UserID, FK_PostID, Vote) VALUES (?, ?, 0)", $userid, $postid
+            );
+        }
+
+    }
+
+    public function deletePost($postid){
+        $this->db->query(
+            "DELETE FROM post WHERE PostID =?", $postid
+        );
+    }
+
+    public function addPost(Post $post, $forumid){
+        $this->db->query(
+            "INSERT INTO post ( Title, FK_ForumID, FK_UserID, Text, Date)
+                VALUES (?,?,?,?, ?)", //SQL Statement 
+
+            $post->getTitle(),
+            $forumid,
+            $post->getUser()->getId(),
+            $post->getText(),
+            $post->getDate()
+        );
+
+    }
+
 }
 
 ForumService::$instance = new ForumService(Database::$instance);
