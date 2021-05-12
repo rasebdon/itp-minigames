@@ -369,6 +369,10 @@ class GameService
             echo "Please attach a game file and try again.";
             return;
         }
+        
+        // Create games dir if it does not exist
+        if(!is_dir("resources/games"))
+            mkdir("resources/games");
 
         $sourcePath = "resources/games/" . str_replace(' ', '', $_POST['game-title']);
         mkdir($sourcePath);
