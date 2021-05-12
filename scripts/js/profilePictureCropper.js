@@ -1,0 +1,1 @@
+new Crop(document.getElementById("cropProfilePicture"), 1);

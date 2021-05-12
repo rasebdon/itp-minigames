@@ -88,9 +88,10 @@ if (isset($user)) {
 
     <link rel="stylesheet" type="text/css" href="css/userAdministration.css" />
     <link rel="stylesheet" type="text/css" href="css/game.css" />
+    <link rel="stylesheet" type="text/css" href="css/crop.css" />
 
     <!-- IMPORT JS -->
-
+    <script src="scripts/ts/compiled/Crop.js"></script>
 </head>
 
 <body>

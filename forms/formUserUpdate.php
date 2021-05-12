@@ -22,6 +22,38 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
     exit;
 }
 
+if (isset($_POST['ProfilePictureSubmit'])) {
+    $file = $_FILES['file']['tmp_name'];
+    if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
+        $finfo = new finfo(FILEINFO_MIME_TYPE);
+        if (in_array(
+            $finfo->file($file),
+            array('gif' => "image/gif", 'png' => "image/png", 'jpg' => "image/jpeg", 'jpeg' => "image/jpeg")
+        )) { // if extension is allowed
+            if (move_uploaded_file($file, "cropped/" . ($newFilename = time() . hexdec(random_bytes(20)) . "." . getExtension($finfo->file($file))))) { // move file
+                // resize image, gets saved in function
+                $didUpload = true;
+            } else {
+                $didUpload = false;
+            }
+        } else {
+            $didUpload = false;
+        }
+    }
+}
+
+function getExtension($mime_type)
+{
+
+    $extensions = array(
+        'image/gif' => 'gif',
+        'image/png' => 'png',
+        'image/jpeg' => 'jpeg'
+    );
+
+    return $extensions[$mime_type];
+}
+
 
 if (isset($_POST['SubmitSettings'])) {
     if (Validation::$instance->editProfile($_POST, $user->getId())) {

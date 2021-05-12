@@ -2,8 +2,26 @@
 if (isset($_GET['action'])) {
     if ($_GET['action'] == 'editProfile') {
 ?>
-
         <h1>Edit Profile</h1>
+        <div id="cropProfilePicture" class="crop">
+            <form method="POST" enctype="multipart/form-data" class="crop__form">
+                <input type="hidden" name="ProfilePictureSubmit" value="">
+                <button type="button" class="crop__submit">CROP</button>
+            </form>
+            <input type="file" class="crop__input" accept="image/*" name="crop-input" id="">
+            <div class="crop__cropper-container">
+                <img class="crop__cropper-image" data-src="" alt="">
+                <img class="crop__cropper-image-clipped" alt="">
+                <div class="crop__cropper">
+                    <span class="crop__crophandle--tl"></span>
+                    <span class="crop__crophandle--tr"></span>
+                    <span class="crop__crophandle--br"></span>
+                    <span class="crop__crophandle--bl"></span>
+                </div>
+                <div class="crop__crop-overlay"></div>
+            </div>
+        </div>
+        <script src="scripts/js/profilePictureCropper.js"></script>
         <form action="" method="post">
             <div class="form-row">
                 <div class="form-group col-6">
