@@ -10,6 +10,7 @@ require_once "models/Post.php";
 require_once "services/UserService.class.php";
 require_once "services/FavoriteService.class.php";
 require_once "services/GameService.class.php";
+require_once "services/FrontPageService.class.php";
 require_once "services/ForumService.class.php";
 require_once "utility/Validation.class.php";
 require_once "utility/favoritelogic.php";
@@ -120,6 +121,9 @@ if ($showDebug) {
 
         <a href="index.php" class="btn btn-success">View Front Page</a>
         <a href="index.php?action=forum" class="btn btn-success">Forum</a>
+        <form action="index.php" method="GET">
+            <input type="search" name="search" placeholder="search...">
+        </form>
         <?php
         if ($loggedIn) {
             $accessStrength = $userType->getAccessStrength();

@@ -145,6 +145,20 @@ class GameRenderer {
                 <p>
                     <?= $game->getDescription() ?>
                 </p>
+                <p>
+                    <?php $genres = FrontPageService::$instance->getGenresToGame($game->getID()); 
+                         echo 'Genre:';
+                        if($genres != null){
+                            foreach($genres as &$genre){
+                                echo '<span> '.$genre.',</span>';
+                                
+                            }
+                        }else{
+                            echo '<span>No Genres added</span>';
+                        }
+                    ?>
+
+                </p>
             </div>
             <!-- DOWNLOADS -->
             <div class="col-10 mt-3 mb-3">
