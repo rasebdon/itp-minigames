@@ -323,30 +323,31 @@ class GameService
     function uploadGameFile($file, string $sourcePath, string $gameVersion, Platform $platform) {
         $pathInfo = pathinfo($file["name"]);
         $target_file = $sourcePath . $gameVersion . "_" . $platform->name . "." . $pathInfo['extension'];
-        $uploadOk = 1;
+        $uploadOk = true;
         $mimeType = mime_content_type($file["tmp_name"]);
 
         // Check if file already exists
         if (file_exists($target_file)) {
             echo "Sorry, game version already exists.";
-            $uploadOk = 0;
+            $uploadOk = false;
         }
 
         // Check file size
         if ($file["size"] > 500000) {
             echo "Sorry, your game is too large.";
-            $uploadOk = 0;
+            $uploadOk = false;
         }
 
         // Allow certain file formats
         if($mimeType != 'application/zip' && $mimeType != 'application/x-rar-compressed') {
             echo "Sorry, only zip or rar files are allowed.";
-            $uploadOk = 0;
+            $uploadOk = false;
         }
 
         // Check if $uploadOk is set to 0 by an error
-        if ($uploadOk == 0) {
+        if (!$uploadOk) {
             echo "Sorry, your game was not uploaded.";
+            exit();
         // if everything is ok, try to upload file
         } else if (!move_uploaded_file($file["tmp_name"], $target_file)) {
             echo "Sorry, there was an error uploading your file.";
@@ -380,12 +381,14 @@ class GameService
 
         $platforms = array();
 
-        if(isset($windowsFile) && $windowsFile != null && $windowsFile['error'] == 0)
+        if(isset($windowsFile) && $windowsFile != null && $windowsFile['error'] == 0) {
             $this->uploadGameFile($windowsFile, $sourcePath, $_POST['game-version'], Platform::Windows());
             $platforms[sizeof($platforms)] = Platform::Windows()->id;
-        if(isset($linuxFile) && $linuxFile != null && $linuxFile['error'] == 0)
+        }
+        if(isset($linuxFile) && $linuxFile != null && $linuxFile['error'] == 0) {
             $this->uploadGameFile($linuxFile, $sourcePath, $_POST['game-version'], Platform::Linux());
             $platforms[sizeof($platforms)] = Platform::Linux()->id;
+        }
         if(isset($macFile) && $macFile != null && $macFile['error'] == 0) {
             $this->uploadGameFile($macFile, $sourcePath, $_POST['game-version'], Platform::Mac());
             $platforms[sizeof($platforms)] = Platform::Mac()->id;
