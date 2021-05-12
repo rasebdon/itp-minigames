@@ -72,18 +72,52 @@ class GameService
             $gameData['Verified']
         );
     }
+    function genreNameToGameData(string $genre){
+        $this->db->query("SELECT GenreID from genre WHERE `Name` Like ?", "%" . $genre . "%");
+        $genreID = $this->db->fetchArray();
+        $this->db->query("SELECT * from game LEFT JOIN game_genre ON game.GameID = game_genre.FK_GameID WHERE FK_GenreID = ?", $genreID['GenreID']);
+        $result = $this->db->fetchALL();
+        //print_r($result);//debug
+        return $result;
+    }
+
+    
   
     function searchGames(string $title, bool $verified = true, bool $all = false) {
         
-        if($all)
+        if($all){
             $this->db->query("SELECT * from game WHERE `Name` LIKE ? ORDER BY GameID ASC", "%" . $title . "%");
-        else if($verified)
+            $gameData = $this->db->fetchAll();
+        }
+        else if($verified){
             $this->db->query("SELECT * from game WHERE `Name` LIKE ? AND Verified = 1 ORDER BY GameID ASC", "%" . $title . "%");
-        else
+            if (!($gameData = $this->db->fetchAll())){
+               $gameData = $this->genreNameToGameData($title);
+               /*Array returned from genreNameToGameData() looks like this
+                Array ( 
+                    [0] => Array ( 
+                        [GameID] => 13 
+                        [FK_UserID] => 105 
+                        [FK_ForumID] => 13 
+                        [Name] => test6 
+                        [Description] => 6 
+                        [Version] => 6 
+                        [UpdateDate] => 2021-05-12 12:05:10 
+                        [UploadDate] => 2021-05-12 12:05:10 
+                        [PlayCount] => 0 
+                        [Verified] => 1 
+                        [SourcePath] => 
+                        [FK_GameID] => 13 
+                        [FK_GenreID] => 5 ) )*/
+            }
+        }
+        else{
             $this->db->query("SELECT * from game WHERE `Name` LIKE ? AND Verified = 0 ORDER BY GameID ASC", "%" . $title . "%");
+            $gameData = $this->db->fetchAll();
+        }
 
         // Null reference catch
-        if (!($gameData = $this->db->fetchAll()))
+        if (!($gameData))
         return null;
 
         $gameObjs = array();
@@ -388,6 +422,8 @@ class GameService
         // Also auto redirect possible
         echo "<h3>Game upload succesful!</h3><a class='btn btn-primary' href='index.php?action=viewGame&id=$gameID'>View Game</a>";
     }
+
+    
 }
 
 GameService::$instance = new GameService(Database::$instance);
