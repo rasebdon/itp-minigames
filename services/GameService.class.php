@@ -339,7 +339,10 @@ class GameService
         }
 
         // Allow certain file formats
-        if($mimeType != 'application/zip' && $mimeType != 'application/x-rar-compressed') {
+        if($mimeType != 'application/zip' && $mimeType != 'application/x-rar-compressed'
+        && $mimeType != 'application/x-rar' && $mimeType != 'application/x-7z-compressed'
+        && $mimeType != 'application/x-7z' && $mimeType != 'application/x-tar'
+        && $mimeType != 'application/x-gtar') {
             echo "Sorry, only zip or rar files are allowed.";
             $uploadOk = false;
         }
