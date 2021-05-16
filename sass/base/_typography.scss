@@ -1,0 +1,108 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Press+Start+2P&family=Quicksand:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Maven+Pro:wght@500;600;700;800;900&display=swap");
+// font-family: 'Bungee', cursive;
+// font-family: 'Lato', sans-serif;
+// font-family: 'Press Start 2P', cursive;
+// font-family: 'Quicksand', sans-serif;
+// font-family: 'Maven Pro', sans-serif;
+
+body {
+    font-family: "Quicksand", sans-serif;
+    font-weight: 500;
+    font-size: 1.8rem;
+    color: $color-white;
+}
+
+.heading-primary {
+    font-family: "Maven Pro", cursive;
+    margin-bottom: 6rem;
+    text-transform: uppercase;
+
+    
+
+    &__main {
+        animation: moveInBottom .5s ease-in;
+        animation-fill-mode: backwards;
+        display: block;
+        font-size: 7rem;
+        letter-spacing: 2rem;
+        font-weight: 700;
+        background-image: linear-gradient(to right, $color-green-lightest, $color-green-darkest);
+        color: transparent;
+        -webkit-background-clip: text;
+        transition: all 0.3s;
+        width: fit-content;
+        margin: 0 auto;
+
+        &:hover {
+            transform: scale(1.05);
+        }
+    }
+
+    &__sub {
+        animation: moveInBottom .5s ease-in-out .5s;
+        animation-fill-mode: backwards;
+        display: block;
+        font-size: 3rem;
+        letter-spacing: 1rem;
+        font-weight: 500;
+        color: $color-grey-lightest;
+        transition: all 0.3s;
+        width: fit-content;
+        margin: 0 auto;
+
+        &:hover {
+            transform: scale(1.05);
+        }
+    }
+}
+
+.heading-secondary{
+    
+    font-size: 2.7rem;
+    font-family: "Maven Pro", cursive;
+    letter-spacing: .3rem;
+    text-transform: uppercase;
+    text-shadow: 0 0 .5rem rgba($color-black, 0.35);
+    transition: all .2s ease-out;
+    
+}
+
+.text {
+    display: inline-block;
+    width: 100%;
+    &-box {
+        &--1 {
+            &:hover .heading-secondary{
+                text-shadow: 0px 0px 0 rgb(29,199,108),
+                         -1px 1px 0 rgb(4,174,83),
+                         -2px 2px  0 rgb(-21,149,58),
+                         -3px 3px 2px rgba(0,0,0,0.31),
+                         -3px 3px 1px rgba(0,0,0,0.5),
+                         0px 0px 2px rgba(0,0,0,.2);
+                transform: skewX(-12deg) scale(1.01) translate(3px);
+            }
+
+            &:hover {
+                transform: translateX(2.2rem) scale(1.03);
+                box-shadow: 0 0 1.5rem rgba($color-black, 0.25);
+            }
+            transition: all .3s ease-out;
+            box-shadow: 0 0 1rem rgba($color-black, 0.25);
+            border-radius: 2px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: block;
+            height: 20rem;
+            width: 80rem;
+            background-color: $color-grey-light;
+            
+            p {
+                font-size: 1.8rem;
+            }
+            &:not(:last-child){
+                margin-bottom: 8rem;
+            }
+        }
+    }
+}

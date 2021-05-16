@@ -1,4 +1,9 @@
+#node modules, duh
 /node_modules
+
+# profile pictures uploaded by users
+/resources/profilePictures/original
+/resources/profilePictures/thumbnail
 
 # This .gitignore file should be placed at the root of your Unity project directory
 #

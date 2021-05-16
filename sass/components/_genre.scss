@@ -1,0 +1,11 @@
+.genre {
+    font-weight: 500;
+    margin: .25rem;
+    height: fit-content;
+    background-color: $color-white;
+    padding: 0 .5rem;
+    border-radius: 2px;
+    list-style: none;
+    box-shadow: 0 0 .3rem rgba($color-black, 0.24);
+    color: $color-grey-darkest;
+}
