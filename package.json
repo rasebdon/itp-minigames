@@ -7,7 +7,8 @@
     "doc": "docs"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "watch:sass": "node-sass sass/main.scss css/styleComp.css -w",
+    "compile:sass": "node-sass sass/main.scss css/styleComp.comp.css"
   },
   "repository": {
     "type": "git",

@@ -17,48 +17,51 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
         );
     }
     session_destroy();
-
     header("Location: index.php#");
     exit;
 }
 
 if (isset($_POST['ProfilePictureSubmit'])) {
-    $file = $_FILES['file']['tmp_name'];
-    if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
+    if (!is_dir("resources/profilePictures/original"))
+        mkdir("resources/profilePictures/original");
+    if (!is_dir("resources/profilePictures/thumbnail"))
+        mkdir("resources/profilePictures/thumbnail");
+    if (Validation::$instance->checkMimeType(array("image/gif", "image/png", "image/jpeg", "image/jpeg"), $_FILES['file'])) {
         $finfo = new finfo(FILEINFO_MIME_TYPE);
-        if (in_array(
-            $finfo->file($file),
-            array('gif' => "image/gif", 'png' => "image/png", 'jpg' => "image/jpeg", 'jpeg' => "image/jpeg")
-        )) { // if extension is allowed
-            if (move_uploaded_file($file, "cropped/" . ($newFilename = time() . hexdec(random_bytes(20)) . "." . getExtension($finfo->file($file))))) { // move file
-                // resize image, gets saved in function
-                $didUpload = true;
-            } else {
-                $didUpload = false;
+        $newFilename = time() . hexdec(random_bytes(20)) . "." . getExtension($finfo->file($_FILES['file']['tmp_name']));
+        $sourcePath = "resources/profilePictures/original/" . $user->getUsername() . $newFilename;
+        $thumbnailPath = "resources/profilePictures/thumbnail/" . $user->getUsername() . $newFilename;
+        if (PictureService::$instance->uploadImage($_FILES['file'], $sourcePath)) {
+            PictureService::$instance->resizeImage($sourcePath, $thumbnailPath, 250, 250);
+            ProfilePictureService::$instance->uploadPicture(
+                $user->getId(),
+                $sourcePath,
+                $thumbnailPath
+            );
+            if (ProfilePictureService::$instance->getDefaultPicture()->getId() != $user->getFK_PictureID()) {
+                ProfilePictureService::$instance->deletePicture($user->getFK_PictureID());
             }
-        } else {
-            $didUpload = false;
+            header("Location: index.php?action=editProfile");
+            exit;
         }
+    } else {
+        $_SESSION['profilePictureErrors'] = Validation::$instance->getReturnErrors();
     }
 }
 
 function getExtension($mime_type)
 {
-
     $extensions = array(
         'image/gif' => 'gif',
         'image/png' => 'png',
         'image/jpeg' => 'jpeg'
     );
-
     return $extensions[$mime_type];
 }
-
 
 if (isset($_POST['SubmitSettings'])) {
     if (Validation::$instance->editProfile($_POST, $user->getId())) {
         UserService::$instance->updateProfileData($_POST, $user->getId());
-
         header("Location: index.php?action=editProfile");
         exit;
     } else {

@@ -1,3 +1,5 @@
+
+// ##################################### HTML STRUCTURE ###############################################
 // <div id="crop1" class="crop">
 //     <form action="imageUploader.php" method="POST" enctype="multipart/form-data" class="crop__form">
 //         <input type="hidden" name="ProfilePictureSubmit" value="">
@@ -16,6 +18,7 @@
 //         <div class="crop__crop-overlay"></div>
 //     </div>
 // </div>
+// ####################################################################################################
 
 type Position = {
     abs: {

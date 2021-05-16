@@ -21,7 +21,8 @@ class Validation
         "PASSWORD_FORMAT" => "<div class='mt-1 alert alert-danger' role='alert'> Password must be at least 8 characters long </div>",
         "PASSWORD_MATCH" => "<div class='mt-1 alert alert-danger' role='alert'> Password does not match </div>",
         "PASSWORD_WRONG" => "<div class='mt-1 alert alert-danger' role='alert'> Wrong Password! </div>",
-        "USERNAME_WRONG" => "<div class='mt-1 alert alert-danger' role='alert'> Wrong username / password! </div>"
+        "USERNAME_WRONG" => "<div class='mt-1 alert alert-danger' role='alert'> Wrong username / password! </div>",
+        "MIME_TYPE" => "<div class='mt-1 alert alert-danger' role='alert'> Invalid File Type! </div>"
     ];
 
     // bool tracking successful validation, MUST BE RESET EVERY VALIDATION CALL, using the clearErrors() function
@@ -250,6 +251,17 @@ class Validation
             }
         }
         $this->fillSuccessful($userData);
+        return $this->success;
+    }
+
+    public function checkMimeType($mimeTypes, $file)
+    {
+        $this->clearErrors();
+        $finfo = new finfo(FILEINFO_MIME_TYPE);
+        if (!in_array($finfo->file($file['tmp_name']), $mimeTypes)) {
+            $this->returnErrors['MimeType'] = Validation::error['MIME_TYPE'];
+            $this->success = false;
+        }
         return $this->success;
     }
 }

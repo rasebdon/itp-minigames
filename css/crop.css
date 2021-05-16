@@ -39,8 +39,8 @@
 }
 
 #cropProfilePicture .crop__cropper-container{
-    width: 20rem;
-    height: 20rem;
+    width: 30rem;
+    height: 30rem;
 }
 
 .crop__cropper-image-clipped {
