@@ -4,7 +4,7 @@
  */
 class Game {
     private $id;
-    private $name;
+    private $title;
     private $author;
     private $description;
     /** Associative bool array with keys: `windows`, `linux`, `mac` */
@@ -12,13 +12,14 @@ class Game {
     private $version;
     private $rating;
     private $playCount;
+    private $verified;
     /** Array with all screenshot paths */
     private $screenshots;
 
-    function __construct(int $id, string $name, User $author, string $description, array $plattforms, string $version, float $rating, array $screenshots, int $playCount)
+    function __construct(int $id, string $title, User $author, string $description, array $plattforms, string $version, float $rating, array $screenshots, int $playCount, bool $verified)
     {
         $this->id = $id;
-        $this->name = $name;
+        $this->title = $title;
         $this->author = $author;
         $this->description = $description;
         $this->plattforms = $plattforms;
@@ -26,6 +27,7 @@ class Game {
         $this->rating = $rating;
         $this->screenshots = $screenshots;
         $this->playCount = $playCount;
+        $this->verified = $verified;
     }
 
     /**
@@ -37,11 +39,11 @@ class Game {
     }
 
     /**
-     * Get the value of name
+     * Get the value of title
      */ 
-    public function getName()
+    public function getTitle()
     {
-        return $this->name;
+        return $this->title;
     }
 
     /**
@@ -109,10 +111,29 @@ class Game {
     }
 
     /**
+     * Get the path of the first screenshot
+     */
+    public function getFirstScreenshot()
+    {
+        if($this->screenshots == null){
+            return "./resources/images/placeholder/placeholder_thumb.jpg";
+        }else{
+            return $this->screenshots[0];
+        }
+    }
+    /**
      * Get the value of playCount
      */ 
     public function getPlayCount()
     {
         return $this->playCount;
+    }
+
+    /**
+     * Get the value of verified
+     */ 
+    public function isVerified()
+    {
+        return $this->verified;
     }
 }

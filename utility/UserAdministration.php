@@ -156,8 +156,8 @@ class UserAdministration {
             <div class="user-box col-12 row user-administration-list-item">
                 <div class="col-2 fw-bold">ID</div>
                 <div class="col-2 fw-bold">Username</div>
-                <div class="col-2 fw-bold">First Name</div>
                 <div class="col-2 fw-bold">Last Name</div>
+                <div class="col-2 fw-bold">First Name</div>
                 <div class="col-2 fw-bold">Role</div>
                 <div class="col-1 fw-bold">Delete</div>
                 <div class="col-1 fw-bold">View</div>
