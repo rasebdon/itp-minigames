@@ -9,7 +9,9 @@ if (isset($_POST['RegisterSubmit'])) {
             unset($_SESSION['registerErrors']);
 
         // insert into database...
-        UserService::$instance->insertUserData($_POST);
+        $_SESSION['UserID'] =  UserService::$instance->insertUserData($_POST);;
+        header("Location: index.php");
+        exit;
     } else {
         // get errors and store into session variable
         $_SESSION['registerErrors'] = Validation::$instance->getReturnErrors();

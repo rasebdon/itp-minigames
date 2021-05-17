@@ -130,6 +130,7 @@ class UserService
         $this->db->query("DELETE FROM user WHERE UserID = ?", $uid);
     }
 
+    // returns inserted id to auto login after registration
     public function insertUserData($userData)
     {
         $this->db->query("SELECT * FROM picture WHERE SourcePath LIKE 'resources/profilePictures/default%'");
@@ -147,6 +148,8 @@ class UserService
             session_id() . time(),
             $defaultPictureID
         );
+
+        return $this->db->lastInsertID();
     }
 
     public function updateSessionID($sessionID, $userID)
@@ -165,7 +168,8 @@ class UserService
         );
     }
 
-    public function updatePassword($password, $uid){
+    public function updatePassword($password, $uid)
+    {
         $this->db->query("UPDATE user SET Password = ? WHERE UserID = ?", password_hash($password, PASSWORD_DEFAULT), $uid);
     }
 }

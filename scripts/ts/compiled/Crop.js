@@ -373,6 +373,11 @@ var Crop = /** @class */ (function () {
         document.querySelector("#" + crop.id + " .crop__cropper-container").style.display = "none";
         input.addEventListener("change", function () {
             if (input.value != "") {
+                if (input.files[0].type != "image/jpeg" && input.files[0].type != "image/png" && input.files[0].type != "image/jpg") {
+                    _this.cropper.el.style.display = "none";
+                    document.querySelector("#" + crop.id + " .crop__cropper-container").style.display = "none";
+                    return;
+                }
                 document.querySelector("#" + crop.id + " .crop__cropper-container").style.display = "block";
                 _this.cropperBox = new CropperBox(document.querySelector("#" + crop.id + " .crop__cropper-container"));
                 crop.dataset.src = URL.createObjectURL(input.files[0]);

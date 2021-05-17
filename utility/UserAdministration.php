@@ -8,7 +8,11 @@ class UserAdministration {
     {
         // Check for delete user
         if(isset($_GET['delete'])) {
+            $userToDelete = UserService::$instance->getUser($_GET['delete']);
             UserService::$instance->deleteUser($_GET['delete']);
+            if (ProfilePictureService::$instance->getDefaultPicture()->getId() != $userToDelete->getFK_PictureID()) {
+                ProfilePictureService::$instance->deletePicture($userToDelete->getFK_PictureID());
+            }
         }
         // Route GET variables
         if(!isset($_GET['action']))

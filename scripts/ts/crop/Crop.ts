@@ -447,6 +447,11 @@ class Crop {
         (document.querySelector("#" + crop.id + " .crop__cropper-container")! as HTMLElement).style.display = "none";
         input.addEventListener("change", () => {
             if (input.value != "") {
+                if (input.files![0].type != "image/jpeg" && input.files![0].type != "image/png" && input.files![0].type != "image/jpg") {
+                    this.cropper.el.style.display = "none";
+                    (document.querySelector("#" + crop.id + " .crop__cropper-container")! as HTMLElement).style.display = "none";
+                    return;
+                }
                 (document.querySelector("#" + crop.id + " .crop__cropper-container")! as HTMLElement).style.display = "block";
                 this.cropperBox = new CropperBox(document.querySelector("#" + crop.id + " .crop__cropper-container")!);
                 crop.dataset.src! = URL.createObjectURL(input.files![0]);
@@ -511,13 +516,13 @@ class Crop {
             -(this.cropper.pos.rel.top - this.cropperImage.pos.rel.top) * this.cropperImage.imageHeight / this.cropperImage.el.height
         );
 
-        imageOut.toBlob((blob: Blob)=> {
+        imageOut.toBlob((blob: Blob) => {
             const formDataImage = document.createElement("input");
             formDataImage.name = "file";
             formDataImage.type = "file";
-            
+
             const container = new DataTransfer();
-            container.items.add(new File([blob], "img.jpeg", {type:"image/jpeg", lastModified:new Date().getTime()}));
+            container.items.add(new File([blob], "img.jpeg", { type: "image/jpeg", lastModified: new Date().getTime() }));
             console.log()
             formDataImage.files = container.files;
             this.form.append(formDataImage)

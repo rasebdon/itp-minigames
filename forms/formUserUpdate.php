@@ -26,7 +26,7 @@ if (isset($_POST['ProfilePictureSubmit'])) {
         mkdir("resources/profilePictures/original");
     if (!is_dir("resources/profilePictures/thumbnail"))
         mkdir("resources/profilePictures/thumbnail");
-    if (Validation::$instance->checkMimeType(array("image/gif", "image/png", "image/jpeg", "image/jpeg"), $_FILES['file'])) {
+    if (Validation::$instance->checkMimeType(array("image/gif", "image/png", "image/jpeg", "image/jpg"), $_FILES['file'])) {
         $finfo = new finfo(FILEINFO_MIME_TYPE);
         $newFilename = time() . hexdec(random_bytes(20)) . "." . getExtension($finfo->file($_FILES['file']['tmp_name']));
         $sourcePath = "resources/profilePictures/original/" . $user->getUsername() . $newFilename;
