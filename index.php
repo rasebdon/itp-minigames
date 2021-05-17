@@ -4,12 +4,11 @@
 require_once "utility/database.class.php";
 require_once "models/UserType.php";
 require_once "models/Game.php";
-// require_once "models/ProfilePicture.php";
 require_once "models/User.php";
 require_once "models/Picture.php";
 
+require_once "utility/PictureUpload.class.php";
 require_once "services/UserService.class.php";
-require_once "services/PictureService.class.php";
 require_once "services/ProfilePictureService.class.php";
 require_once "services/GameService.class.php";
 require_once "utility/Validation.class.php";

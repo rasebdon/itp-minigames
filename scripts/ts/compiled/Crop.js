@@ -1,4 +1,5 @@
 "use strict";
+// ##################################### HTML STRUCTURE ###############################################
 // <div id="crop1" class="crop">
 //     <form action="imageUploader.php" method="POST" enctype="multipart/form-data" class="crop__form">
 //         <input type="hidden" name="ProfilePictureSubmit" value="">
@@ -17,6 +18,7 @@
 //         <div class="crop__crop-overlay"></div>
 //     </div>
 // </div>
+// ####################################################################################################
 var CropperBox = /** @class */ (function () {
     function CropperBox(element) {
         this.ar = 0;
@@ -367,17 +369,18 @@ var Crop = /** @class */ (function () {
             document.body.append(cropped);
         });
         this.cropper = new Cropper(document.querySelector("#" + crop.id + " .crop__cropper"));
-        this.cropper.el.style.visibility = "hidden";
-        document.querySelector("#" + crop.id + " .crop__cropper-container");
+        this.cropper.el.style.display = "none";
+        document.querySelector("#" + crop.id + " .crop__cropper-container").style.display = "none";
         input.addEventListener("change", function () {
             if (input.value != "") {
+                document.querySelector("#" + crop.id + " .crop__cropper-container").style.display = "block";
                 _this.cropperBox = new CropperBox(document.querySelector("#" + crop.id + " .crop__cropper-container"));
                 crop.dataset.src = URL.createObjectURL(input.files[0]);
                 document.querySelector("#" + crop.id + " .crop__cropper-image").dataset.src = URL.createObjectURL(input.files[0]);
                 _this.cropperImage = new CropperImage(document.querySelector("#" + crop.id + " .crop__cropper-image"), document.querySelector("#" + crop.id + " .crop__cropper-image-clipped"), _this.cropperBox, function () {
                     submit.disabled = false;
                     _this.setAspectRatio(ar);
-                    _this.cropper.el.style.visibility = "visible";
+                    _this.cropper.el.style.display = "block";
                     _this.cropper.resize(_this.cropperImage);
                     _this.cropperHandles = new CropperHandles(crop.id, _this.cropper);
                     _this.initUpdate();

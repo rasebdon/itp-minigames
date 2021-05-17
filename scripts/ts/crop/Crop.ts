@@ -443,10 +443,11 @@ class Crop {
             document.body.append(cropped);
         });
         this.cropper = new Cropper(document.querySelector("#" + crop.id + " .crop__cropper")!);
-        this.cropper.el.style.visibility = "hidden";
-        document.querySelector("#" + crop.id + " .crop__cropper-container")!
+        this.cropper.el.style.display = "none";
+        (document.querySelector("#" + crop.id + " .crop__cropper-container")! as HTMLElement).style.display = "none";
         input.addEventListener("change", () => {
             if (input.value != "") {
+                (document.querySelector("#" + crop.id + " .crop__cropper-container")! as HTMLElement).style.display = "block";
                 this.cropperBox = new CropperBox(document.querySelector("#" + crop.id + " .crop__cropper-container")!);
                 crop.dataset.src! = URL.createObjectURL(input.files![0]);
                 (document.querySelector("#" + crop.id + " .crop__cropper-image")! as HTMLInputElement).dataset.src = URL.createObjectURL(input.files![0]);
@@ -457,7 +458,7 @@ class Crop {
                     () => {
                         submit.disabled = false;
                         this.setAspectRatio(ar);
-                        this.cropper.el.style.visibility = "visible";
+                        this.cropper.el.style.display = "block";
                         this.cropper.resize(this.cropperImage);
                         this.cropperHandles = new CropperHandles(crop.id, this.cropper);
                         this.initUpdate();
