@@ -7,16 +7,18 @@ class User {
     private $username;
     private $firstname;
     private $lastname;
+    private $FK_PictureID;
     /** Associative string array with keys: `twitter`, `facebook`, `patreon`, `instagram` */
     private $socialMedia;
     private $userType;
 
-    function __construct(int $id, string $username, string $firstname, string $lastname, array $socialMedia, UserType $userType)
+    function __construct(int $id, string $username, string $firstname,string $lastname, $FK_PictureID, array $socialMedia, UserType $userType)
     {
         $this->id = $id;
         $this->username = $username;
         $this->firstname = $firstname;
         $this->lastname = $lastname;
+        $this->FK_PictureID = $FK_PictureID; 
         $this->socialMedia = $socialMedia;
         $this->userType = $userType;
     }
@@ -98,5 +100,25 @@ class User {
     public function getUserType()
     {
         return $this->userType;
+    }
+
+    /**
+     * Get the value of FK_PictureID
+     */ 
+    public function getFK_PictureID()
+    {
+        return $this->FK_PictureID;
+    }
+
+    /**
+     * Set the value of FK_PictureID
+     *
+     * @return  self
+     */ 
+    public function setFK_PictureID($FK_PictureID)
+    {
+        $this->FK_PictureID = $FK_PictureID;
+
+        return $this;
     }
 }

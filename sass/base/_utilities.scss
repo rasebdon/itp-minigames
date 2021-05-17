@@ -1,0 +1,20 @@
+.gradient {
+    &-green {
+        background-image: linear-gradient(to right, $color-green-darkest, $color-green-lightest);
+    }
+    &-blue {
+        background-image: linear-gradient(to right, $color-blue-dark, $color-blue-light);
+    }
+    &-purple {
+        background-image: linear-gradient(to right, $color-purple-dark, $color-purple-light);
+    }
+    &-red {
+        background-image: linear-gradient(to right, $color-red-dark, $color-red-light);
+    }
+    &-orange {
+        background-image: linear-gradient(to right, $color-orange-dark, $color-orange-light);
+    }
+    &-yellow {
+        background-image: linear-gradient(to right, $color-yellow-dark, $color-yellow-light);
+    }
+}

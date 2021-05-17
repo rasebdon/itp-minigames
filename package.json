@@ -1,0 +1,29 @@
+{
+  "name": "itp-minigames",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "watch:sass": "node-sass sass/main.scss css/styleComp.css -w",
+    "compile:sass": "node-sass sass/main.scss css/styleComp.comp.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rasebdon/itp-minigames.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rasebdon/itp-minigames/issues"
+  },
+  "homepage": "https://github.com/rasebdon/itp-minigames#readme",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.23.0",
+    "@typescript-eslint/parser": "^4.23.0",
+    "eslint": "^7.26.0",
+    "typescript": "^4.2.4"
+  }
+}

@@ -2,17 +2,24 @@
 // Initialization
 // REQUIREMENTS
 require_once "utility/database.class.php";
+
 require_once "models/Platform.php";
 require_once "models/UserType.php";
 require_once "models/Game.php";
 require_once "models/User.php";
+require_once "models/Picture.php";
 require_once "models/Post.php";
+
+require_once "utility/PictureUpload.class.php";
+require_once "utility/Validation.class.php";
+
 require_once "services/UserService.class.php";
+require_once "services/ProfilePictureService.class.php";
 require_once "services/FavoriteService.class.php";
 require_once "services/GameService.class.php";
 require_once "services/FrontPageService.class.php";
 require_once "services/ForumService.class.php";
-require_once "utility/Validation.class.php";
+
 require_once "utility/favoritelogic.php";
 
 // GET/SET session
@@ -98,25 +105,21 @@ if ($showDebug) {
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="css/userAdministration.css">
+    <link rel="stylesheet" type="text/css" href="css/crop.css" />
     <link rel="stylesheet" type="text/css" href="css/game.css">
+    <link rel="stylesheet" type="text/css" href="css/gameUploadInterface.css"/>
     <link rel="stylesheet" type="text/css" href="css/forum.css">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
-
-    
-    <link rel="stylesheet" type="text/css" href="css/userAdministration.css"/>
-    <link rel="stylesheet" type="text/css" href="css/game.css"/>
-    <link rel="stylesheet" type="text/css" href="css/gameUploadInterface.css"/>
-
-
-
-    <!-- IMPORT JS -->
+ 
     <!-- JQUERY -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- IMPORT JS -->
+    <script src="scripts/ts/compiled/Crop.js"></script>
 </head>
 
 <body>
-
+  
     <nav class="navbar navbar-dark bg-dark">
 
         <a href="index.php" class="btn btn-success">View Front Page</a>
@@ -131,6 +134,7 @@ if ($showDebug) {
             // Normal user components
             if ($accessStrength >= UserType::User()->getAccessStrength()) {
         ?>
+                <a href="index.php?action=editProfile" class="btn btn-success">Edit Profile</a>
                 <a href="index.php?action=logout" class="btn btn-success">Logout</a>
             <?php
             }
@@ -170,6 +174,7 @@ if ($showDebug) {
             <a href="index.php?action=forum" class="btn btn-success">Forum</a>
             <a href="index.php?action=listCreatedGames" class="btn btn-success">Created Games List</a>
             <a href="index.php?action=register" class="btn btn-success">Registration</a>
+            <a href="index.php?action=editProfile" class="btn btn-success">Edit Profile</a>
             <a href="index.php?action=login" class="btn btn-success">Login</a>
             <a href="index.php?action=logout" class="btn btn-success">Logout</a>
 
@@ -183,6 +188,7 @@ if ($showDebug) {
         </div>
     <?php
     } ?>
+
 
     <!-- Main container -->
     <div class="container">
@@ -205,6 +211,7 @@ if ($showDebug) {
             $accessStrength = $userType->getAccessStrength();
             // Normal user components
             if ($accessStrength >= UserType::User()->getAccessStrength()) {
+                require_once "utility/EditProfile.php";
             }
             // Game creator components
             if ($accessStrength >= UserType::Creator()->getAccessStrength()) {

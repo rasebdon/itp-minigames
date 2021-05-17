@@ -21,7 +21,8 @@ class Validation
         "PASSWORD_FORMAT" => "<div class='mt-1 alert alert-danger' role='alert'> Password must be at least 8 characters long </div>",
         "PASSWORD_MATCH" => "<div class='mt-1 alert alert-danger' role='alert'> Password does not match </div>",
         "PASSWORD_WRONG" => "<div class='mt-1 alert alert-danger' role='alert'> Wrong Password! </div>",
-        "USERNAME_WRONG" => "<div class='mt-1 alert alert-danger' role='alert'> Wrong username / password! </div>"
+        "USERNAME_WRONG" => "<div class='mt-1 alert alert-danger' role='alert'> Wrong username / password! </div>",
+        "MIME_TYPE" => "<div class='mt-1 alert alert-danger' role='alert'> Invalid File Type! </div>"
     ];
 
     // bool tracking successful validation, MUST BE RESET EVERY VALIDATION CALL, using the clearErrors() function
@@ -196,6 +197,71 @@ class Validation
         }
 
         $this->fillSuccessful($loginData);
+        return $this->success;
+    }
+
+    public function editProfile($profileData, $uid)
+    {
+        $this->clearErrors();
+        $this->removeSubmit($profileData);
+        $this->checkEmpty($profileData);
+
+        if (!isset($this->returnErrors['Username']))
+            if (preg_match('/^[a-z\d_-]{5,30}$/i', $profileData['Username']) === 0) {
+                $this->returnErrors['Username'] = Validation::error['USERNAME_FORMAT'];
+                $this->success = false;
+            }
+
+        if (!isset($this->returnErrors['Username'])) {
+
+            $this->db->query("SELECT * FROM user WHERE Username = ? AND UserID != ? ", $profileData['Username'], $uid);
+
+            if ($this->db->numRows() > 0) {
+                $this->returnErrors['Username'] = Validation::error['USERNAME_EXISTS'];
+                $this->success = false;
+            }
+        }
+        $this->fillSuccessful($profileData);
+        return $this->success;
+    }
+
+    public function changePassword($userData, $username)
+    {
+        $this->clearErrors();
+        $this->removeSubmit($userData);
+        $this->checkEmpty($userData);
+
+        if (!isset($this->returnErrors['CurrentPassword'])) {
+            if (!$this->matchPassword($username, $userData['CurrentPassword'])) {
+                $this->returnErrors['CurrentPassword'] = Validation::error['PASSWORD_MATCH'];
+                $this->success = false;
+            } else {
+                if (!isset($this->returnErrors['Password']))
+                    if (strlen($userData['Password']) < 8) {
+                        $this->returnErrors['Password'] = Validation::error['PASSWORD_FORMAT'];
+                        $this->returnErrors['ConfirmPassword'] = Validation::error['PASSWORD_FORMAT'];
+                        $this->success = false;
+                    }
+
+                if (!isset($this->returnErrors['Password']))
+                    if ($userData['Password'] !== $userData['ConfirmPassword']) {
+                        $this->returnErrors['ConfirmPassword'] = Validation::error['PASSWORD_MATCH'];
+                        $this->success = false;
+                    }
+            }
+        }
+        $this->fillSuccessful($userData);
+        return $this->success;
+    }
+
+    public function checkMimeType($mimeTypes, $file)
+    {
+        $this->clearErrors();
+        $finfo = new finfo(FILEINFO_MIME_TYPE);
+        if (!in_array($finfo->file($file['tmp_name']), $mimeTypes)) {
+            $this->returnErrors['MimeType'] = Validation::error['MIME_TYPE'];
+            $this->success = false;
+        }
         return $this->success;
     }
 }
