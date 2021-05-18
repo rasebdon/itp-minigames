@@ -15,7 +15,8 @@ class GameRenderer {
         switch($_GET['action']) {
             case "viewGame":
                 $game = GameService::$instance->getGame($_GET['id']);
-                if($game->isVerified() || (isset($_SESSION['AccessStrength']) && $_SESSION['AccessStrength'] >= UserType::Admin()->getAccessStrength()))
+                if($game != null && ($game->isVerified() || (isset($_SESSION['AccessStrength']) && $_SESSION['AccessStrength'] >= UserType::Admin()->getAccessStrength()
+                || (isset($_SESSION['UserID']) && $game->getAuthor()->getId() == $_SESSION['UserID']))))
                     $this->RenderGame($game);
                 break;
         }
