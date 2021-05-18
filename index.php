@@ -1,5 +1,9 @@
 <?php
-// Initialization
+/// Initialization
+// Set Session
+session_set_cookie_params(0, "/", $_SERVER['HTTP_HOST'], (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'on'), true);
+session_start();
+
 // REQUIREMENTS
 require_once "utility/database.class.php";
 require_once "utility/Initialization.php";
@@ -22,12 +26,6 @@ require_once "services/FrontPageService.class.php";
 require_once "services/ForumService.class.php";
 
 require_once "utility/favoritelogic.php";
-
-// GET/SET session
-session_set_cookie_params(0, "/", $_SERVER['HTTP_HOST'], (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'on'), true);
-session_start();
-
-
 
 //BOOL FOR DEBUGGIG MODE
 $showDebug = false;
