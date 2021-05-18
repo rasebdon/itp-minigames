@@ -4,6 +4,7 @@
 
 class Database
 {
+    /** @var Database */
     public static $instance;
 	protected $connection;
 	protected $query;
