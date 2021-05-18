@@ -34,9 +34,12 @@ class GameVerificationList {
      */
     public function showGamesToVerify($offset = 0, $amount = 20) {
         // Check if games can be loaded (games amount > 0)
-        if(($gamesAmount = GameService::$instance->getGamesCount(false, false)) == 0)
+        if(($gamesAmount = GameService::$instance->getGamesCount(false, false)) == 0) {
+            ?>
+            <h1 class="text-center mt-5">Currently there are no games that need verification!<br> Check back later.</h1>
+            <?php
             return;
-
+        }
         ?>
         <div class="row game-verification-list">
             <div class="mb-3 col-12 text-center">

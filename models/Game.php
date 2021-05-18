@@ -83,7 +83,7 @@ class Game {
      */ 
     public function hasMac()
     {
-        return isset($this->plattforms['Mac']) && $this->plattforms['Mac'] === true;
+        return isset($this->plattforms['Mac OS']) && $this->plattforms['Mac OS'] === true;
     }
 
     /**
