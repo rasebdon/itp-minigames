@@ -51,14 +51,35 @@ class GameRenderer {
                 <span class="author">Author: <?= $game->getAuthor()->getUsername(); ?></span>
             </div>
             <div class="col-12 pb-2">
+
+                <script>
+                    $(document).ready(function(){
+                        var options = {
+                        max_value: 5,
+                        step_size: 0.5,
+                        selected_symbol_type: 'fontawesome_star',
+                        url: 'http://localhost/itproject/itp-minigames/services/ratingService.php',
+                        readonly: true,
+                    }
+                    $(".rate").rate(options);
+                });
+                    
+                </script>
+                
+                <div class="rate" data-rate-value=<?= $game->getRating() ?>>
+                
+                </div>
                 <!-- RATING -->
                 <?php 
+
+                /*
                 for ($i=0; $i < 5; $i++) { 
                     echo '<span class="fa fa-star';
                     if($i < (int)$game->getRating())
                     echo ' checked';
                     echo '"></span>';
                 }
+                */
                 ?>
                 <span class="rating"><?php printf("%.2f/5", $game->getRating()); ?></span>
 
@@ -234,8 +255,131 @@ class GameRenderer {
                 ?>
             </div>
         </div>
-
+            
         <?php
+        $this->renderRating($game);
+    }
+
+    function renderRating($game){
+        $rating5 = GameService::$instance->getRatingByStars($game->getId(), 5);
+        $rating4 = GameService::$instance->getRatingByStars($game->getId(), 4);
+        $rating3 = GameService::$instance->getRatingByStars($game->getId(), 3);
+        $rating2 = GameService::$instance->getRatingByStars($game->getId(), 2);
+        $rating1 = GameService::$instance->getRatingByStars($game->getId(), 1);
+        $rating_total = ($rating5+$rating4+$rating3+$rating2+$rating1);
+
+        ?>
+        <div class="row rating-display mb-5">
+            <div class="col-md-3">
+                    <h1 class="m-0">Rating</h1>
+                    <div class="row mb-3">
+                        <div class="col">Average</div> 
+                        <div class="col">
+                            <div class="rate" data-rate-value=<?= $game->getRating() ?>></div>
+                        </div>
+                    </div>
+                        
+                    <div>
+                        <span>5 Stars</span>
+                        <div class="rating-bar-outer">
+                            <div class="rating-bar-inner" style="width: <?= $rating5/$rating_total*100 ?>%;"></div>
+                            <div class="rating-bar-percent"><?= round($rating5/$rating_total*100) ?>%</div>
+                        </div>
+                    </div>
+                    <div>
+                        <span>4 Stars</span>
+                        <div class="rating-bar-outer">
+                            <div class="rating-bar-inner" style="width: <?= $rating4/$rating_total*100 ?>%;"></div>
+                            <div class="rating-bar-percent"><?= round($rating4/$rating_total*100) ?>%</div>
+                        </div>
+                    </div>
+                    <div>
+                        <span>3 Stars</span>
+                        <div class="rating-bar-outer">
+                            <div class="rating-bar-inner" style="width: <?= $rating3/$rating_total*100 ?>%;"></div>
+                            <div class="rating-bar-percent"><?= round($rating3/$rating_total*100) ?>%</div>
+                        </div>
+                    </div>
+                    <div>
+                        <span>2 Stars</span>
+                        <div class="rating-bar-outer">
+                            <div class="rating-bar-inner" style="width: <?= $rating2/$rating_total*100 ?>%;"></div>
+                            <div class="rating-bar-percent"><?= round($rating2/$rating_total*100) ?>%</div>
+                        </div>
+                    </div>
+                    <div>
+                        <span>1 Star</span>
+                        <div class="rating-bar-outer">
+                            <div class="rating-bar-inner" style="width: <?= $rating1/$rating_total*100 ?>%;"></div>
+                            <div class="rating-bar-percent"><?= round($rating1/$rating_total*100) ?>%</div>
+                        </div>
+                    </div>
+            </div>
+            <div class="col-md-9">
+                <h1 class="m-0">
+                    Feedback
+                </h1>
+                <div class="row">
+                    <script>
+                        $(document).ready(function(){
+                            var options2 = {
+                            max_value: 5,
+                            step_size: 0.5,
+                            selected_symbol_type: 'fontawesome_star',
+                            readonly: false,                        
+                        }
+                        $(".rate2").rate(options2);
+                    });                                    
+                    </script>
+                    <span>Add own feedback:</span>
+                    <div class="col-4">Rating</div> 
+                    <div class="col">
+                        <div class="rate2"></div>
+                    </div>
+                    <form action="index.php?action=viewGame&id=<?= $game->getId() ?>" method="POST">                        
+                        <textarea name="rating-text" id="rating-text" class="form-control" cols="30" rows="3" placeholder="Type some feedback"></textarea>
+                        <button class="btn-primary btn mt-1" id="postFeedback">Submit</button>
+                        <input type="number" name="rating-value" id="rating-value" value="0" hidden>
+                    </form>
+                </div>
+                <div class="feedbacklist">
+
+                <?php
+                $feedbacks = RatingService::$instance->getRatings($game->getId());
+                //var_dump($feedbacks);
+                foreach($feedbacks as $feedback){
+                    ?>
+                    <div class="feedback-single">                   
+                    <div class="row mt-4">
+                        <div class="col"><?= $feedback->getUser()->getUsername() ?></div> 
+                        <div class="col">
+                            <div class="rate" data-rate-value=<?= $feedback->getRating() ?>></div>
+                        </div>
+                    </div>
+                    <?php
+                    if($feedback->getText() != NULL){
+                        ?>
+                        <div><?= $feedback->getText() ?></div>
+                        </div>
+
+                        <?php                        
+                    }
+                }
+
+
+                ?>
+
+
+
+                </div>
+
+
+
+            </div>
+        </div>
+        <?php
+
+
     }
 }
 

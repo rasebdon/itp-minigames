@@ -14,6 +14,7 @@ require_once "models/Game.php";
 require_once "models/User.php";
 require_once "models/Picture.php";
 require_once "models/Post.php";
+require_once "models/Rating.php";
 
 require_once "utility/PictureUpload.class.php";
 require_once "utility/Validation.class.php";
@@ -24,6 +25,7 @@ require_once "services/FavoriteService.class.php";
 require_once "services/GameService.class.php";
 require_once "services/FrontPageService.class.php";
 require_once "services/ForumService.class.php";
+require_once "services/RatingService.class.php";
 
 require_once "utility/favoritelogic.php";
 
@@ -110,6 +112,7 @@ if ($showDebug) {
     <link rel="stylesheet" type="text/css" href="css/game.css">
     <link rel="stylesheet" type="text/css" href="css/gameUploadInterface.css"/>
     <link rel="stylesheet" type="text/css" href="css/forum.css">
+    <link rel="stylesheet" type="text/css" href="css/rating.css">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
  
@@ -117,6 +120,8 @@ if ($showDebug) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- IMPORT JS -->
     <script src="scripts/ts/compiled/Crop.js"></script>
+    <script src="scripts/js/rater.js"></script>
+
 </head>
 
 <body>
