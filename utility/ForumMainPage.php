@@ -4,6 +4,13 @@ if (isset($_GET['action'])) {
         //get an array of all games with forums   
         $games = GameService::$instance->getAllGames();
 
+        if($games == null) {
+            ?>
+            <h1 class="text-center mt-5">There are no forums yet! Check back later.</h1>
+            <?php
+            return;
+        }
+
         //display a banner for each game with link to game forum 
         foreach($games as $game){            
             ?>
