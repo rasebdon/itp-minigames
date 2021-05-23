@@ -15,8 +15,10 @@ class Game {
     private $verified;
     /** Array with all screenshot paths */
     private $screenshots;
+    /** Array with genres */
+    private $genres;
 
-    function __construct(int $id, string $title, User $author, string $description, array $plattforms, string $version, float $rating, array $screenshots, int $playCount, bool $verified)
+    function __construct(int $id, string $title, User $author, string $description, array $plattforms, string $version, float $rating, array $screenshots, int $playCount, bool $verified, array $genres = array())
     {
         $this->id = $id;
         $this->title = $title;
@@ -28,6 +30,7 @@ class Game {
         $this->screenshots = $screenshots;
         $this->playCount = $playCount;
         $this->verified = $verified;
+        $this->genres = $genres;
     }
 
     /**
@@ -135,5 +138,13 @@ class Game {
     public function isVerified()
     {
         return $this->verified;
+    }
+
+    /**
+     * Get the value of genres (array)
+     */ 
+    public function getGenres()
+    {
+        return $this->genres;
     }
 }

@@ -2,9 +2,9 @@
 /**
  * Class that manages the initial game upload
  */
-class GameUploadInterface {
+class GameEditInterface {
 
-    /** @var GameUploadInterface */
+    /** @var GameEditInterface */
     public static $instance;
 
     function __construct()
@@ -13,31 +13,28 @@ class GameUploadInterface {
             return;
      
         switch($_GET['action']) {
-            case "uploadGameInterface":
-                $this->showForm();
-                break;
-            case "uploadGame":
-                GameService::$instance->uploadGame();
+            case "editGameInterface":
+                if(isset($_GET['id']) && $_GET['id'] != null && isset($_SESSION['UserID']) && $_SESSION['UserID'] != null)
+                    $this->showForm(GameService::$instance->getGame($_GET['id']));
                 break;
         }
     }
 
-    function showForm() {
-        // HTML FORM
+    function showForm(Game $game) {
+        if($game == null || $_SESSION['UserID'] != $game->getAuthor()->getID()) 
+            return;
+        
+        // HTML EDIT FORM
         ?>
-            <h1 class="mb-5">Upload Game</h1>
-            <form method="post" enctype="multipart/form-data" action="index.php?action=uploadGame">
-                <div class="mb-3">
-                    <label for="game-title" class="form-label">Game Title</label>
-                    <input type="text" class="form-control" name="game-title" id="game-title" aria-describedby="game-title">
-                </div>
+            <h1 class="mb-5">Edit <?= $game->getTitle()?></h1>
+            <form method="post" enctype="multipart/form-data" action="index.php?action=editGame?id=<?=$game->getId()?>">
                 <div class="mb-3">
                     <label for="game-description" class="form-label">Description</label>
-                    <textarea type="text" class="form-control" name="game-description" id="game-description" aria-describedby="game-description"></textarea>
+                    <textarea type="text" class="form-control" name="game-description" id="game-description" aria-describedby="game-description"><?=$game->getDescription()?></textarea>
                 </div>
                 <div class="mb-3">
                     <label for="game-version" class="form-label">Version</label>
-                    <input type="text" class="form-control" name="game-version" id="game-version" aria-describedby="game-version">
+                    <input type="text" class="form-control" name="game-version" id="game-version" aria-describedby="game-version" value="<?=$game->getVersion()?>">
                 </div>
                 <div class="mb-3">
                     <label for="game-genres" class="form-label">Genre</label>
@@ -56,7 +53,7 @@ class GameUploadInterface {
                     </div>
                 </div>
                 <div class="mb-3">
-                    <h2>Upload Game as .zip or .rar file</h2>
+                    <h2>Upload new Game version as .zip or .rar file</h2>
                     <label for="game-file-windows" class="form-label">Windows</label>
                     <input class="form-control" type="file" id="game-file-windows" name="game-file-windows">
                     <label for="game-file-linux" class="form-label">Linux</label>
@@ -70,4 +67,4 @@ class GameUploadInterface {
     }    
 }
 
-GameUploadInterface::$instance = new GameUploadInterface();
+GameEditInterface::$instance = new GameEditInterface();
