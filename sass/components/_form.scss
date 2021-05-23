@@ -1,0 +1,50 @@
+.form {
+    display: block;
+    &__group:not(:last-child) {
+        margin-bottom: 0.5rem;
+        position: relative;
+    }
+
+    &__input {
+        margin-top: 4rem;
+        width: 100%;
+        display: block;
+        outline: none;
+        font-size: 1.5rem;
+        padding: 1.5rem 2rem;
+        border-radius: 2px;
+        border: none;
+
+        & ~ .form__separator {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background-image: linear-gradient(to right, $color-secondary, $color-tertiary);
+        }
+
+        &:focus ~ .form__separator {
+            width: 100%;
+            transition: 0.4s ease-in-out;
+        }
+    }
+
+    label {
+        color: $color-black;
+    }
+
+    &__label {
+        margin-left: 2rem;
+        display: block;
+        position: absolute;
+        top: -3rem;
+        transition: all 0.3s;
+    }
+
+    &__input:placeholder-shown ~ &__label {
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(4rem);
+    }
+}

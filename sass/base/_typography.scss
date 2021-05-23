@@ -6,6 +6,11 @@
 // font-family: 'Quicksand', sans-serif;
 // font-family: 'Maven Pro', sans-serif;
 
+@font-face {
+    font-family: FontAwesome;
+    src: url(../resources/fonts/FontAwesome5Free-Solid-900.otf) format("opentype");
+}
+
 body {
     font-family: "Quicksand", sans-serif;
     font-weight: 500;
@@ -18,10 +23,8 @@ body {
     margin-bottom: 6rem;
     text-transform: uppercase;
 
-    
-
     &__main {
-        animation: moveInBottom .5s ease-in;
+        animation: moveInBottom 0.5s ease-in;
         animation-fill-mode: backwards;
         display: block;
         font-size: 7rem;
@@ -40,7 +43,7 @@ body {
     }
 
     &__sub {
-        animation: moveInBottom .5s ease-in-out .5s;
+        animation: moveInBottom 0.5s ease-in-out 0.5s;
         animation-fill-mode: backwards;
         display: block;
         font-size: 3rem;
@@ -57,15 +60,18 @@ body {
     }
 }
 
-.heading-secondary{
-    
-    font-size: 2.7rem;
+.heading-secondary {
+    color: $color-tertiary;
+    font-size: 3.3rem;
     font-family: "Maven Pro", cursive;
-    letter-spacing: .3rem;
+    font-weight: 700;
+    letter-spacing: 0.2rem;
     text-transform: uppercase;
-    text-shadow: 0 0 .5rem rgba($color-black, 0.35);
-    transition: all .2s ease-out;
-    
+    transition: all 0.2s ease-out;
+}
+
+.form__label {
+    color: $color-black;
 }
 
 .text {
@@ -73,13 +79,9 @@ body {
     width: 100%;
     &-box {
         &--1 {
-            &:hover .heading-secondary{
-                text-shadow: 0px 0px 0 rgb(29,199,108),
-                         -1px 1px 0 rgb(4,174,83),
-                         -2px 2px  0 rgb(-21,149,58),
-                         -3px 3px 2px rgba(0,0,0,0.31),
-                         -3px 3px 1px rgba(0,0,0,0.5),
-                         0px 0px 2px rgba(0,0,0,.2);
+            &:hover .heading-secondary {
+                text-shadow: 0px 0px 0 rgb(29, 199, 108), -1px 1px 0 rgb(4, 174, 83), -2px 2px 0 rgb(-21, 149, 58),
+                    -3px 3px 2px rgba(0, 0, 0, 0.31), -3px 3px 1px rgba(0, 0, 0, 0.5), 0px 0px 2px rgba(0, 0, 0, 0.2);
                 transform: skewX(-12deg) scale(1.01) translate(3px);
             }
 
@@ -87,7 +89,7 @@ body {
                 transform: translateX(2.2rem) scale(1.03);
                 box-shadow: 0 0 1.5rem rgba($color-black, 0.25);
             }
-            transition: all .3s ease-out;
+            transition: all 0.3s ease-out;
             box-shadow: 0 0 1rem rgba($color-black, 0.25);
             border-radius: 2px;
             margin: 0 auto;
@@ -96,11 +98,11 @@ body {
             height: 20rem;
             width: 80rem;
             background-color: $color-grey-light;
-            
+
             p {
                 font-size: 1.8rem;
             }
-            &:not(:last-child){
+            &:not(:last-child) {
                 margin-bottom: 8rem;
             }
         }

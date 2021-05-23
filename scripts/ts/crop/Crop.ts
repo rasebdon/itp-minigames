@@ -440,7 +440,6 @@ class Crop {
         submit.disabled = true;
         submit.addEventListener("click", () => {
             const cropped = this.submitCropped();
-            document.body.append(cropped);
         });
         this.cropper = new Cropper(document.querySelector("#" + crop.id + " .crop__cropper")!);
         this.cropper.el.style.display = "none";

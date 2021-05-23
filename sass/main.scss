@@ -10,10 +10,14 @@
 @import "base/utilities";
 
 @import "components/genre";
+@import "components/checkbox";
+@import "components/button";
+@import "components/form";
 @import "components/card";
 
 @import "layout/demo-heading";
 @import "layout/demo-games";
 @import "layout/demo-text";
 
-@import "pages/test";
+@import "pages/register";
+@import "pages/login";

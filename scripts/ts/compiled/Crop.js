@@ -366,7 +366,6 @@ var Crop = /** @class */ (function () {
         submit.disabled = true;
         submit.addEventListener("click", function () {
             var cropped = _this.submitCropped();
-            document.body.append(cropped);
         });
         this.cropper = new Cropper(document.querySelector("#" + crop.id + " .crop__cropper"));
         this.cropper.el.style.display = "none";

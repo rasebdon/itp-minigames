@@ -1,0 +1,58 @@
+.login {
+    animation: moveInBottom 0.5s ease-out;
+    margin: 5rem auto 0 auto;
+    width: 70%;
+    @include respond(xxl) {
+        width: 70%;
+    }
+    @include respond(xl) {
+        width: 80%;
+    }
+    @include respond(md) {
+        width: 100%;
+    }
+    padding: 4rem;
+    background-color: $color-white;
+    background-image: linear-gradient(
+            100deg,
+            rgba(255, 255, 255, 0.8) 0%,
+            rgba(255, 255, 255, 0.8) 50%,
+            rgba(255, 255, 255, 0.1) 50%
+        ),
+        url(../resources/images/background/michael-marais-rURWNx7VndM-unsplash.jpg);
+    @include respond(xl) {
+        background-image: linear-gradient(
+                90deg,
+                rgba(255, 255, 255, 0.8) 0%,
+                rgba(255, 255, 255, 0.8) 50%,
+                rgba(255, 255, 255, 0.1) 50%
+            ),
+            url(../resources/images/background/michael-marais-rURWNx7VndM-unsplash.jpg);
+    }
+    @include respond(md) {
+        background-image: linear-gradient(rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0.75) 100%),
+            url(../resources/images/background/michael-marais-rURWNx7VndM-unsplash.jpg);
+    }
+    background-size: cover;
+    background-position: top;
+    border-radius: 2px;
+
+    &:hover .heading-secondary {
+        text-shadow: 0px 0px 0 $color-tertiary, -1px 1px 0 $color-primary, -2px 2px 0 $color-secondary,
+            -3px 3px 2px rgba(0, 0, 0, 0.31), -3px 3px 1px rgba(0, 0, 0, 0.5), 0px 0px 2px rgba(0, 0, 0, 0.2);
+        transform: skewX(-12deg) scale(1.01) translate(9px);
+    }
+
+    &__form {
+        width: 40%;
+        @include respond(xl) {
+            width: 45%;
+        }
+        @include respond(md) {
+            width: 100%;
+        }
+        .button {
+            margin-top: 3rem;
+        }
+    }
+}

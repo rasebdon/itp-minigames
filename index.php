@@ -111,6 +111,8 @@ if ($showDebug) {
     <link rel="stylesheet" type="text/css" href="css/gameUploadInterface.css"/>
     <link rel="stylesheet" type="text/css" href="css/forum.css">
 
+    <link rel="stylesheet" type="text/css" href="css/styleComp.css">
+
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
  
     <!-- JQUERY -->
