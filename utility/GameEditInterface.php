@@ -17,6 +17,15 @@ class GameEditInterface {
                 if(isset($_GET['id']) && $_GET['id'] != null && isset($_SESSION['UserID']) && $_SESSION['UserID'] != null)
                     $this->showForm(GameService::$instance->getGame($_GET['id']));
                 break;
+            case "editGame":
+                // Get game author
+                $rightToEdit = $_SESSION['UserID'] == GameService::$instance->getGame($_GET['id'])->getAuthor()->getId();               
+                if(isset($_GET['id']) && $_GET['id'] != null &&
+                isset($_SESSION['UserID']) && $_SESSION['UserID'] != null &&
+                $rightToEdit) {
+                    GameService::$instance->editGame();
+                }
+                break;
         }
     }
 
@@ -27,7 +36,7 @@ class GameEditInterface {
         // HTML EDIT FORM
         ?>
             <h1 class="mb-5">Edit <?= $game->getTitle()?></h1>
-            <form method="post" enctype="multipart/form-data" action="index.php?action=editGame?id=<?=$game->getId()?>">
+            <form method="post" enctype="multipart/form-data" action="index.php?action=editGame&id=<?=$game->getId()?>">
                 <div class="mb-3">
                     <label for="game-description" class="form-label">Description</label>
                     <textarea type="text" class="form-control" name="game-description" id="game-description" aria-describedby="game-description"><?=$game->getDescription()?></textarea>
@@ -44,9 +53,19 @@ class GameEditInterface {
                             <?php
                                 // Get genres from database and print selection
                                 $genres = GameService::$instance->getAllGenres();
-                                for ($i = 0; $i < sizeof($genres); $i++) { 
+                                $gamesGenres = $game->getGenres();
+
+                                for ($i = 0; $i < sizeof($genres); $i++) {
                                     $genre = $genres[$i];
-                                    echo '<li><input id="genre-' . $genre['Name'] . '" class="form-check-input" type="checkbox" name="game-genres[]" value="' . $genre['GenreID'] . '"><label  class="form-check-label ms-2" for="genre-' . $genre['Name'] . '">' . $genre['Name'] . '</label></li>';
+                                    $checked = false;
+
+                                    for ($j=0; $j < sizeof($gamesGenres); $j++) { 
+                                        if($gamesGenres[$j] == $genre['Name']) {
+                                            $checked = true;
+                                        }
+                                    }
+
+                                    echo '<li><input id="genre-' . $genre['Name'] . '" class="form-check-input" type="checkbox" name="game-genres[]" value="' . $genre['GenreID'] . '"' . ($checked ? 'checked' : '') . '><label  class="form-check-label ms-2" for="genre-' . $genre['Name'] . '">' . $genre['Name'] . '</label></li>';
                                 }
                             ?>
                         </ul>
@@ -61,7 +80,8 @@ class GameEditInterface {
                     <label for="game-file-mac" class="form-label">Mac OS</label>
                     <input class="form-control" type="file" id="game-file-mac" name="game-file-mac">
                 </div>
-                <button type="submit" class="btn btn-primary">Create</button>
+                <input type="hidden" name="game-id" value="<?=$game->getId()?>">
+                <button type="submit" class="btn btn-primary">Edit</button>
             </form>
         <?php
     }    

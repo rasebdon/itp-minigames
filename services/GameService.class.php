@@ -28,10 +28,12 @@ class GameService
             return $games;
 
         for ($i = 0; $i < sizeof($gamesData); $i++) {
-            $platforms = $this->getPlatforms($gamesData[$i]['GameID']);
+            $gameID = $gamesData[$i]['GameID'];
+            $platforms = $this->getPlatforms($gameID);
+            $genres = $this->getGameGenres($gameID);
 
             $games[$i] = new Game(
-                $gamesData[$i]['GameID'],
+                $gameID,
                 $gamesData[$i]['Name'],
                 $user,
                 $gamesData[$i]['Description'],
@@ -40,13 +42,31 @@ class GameService
                 $gamesData[$i]['Rating'] == null ? 0 : $gamesData[$i]['Rating'],
                 array(), // TODO !
                 $gamesData[$i]['PlayCount'],
-                $gamesData[$i]['Verified']
+                $gamesData[$i]['Verified'],
+                $genres
             );
         }
         return $games;
     }
 
-    function getGame($gameID) {
+    function getGameGenres(int $gameID) {
+        $this->db->query('SELECT *
+        FROM game_genre, genre
+        WHERE game_genre.FK_GameID = ?
+        AND genre.GenreID = game_genre.FK_GenreID', $gameID);
+        // Null reference catch -> Return empty array
+        if (!($genresData = $this->db->fetchAll()))
+            return null;
+
+        $genres = array();
+        for ($i=0; $i < sizeof($genresData); $i++) { 
+            $genres[$i] = $genresData[$i]["Name"];
+        }
+
+        return $genres;
+    }
+
+    function getGame(int $gameID) {
         $this->db->query(
             "SELECT *,
             (SELECT AVG(Rating) FROM rating WHERE rating.FK_GameID = GameID) as Rating
@@ -58,6 +78,7 @@ class GameService
         
         $user = UserService::$instance->getUser($gameData['FK_UserID']);
         $platforms = $this->getPlatforms($gameID);
+        $genres = $this->getGameGenres($gameID);
 
         return new Game(
             $gameData['GameID'],
@@ -69,7 +90,8 @@ class GameService
             $gameData['Rating'] == null ? 0 : $gameData['Rating'],
             array(), // TODO !
             $gameData['PlayCount'],
-            $gameData['Verified']
+            $gameData['Verified'],
+            $genres
         );
     }
     function genreNameToGameData(string $genre){
@@ -90,7 +112,13 @@ class GameService
             $gameData = $this->db->fetchAll();
         }
         else if($verified){
-            $this->db->query("SELECT * from game WHERE `Name` LIKE ? AND Verified = 1 ORDER BY GameID ASC", "%" . $title . "%");
+            $this->db->query("SELECT *,
+            (SELECT AVG(Rating) FROM rating WHERE rating.FK_GameID = GameID) as Rating
+            FROM game
+            WHERE `Name` LIKE ?
+            AND Verified = 1
+            ORDER BY GameID ASC", "%" . $title . "%");
+
             if (!($gameData = $this->db->fetchAll())){
                $gameData = $this->genreNameToGameData($title);
                /*Array returned from genreNameToGameData() looks like this
@@ -123,29 +151,39 @@ class GameService
         $gameObjs = array();
 
         for ($i = 0; $i < sizeof($gameData); $i++) {
-        $gameObjs[$i] = new Game(
-            $gameData[$i]['GameID'],
-            $gameData[$i]['Name'],
-            UserService::$instance->getUser($gameData[$i]['FK_UserID']),
-            $gameData[$i]['Description'],
-            array(),
-            $gameData[$i]['Version'],
-            0,
-            array(), 
-            0,
-            $gameData[$i]['Verified']
-        );
+            $gameID = $gameData[$i]['GameID'];
+            $platforms = $this->getPlatforms($gameID);
+            $genres = $this->getGameGenres($gameID);
+            $user = UserService::$instance->getUser($gameData[$i]['FK_UserID']);
+
+            $gameObjs[$i] = new Game(
+                $gameID,
+                $gameData[$i]['Name'],
+                $user,
+                $gameData[$i]['Description'],
+                $platforms,
+                $gameData[$i]['Version'],
+                $gameData[$i]['Rating'],
+                array(), 
+                $gameData[$i]['PlayCount'],
+                $gameData[$i]['Verified'],
+                $genres
+                
+            );
         }
         return $gameObjs; 
     }
 
     function getGames(int $offset, int $amount, bool $verified = true, bool $all = false) {
         if($all)
-            $this->db->query("SELECT * from game ORDER BY GameID ASC LIMIT ?, ?", $offset, $amount);
+            $this->db->query("SELECT *,
+            (SELECT AVG(Rating) FROM rating WHERE rating.FK_GameID = GameID) as Rating from game ORDER BY GameID ASC LIMIT ?, ?", $offset, $amount);
         else if($verified)
-            $this->db->query("SELECT * from game WHERE Verified = 1 ORDER BY GameID ASC LIMIT ?, ?", $offset, $amount);
+            $this->db->query("SELECT *,
+            (SELECT AVG(Rating) FROM rating WHERE rating.FK_GameID = GameID) as Rating from game WHERE Verified = 1 ORDER BY GameID ASC LIMIT ?, ?", $offset, $amount);
         else
-            $this->db->query("SELECT * from game WHERE Verified = 0 ORDER BY GameID ASC LIMIT ?, ?", $offset, $amount);
+            $this->db->query("SELECT *,
+            (SELECT AVG(Rating) FROM rating WHERE rating.FK_GameID = GameID) as Rating from game WHERE Verified = 0 ORDER BY GameID ASC LIMIT ?, ?", $offset, $amount);
     
         // Null reference catch
         if (!($gameData = $this->db->fetchAll()))
@@ -154,17 +192,23 @@ class GameService
         $gameObjs = array();
 
         for ($i = 0; $i < sizeof($gameData); $i++) {
+            $gameID = $gameData[$i]['GameID'];
+            $platforms = $this->getPlatforms($gameID);
+            $genres = $this->getGameGenres($gameID);
+            $user = UserService::$instance->getUser($gameData[$i]['FK_UserID']);
+
             $gameObjs[$i] = new Game(
-                $gameData[$i]['GameID'],
+                $gameID,
                 $gameData[$i]['Name'],
-                UserService::$instance->getUser($gameData[$i]['FK_UserID']),
+                $user,
                 $gameData[$i]['Description'],
-                array(),
+                $platforms,
                 $gameData[$i]['Version'],
-                0,
+                $gameData[$i]['Rating'],
                 array(), 
-                0,
-                $gameData[$i]['Verified']
+                $gameData[$i]['PlayCount'],
+                $gameData[$i]['Verified'],
+                $genres
             );
         }
         return $gameObjs; 
@@ -223,12 +267,18 @@ class GameService
     }
 
     public function getAllGames(bool $verified = true, bool $all = false){
-        if($all)
-            $this->db->query("SELECT * from game");
-        else if($verified)
-            $this->db->query("SELECT * from game WHERE Verified = 1");
-        else
-            $this->db->query("SELECT * from game WHERE Verified = 0");
+        if($all) {
+            $this->db->query("SELECT *,
+            (SELECT AVG(Rating) FROM rating WHERE rating.FK_GameID = GameID) as Rating from game");
+        
+        } else if($verified) {
+            $this->db->query("SELECT *,
+            (SELECT AVG(Rating) FROM rating WHERE rating.FK_GameID = GameID) as Rating from game WHERE Verified = 1");
+        
+        } else {
+            $this->db->query("SELECT *,
+            (SELECT AVG(Rating) FROM rating WHERE rating.FK_GameID = GameID) as Rating from game WHERE Verified = 0");
+        }
 
         // Null reference catch
         if (!($gameData = $this->db->fetchAll()))
@@ -237,40 +287,53 @@ class GameService
         $gameObjs = array();
 
         for ($i = 0; $i < sizeof($gameData); $i++) {
-            $gameObjs[$i] = new Game(
+            $gameID = $gameData[$i]['GameID'];
+            $platforms = $this->getPlatforms($gameID);
+            $genres = $this->getGameGenres($gameID);
+            $user = UserService::$instance->getUser($gameData[$i]['FK_UserID']);
 
-                $gameData[$i]['GameID'],
+            $gameObjs[$i] = new Game(
+                $gameID,
                 $gameData[$i]['Name'],
-                UserService::$instance->getUser($gameData[$i]['FK_UserID']),
+                $user,
                 $gameData[$i]['Description'],
-                array(),
+                $platforms,
                 $gameData[$i]['Version'],
-                0,
+                $gameData[$i]['Rating'],
                 array(), 
-                0,
-                $gameData[$i]['Verified']
+                $gameData[$i]['PlayCount'],
+                $gameData[$i]['Verified'],
+                $genres
             );
         }
         return $gameObjs; 
     }
 
     public function getGameByForumId(int $forumid) {   
-        $this->db->query("SELECT * from game WHERE FK_ForumID = ?", $forumid);
+        $this->db->query("SELECT *,
+        (SELECT AVG(Rating) FROM rating WHERE rating.FK_GameID = GameID) as Rating  from game WHERE FK_ForumID = ?", $forumid);
 
-        if (!($gameData = $this->db->fetchAll()))
+        if (!($gameData = $this->db->fetchArray()))
             return null;
 
+        $gameID = $gameData['GameID'];
+        $platforms = $this->getPlatforms($gameID);
+        $genres = $this->getGameGenres($gameID);
+        $user = UserService::$instance->getUser($gameData['FK_UserID']);
+
+
         $gameObj = new Game(
-            $gameData[0]['GameID'],
-            $gameData[0]['Name'],
-            UserService::$instance->getUser($gameData[0]['FK_UserID']),
-            $gameData[0]['Description'],
-            array(),
-            $gameData[0]['Version'],
-            0,
+            $gameData['GameID'],
+            $gameData['Name'],
+            $user,
+            $gameData['Description'],
+            $platforms,
+            $gameData['Version'],
+            $gameData['Rating'],
             array(), 
-            0,
-            $gameData[0]['Verified']
+            $gameData['PlayCount'],
+            $gameData['Verified'],
+            $genres
         );
 
         return $gameObj;
@@ -356,6 +419,67 @@ class GameService
             echo "Sorry, there was an error uploading your file.";
             exit();
         }
+    }
+
+    function editGame() {
+        $gameID = $_POST['game-id'];
+        $oldData = GameService::$instance->getGame($gameID);
+
+        // Need to check that if something is uploaded,
+        // that the version is newer
+
+        // Edit game
+        // Check for platforms
+        $windowsFile = $_FILES["game-file-windows"];
+        $linuxFile = $_FILES["game-file-linux"];
+        $macFile = $_FILES["game-file-mac"];
+
+        // Upload games
+        $platforms = array();
+
+        $sourcePath = "resources/games/" . str_replace(' ', '', $oldData->getTitle()) . "/";
+
+        if(isset($windowsFile) && $windowsFile != null && $windowsFile['error'] == 0) {
+            $this->uploadGameFile($windowsFile, $sourcePath, $_POST['game-version'], Platform::Windows());
+            $platforms[sizeof($platforms)] = Platform::Windows()->id;
+        }
+        if(isset($linuxFile) && $linuxFile != null && $linuxFile['error'] == 0) {
+            $this->uploadGameFile($linuxFile, $sourcePath, $_POST['game-version'], Platform::Linux());
+            $platforms[sizeof($platforms)] = Platform::Linux()->id;
+        }
+        if(isset($macFile) && $macFile != null && $macFile['error'] == 0) {
+            $this->uploadGameFile($macFile, $sourcePath, $_POST['game-version'], Platform::Mac());
+            $platforms[sizeof($platforms)] = Platform::Mac()->id;
+        }
+
+        $now = new DateTime('now');
+        $now = $now->format("Y-m-d H:m:s");
+
+        // Update game data
+        $this->db->query("UPDATE `game`
+        SET `Description` = ?, `Version` = ?, `UpdateDate` = ?
+        WHERE `game`.`GameID` = ?", $_POST['game-description'],
+        $_POST['game-version'], $now, $gameID);
+
+        // Update genres
+        if(isset($_POST['game-genres'])) {
+            // First delete genres
+            $this->db->query("DELETE FROM game_genre WHERE FK_GameID = ?", $gameID);
+            // Insert genres
+            $genres = $_POST['game-genres'];
+            for ($i=0; $i < sizeof($genres); $i++) { 
+                $this->db->query("INSERT INTO game_genre VALUES ( ? , ? )", $gameID, $genres[$i]);
+            }
+        }
+
+        // Check which games were uploaded and update platforms
+        // // Insert platforms
+        // for ($i=0; $i < sizeof($platforms); $i++) { 
+        //     $this->db->query("INSERT INTO game_platform VALUES ( ? , ? )", $gameID, $platforms[$i]);
+        // }
+
+        // Also auto redirect possible
+        echo "<h3>Game edit succesful!</h3><a class='btn btn-primary' href='index.php?action=viewGame&id=$gameID'>View Game</a>";
     }
 
     function uploadGame() {

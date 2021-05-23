@@ -18,7 +18,7 @@ class Game {
     /** Array with genres */
     private $genres;
 
-    function __construct(int $id, string $title, User $author, string $description, array $plattforms, string $version, float $rating, array $screenshots, int $playCount, bool $verified, array $genres = array())
+    function __construct(int $id, string $title, User $author, string $description, array $plattforms, string $version, $rating, array $screenshots, int $playCount, bool $verified, $genres)
     {
         $this->id = $id;
         $this->title = $title;
