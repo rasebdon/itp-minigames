@@ -7,15 +7,17 @@ class Comment
     private $FK_PostID;
     private $FK_UserID;
     private $Date;
+    private $upvotes;
 
 
-    public function __construct($CommentID, $Text, $FK_PostID, $FK_UserID, $Date)
+    public function __construct($CommentID, $Text, $FK_PostID, $FK_UserID, $Date, int $upvotes)
     {
         $this->CommentID = $CommentID;
         $this->Text = $Text;
         $this->FK_PostID = $FK_PostID;
         $this->FK_UserID = $FK_UserID;
         $this->Date = $Date;
+        $this->upvotes = $upvotes;
     }
 
     /**
@@ -56,5 +58,13 @@ class Comment
     public function getText()
     {
         return $this->Text;
+    }
+
+    /**
+     * Get the value of upvotes
+     */
+    public function getUpvotes()
+    {
+        return $this->upvotes;
     }
 }
