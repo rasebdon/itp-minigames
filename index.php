@@ -135,6 +135,7 @@ if ($showDebug) {
             // Normal user components
             if ($accessStrength >= UserType::User()->getAccessStrength()) {
         ?>
+                <a href="index.php?action=favorites" class="btn btn-success">View Favorites</a>
                 <a href="index.php?action=editProfile" class="btn btn-success">Edit Profile</a>
                 <a href="index.php?action=logout" class="btn btn-success">Logout</a>
             <?php

@@ -72,6 +72,8 @@ class GameService
             $gameData['Verified']
         );
     }
+
+    //TODO: Null reference catch
     function genreNameToGameData(string $genre){
         $this->db->query("SELECT GenreID from genre WHERE `Name` Like ?", "%" . $genre . "%");
         $genreID = $this->db->fetchArray();
@@ -81,8 +83,6 @@ class GameService
         return $result;
     }
 
-    
-  
     function searchGames(string $title, bool $verified = true, bool $all = false) {
         
         if($all){
@@ -431,6 +431,36 @@ class GameService
 
         // Also auto redirect possible
         echo "<h3>Game upload succesful!</h3><a class='btn btn-primary' href='index.php?action=viewGame&id=$gameID'>View Game</a>";
+    }
+
+    function getFavorites($userID){
+        $this->db->query("SELECT * FROM `favorite` 
+        LEFT JOIN game
+        ON favorite.FK_GameID = game.GameID
+        WHERE favorite.FK_UserID = ?", $userID);
+
+        // Null reference catch
+        if (!($gameData = $this->db->fetchAll()))
+        return null;
+
+        $gameObjs = array();
+
+        for ($i = 0; $i < sizeof($gameData); $i++) {
+            $gameObjs[$i] = new Game(
+
+                $gameData[$i]['GameID'],
+                $gameData[$i]['Name'],
+                UserService::$instance->getUser($gameData[$i]['FK_UserID']),
+                $gameData[$i]['Description'],
+                array(),
+                $gameData[$i]['Version'],
+                0,
+                array(), 
+                0,
+                $gameData[$i]['Verified']
+            );
+        }
+        return $gameObjs;
     }
 
     

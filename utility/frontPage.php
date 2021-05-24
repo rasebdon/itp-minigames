@@ -1,10 +1,12 @@
 <?php
-if (!isset($_GET['action'])) {
-
     if (isset($_GET['search'])) {
         $games = GameService::$instance->searchGames($_GET['search']);
 
-    } else if (!isset($_GET['action'])) {
+    }else if(isset($_GET['action']) && $_GET['action'] == "favorites"){
+
+        $games = GameService::$instance->getFavorites($_SESSION['UserID']);
+
+    }else if (!isset($_GET['action'])) {
         $games = GameService::$instance->getAllGames();
     }
     if ($games != null) {
@@ -91,6 +93,6 @@ if (!isset($_GET['action'])) {
             
     <?php
     }
-}
+
 
 
