@@ -46,16 +46,10 @@ class ForumService
     //get number of upvotes a specivic post has
     public function getUpvotesFromPost(int $postid)
     {
-        $result = 0;
+
         $this->db->query("SELECT COUNT(*) FROM vote_post WHERE FK_PostID = ? AND Vote = 1", $postid);
 
-        $result = $this->db->fetchAll()[0]['COUNT(*)'];
-
-        $this->db->query("SELECT COUNT(*) FROM vote_post WHERE FK_PostID = ? AND Vote = 0", $postid);
-
-        $result -= $this->db->fetchAll()[0]['COUNT(*)'];
-        return $result;
-
+        return $this->db->fetchAll()[0]['COUNT(*)'];
     }
 
     public function getNumberOfPosts(int $forumid)
@@ -119,11 +113,87 @@ class ForumService
                 $comment['Text'],
                 ForumService::$instance->getUpvotesFromPost($comment['FK_PostID']),
                 UserService::$instance->getUser($comment['FK_UserID']),
-                $comment['Date']
+                $comment['Date'],
+                ForumService::$instance->getUpvotesFromComment($comment['CommentID'])
             );
         }
 
         return $commentData;
+    }
+
+
+    public function deleteComment($commentID)
+    {
+        $this->db->query(
+            "DELETE FROM comment WHERE CommentID = ?",
+            $commentID
+        );
+    }
+
+    //////////// LIKES/DISLIKES - COMMENT ////////////
+
+    public function getUpvotesFromComment(int $commentid)
+    {
+        $result = 0;
+        $this->db->query("SELECT COUNT(*) FROM vote_comment WHERE FK_CommentID = ? AND Vote = 1", $commentid);
+
+        $result = $this->db->fetchAll()[0]['COUNT(*)'];
+
+        $this->db->query("SELECT COUNT(*) FROM vote_comment WHERE FK_CommentID = ? AND Vote = 0", $commentid);
+
+        $result -= $this->db->fetchAll()[0]['COUNT(*)'];
+        return $result;
+    }
+
+    public function isCommentRated($commentid, $userid, $rating)
+    {
+
+        $this->db->query(
+            "SELECT * from vote_comment WHERE FK_UserID = ? AND FK_CommentID = ? AND Vote = ?",
+            $userid,
+            $commentid,
+            $rating
+        );
+        $data = $this->db->fetchAll();
+        if (empty($data)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public function toggleLikeComment($commentid, $userid)
+    {
+        if (ForumService::$instance->isCommentRated($commentid, $userid, 1)) {
+            $this->db->query(
+                "DELETE FROM vote_comment WHERE FK_UserID = ? AND FK_CommentID = ?",
+                $userid,
+                $commentid
+            );
+        } else {
+            $this->db->query(
+                "REPLACE INTO vote_comment (FK_UserID, FK_CommentID, Vote) VALUES (?, ?, 1)",
+                $userid,
+                $commentid
+            );
+        }
+    }
+
+    public function toggleDislikeComment($commentid, $userid)
+    {
+        if (ForumService::$instance->isCommentRated($commentid, $userid, 0)) {
+            $this->db->query(
+                "DELETE FROM vote_comment WHERE FK_UserID = ? AND FK_CommentID = ?",
+                $userid,
+                $commentid
+            );
+        } else {
+            $this->db->query(
+                "REPLACE INTO vote_comment (FK_UserID, FK_CommentID, Vote) VALUES (?, ?, 0)",
+                $userid,
+                $commentid
+            );
+        }
     }
 }
 
