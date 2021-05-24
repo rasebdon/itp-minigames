@@ -46,10 +46,16 @@ class ForumService
     //get number of upvotes a specivic post has
     public function getUpvotesFromPost(int $postid)
     {
-
+        $result = 0;
         $this->db->query("SELECT COUNT(*) FROM vote_post WHERE FK_PostID = ? AND Vote = 1", $postid);
 
-        return $this->db->fetchAll()[0]['COUNT(*)'];
+        $result = $this->db->fetchAll()[0]['COUNT(*)'];
+
+        $this->db->query("SELECT COUNT(*) FROM vote_post WHERE FK_PostID = ? AND Vote = 0", $postid);
+
+        $result -= $this->db->fetchAll()[0]['COUNT(*)'];
+        return $result;
+
     }
 
     public function getNumberOfPosts(int $forumid)
