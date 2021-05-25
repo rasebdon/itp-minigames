@@ -42,7 +42,7 @@ class PostRenderer
             ForumService::$instance->insertComment($commentObj);
         }
         //var_dump($post);
-        $allComment = ForumService::$instance->getComments($post->getId());
+
         //var_dump($allComment);
         if (isset($_POST['DeleteComment'])) {
 
@@ -56,6 +56,7 @@ class PostRenderer
         if (isset($_POST['ToggleCommentDislike'])) {
             ForumService::$instance->toggleDislikeComment($_POST['ToggleCommentDislike'], $_SESSION['UserID']);
         }
+        $allComment = ForumService::$instance->getComments($post->getId());
 
 
 ?>
