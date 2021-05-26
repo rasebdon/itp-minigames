@@ -106,15 +106,14 @@ if ($showDebug) {
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="css/userAdministration.css">
-    <link rel="stylesheet" type="text/css" href="css/crop.css" />
     <link rel="stylesheet" type="text/css" href="css/game.css">
-    <link rel="stylesheet" type="text/css" href="css/gameUploadInterface.css"/>
+    <link rel="stylesheet" type="text/css" href="css/gameUploadInterface.css" />
     <link rel="stylesheet" type="text/css" href="css/forum.css">
 
     <link rel="stylesheet" type="text/css" href="css/styleComp.css">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
- 
+
     <!-- JQUERY -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- IMPORT JS -->
@@ -122,7 +121,7 @@ if ($showDebug) {
 </head>
 
 <body>
-  
+
     <nav class="navbar navbar-dark bg-dark">
 
         <a href="index.php" class="btn btn-success">View Front Page</a>
@@ -150,9 +149,9 @@ if ($showDebug) {
             }
             // Admin components
             if ($accessStrength >= UserType::Admin()->getAccessStrength()) {
-            ?> 
-            <a href="index.php?action=showUsers&amount=20&offset=0" class="btn btn-success">User List</a>
-            <a href="index.php?action=listGamesToVerify&amount=20&offset=0" class="btn btn-success">Game Verification List</a>
+            ?>
+                <a href="index.php?action=showUsers&amount=20&offset=0" class="btn btn-success">User List</a>
+                <a href="index.php?action=listGamesToVerify&amount=20&offset=0" class="btn btn-success">Game Verification List</a>
             <?php
             }
         } else {
@@ -195,6 +194,7 @@ if ($showDebug) {
 
     <!-- Main container -->
     <div class="container">
+
         <?php
         require_once "forms/formHandler.php";
 

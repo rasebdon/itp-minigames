@@ -22,3 +22,11 @@
         box-shadow: 0 0 .3rem rgba($color: #000000, $alpha: .3);
     }
 }
+
+a.button {
+    text-decoration: none;
+    text-align: center;
+    &:hover {
+        color: inherit;
+    }
+}

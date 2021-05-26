@@ -3,7 +3,6 @@ if (!isset($_GET['action'])) {
 
     if (isset($_GET['search'])) {
         $games = GameService::$instance->searchGames($_GET['search']);
-
     } else if (!isset($_GET['action'])) {
         $games = GameService::$instance->getAllGames();
     }
@@ -11,86 +10,109 @@ if (!isset($_GET['action'])) {
         //--HTML--
 ?>
         <h1 class="headerfrontPage text-center shadow p-3 mb-5 bg-body rounded text-primary">ITP-Minigames</h1>
-        <div class="container border gamePreviewContainer">
-            <!--Note: These will be several rows with several Items -->
-            <div class="row gamePreviewRow">
+        <!--Note: These will be several rows with several Items -->
+        <div class="row">
+            <?php
+            foreach ($games as $game) {
+            ?>
+                <div class="col-12 col-md-6 col-xxl-4">
+                    <div class="game-card" id="gameID">
+                        <div class="game-card__side game-card__side--front gradient-primary">
+                            <div class="game-card__image">
+                                <img class="game-card__image--default-content" src="<?= $game->getFirstScreenshot() ?>" alt="image">
+                            </div>
+                            <div class="game-card__info">
+                                <h4 class="game-card__title">
+                                    <?= $game->getTitle() ?>
+                                </h4>
+                                <h5 class="game-card__developer">
+                                    <?= $game->getAuthor()->getUsername() ?>
+                                </h5>
+                                <div class="game-card__platforms">
+                                    <?php
+                                    if ($game->hasWindows()) echo '<i class="platform-icon fa fa-windows fa-lg" aria-hidden="true"></i>';
+                                    if ($game->hasLinux()) echo '<i class="platform-icon fa fa-linux fa-lg" aria-hidden="true"></i>';
+                                    if ($game->hasMac()) echo '<i class="platform-icon fa fa-apple fa-lg" aria-hidden="true"></i>';
+                                    ?>
+                                </div>
+                                <div class="game-card__rating">
+                                    <?php
+                                    for ($i = 0; $i < 5; $i++) {
+                                        echo '<i class="fa fa-star';
+                                        if ($i < (int)$game->getRating())
+                                            echo ' checked';
+                                        echo '"></i>';
+                                    }
+                                    ?>
+                                </div>
+                                <div class="game-card__genres">
+                                    <?php
 
-                <?php
-
-                foreach ($games as $game) {
-                    $genres = FrontPageService::$instance->getGenresToGame($game->getID());
-                    /*To-Do :
-                    #TAG's
-                    #Link to Author
-                    */
-                    echo '<div class="col-3 border game-display mt-2 mb-2" >
-                    <div class="sm-3 mb-2">
-                        <h5 class="m-0">
-
-                            <a href="index.php?action=viewGame&id=' . $game->getId() . '" class="d-inline-block">' . $game->getTitle() . '</a>
-
-                            <span class="d-inline-block game-version">
-                                ' . $game->getVersion() . '
-                            </span>
-                        </h5>
-                    </div>
-                    <div class="row">    
-                        <div class="col-6">
-                            
-                            <span class="author">Author: ' . $game->getAuthor()->getUsername() . '</span>
-                        </div>
-                        <div class="col-6 pb-1">
-                        ';
-
-                    for ($i = 0; $i < 5; $i++) {
-                        echo '<span class="fa fa-star';
-                        if ($i < (int)$game->getRating())
-                            echo ' checked';
-                        echo '"></span>';
-                    }
-                    echo '<span class="rating">';
-                    printf("%.2f/5", $game->getRating());
-                    echo '</span>
-                        </div>
-                    </div>
-                    <div class="col-12 border-top border-bottom pb-3 pt-3 screenshots">
-                        <!-- SCREENSHOTS -->
-                        <div class="col-12  mt-1 mb-1 ">
-                            <div class="thumbnail-container">
-                                
-
-                                <img src="' . $game->getFirstScreenshot() . '" alt="Game Preview not loaded" class="img-fluid max-width: 100%">
-
-                            
+                                    if (($genres = GameService::$instance->getGameGenres($game->getID())) != null) {
+                                        echo '<ul>';
+                                        foreach ($genres as $genre) {
+                                            echo '<li class="genre">' . $genre . '</li>';
+                                        }
+                                        echo '</ul>';
+                                    }
+                                    ?>
+                                </div>
                             </div>
                         </div>
+                        <div class="game-card__side game-card__side--back gradient-primary--reverse">
+                            <div id="carouselExampleFade" data-bs-ride="false" class="carousel slide carousel-fade game-card__carousel" data-bs-ride="carousel">
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active">
+                                        <img class="carousel-img" src="https://images.unsplash.com/photo-1620842934770-850803ad3d31?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=1080&ixlib=rb-1.2.1&q=80&w=1920" class="d-block w-100" alt="...">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img class="carousel-img" src="https://images.unsplash.com/photo-1621431901798-21031499dd3e?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=1080&ixlib=rb-1.2.1&q=80&w=1920" class="d-block w-100" alt="...">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img class="carousel-img" src="https://images.unsplash.com/photo-1620831041692-1b82e0e96a7f?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=1080&ixlib=rb-1.2.1&q=80&w=1920" class="d-block w-100" alt="...">
+                                    </div>
+                                </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
+
+
+                            <a href="index.php?action=viewGame&id=<?= $game->getId() ?>" class="button button--primary"><span>Visit Page</span><i class="fa fa-arrow-right" aria-hidden="true"></i> </a>
+
+                            <!-- <div class="game-card__image">
+                    <img class="game-card__image--default-content" src="https://news.xbox.com/de-de/wp-content/uploads/sites/3/2020/04/Minecraft-RTX-Beta_Hero.jpg?fit=1920%2C1080" alt="image">
+                </div> -->
+                        </div>
                     </div>
-                    <div>
-                        <span class="genre">
-                            Genre:';
-                            if($genres != null){
-                                foreach($genres as &$genre){
-                                    echo '<span> '.$genre.',</span>';
-                                    
-                                }
-                            }else{
-                                echo '<span>No Genres added</span>';
-                            }
-                        echo'
-                        </span>
-                    </div>
-                </div>';
-                }
-                unset($game);
-                ?>
-            </div>
-        <?php
-    } else {
-        ?>
-            <h1 class="headerfrontPage text-center shadow p-3 mb-5 bg-body rounded text-primary">No Games Found</h1>
-            
+                    <script>
+                        const gameCard = document.querySelector("#gameID");
+                        const thisCarousel = document.querySelector("#carouselExampleFade");
+                        const carouselId = new bootstrap.Carousel(thisCarousel, {
+                            interval: 2500
+                        })
+                        gameCard.addEventListener("mouseover", function(e) {
+                            carouselId.cycle();
+                        })
+                        gameCard.addEventListener("mouseout", function(e) {
+                            carouselId.pause();
+                        })
+                    </script>
+                </div>
+            <?php
+            }
+            ?>
+        </div>
     <?php
+    } else {
+    ?>
+        <h1 class="headerfrontPage text-center shadow p-3 mb-5 bg-body rounded text-primary">No Games Found</h1>
+
+<?php
     }
 }
-
-

@@ -48,3 +48,27 @@
         transform: translateY(4rem);
     }
 }
+
+.file {
+    display: none;
+    &__label {
+        width: fit-content;
+        color: white;
+        font-weight: 600;
+        letter-spacing: 0.2rem;
+        padding: 1rem 3rem;
+        display: block;
+        font-size: 1.5rem;
+        border: none;
+        border-radius: 1px;
+        transition: all 0.25s ease-in-out;
+        background-color: $color-tertiary;
+        border-bottom: 3px solid $color-primary;
+
+        &:hover {
+            cursor: pointer;
+            transform: scale(1.05);
+            box-shadow: 0 0 .3rem rgba($color: #000000, $alpha: .3);
+        }
+    }
+}

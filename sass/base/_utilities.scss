@@ -17,4 +17,14 @@
     &-yellow {
         background-image: linear-gradient(to right, $color-yellow-dark, $color-yellow-light);
     }
+    &-primary {
+        background-image: linear-gradient(to right, $color-secondary, $color-tertiary);
+    }
+    &-primary--reverse {
+        background-image: linear-gradient(to left, $color-secondary, $color-tertiary);
+    }
+}
+
+.flex {
+    display: flex !important;
 }

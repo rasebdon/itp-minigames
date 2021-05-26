@@ -70,6 +70,15 @@ body {
     transition: all 0.2s ease-out;
 }
 
+.heading-tertiary {
+    color: $color-secondary;
+    font-size: 2.4rem;
+    font-family: "Maven Pro", cursive;
+    font-weight: 600;
+    letter-spacing: 0.12rem;
+    text-transform: uppercase;
+}
+
 .form__label {
     color: $color-black;
 }
@@ -89,6 +98,7 @@ body {
                 transform: translateX(2.2rem) scale(1.03);
                 box-shadow: 0 0 1.5rem rgba($color-black, 0.25);
             }
+            
             transition: all 0.3s ease-out;
             box-shadow: 0 0 1rem rgba($color-black, 0.25);
             border-radius: 2px;
