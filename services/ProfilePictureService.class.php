@@ -1,7 +1,7 @@
 <?php
 class ProfilePictureService
 {
-    /** @var UserService  */
+    /** @var ProfilePictureService  */
     public static $instance;
     /** @var Database  */
     protected $db;

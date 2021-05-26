@@ -22,7 +22,6 @@ require_once "services/UserService.class.php";
 require_once "services/ProfilePictureService.class.php";
 require_once "services/FavoriteService.class.php";
 require_once "services/GameService.class.php";
-require_once "services/FrontPageService.class.php";
 require_once "services/ForumService.class.php";
 
 require_once "utility/favoritelogic.php";
