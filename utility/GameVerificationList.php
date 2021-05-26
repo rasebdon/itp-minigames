@@ -7,12 +7,12 @@ class GameVerificationList {
     function __construct()
     {
         // Check for delete game
-        if(isset($_GET['delete'])) {
-            GameService::$instance->deleteGame($_GET['delete']);
+        if(isset($_GET['deleteGame'])) {
+            GameService::$instance->deleteGame($_GET['deleteGame']);
         }
         // Check for verify game
-        if(isset($_GET['verify'])) {
-            GameService::$instance->verifyGame($_GET['verify']);
+        if(isset($_GET['verifyGame'])) {
+            GameService::$instance->verifyGame($_GET['verifyGame']);
         }
         // Route GET variables
         if(!isset($_GET['action']))
@@ -80,10 +80,10 @@ class GameVerificationList {
                 <div class="col-2"><a href="<?= "?action=showUser&id=" . $game->getAuthor()->getId() ?>"><?= $game->getAuthor()->getUsername()?></a></div>
                 <div class="col-2"><?= $game->getVersion()?></div>
                 <div class="col-1">
-                    <a href="<?= "?action=listGamesToVerify&amount=$amount&offset=$offset&delete=" . $game->getId() ?>" class="btn btn-danger">X</a>
+                    <a href="<?= "?action=listGamesToVerify&amount=$amount&offset=$offset&deleteGame=" . $game->getId() ?>" class="btn btn-danger">X</a>
                 </div>
                 <div class="col-1">
-                    <a href="<?= "?action=listGamesToVerify&amount=$amount&offset=$offset&verify=" . $game->getId() ?>" class="btn btn-success">&#10003;</a>
+                    <a href="<?= "?action=listGamesToVerify&amount=$amount&offset=$offset&verifyGame=" . $game->getId() ?>" class="btn btn-success">&#10003;</a>
                 </div>
                 <div class="col-1">
                     <a href="?action=viewGame&id=<?=$game->getId()?>" class="btn btn-primary"><i class="bi bi-search"></i></a>
@@ -191,10 +191,10 @@ class GameVerificationList {
                 <div class="col-2"><a href="<?= "?action=showUser&id=" . $game->getAuthor()->getId() ?>"><?= $game->getAuthor()->getUsername()?></a></div>
                 <div class="col-2"><?= $game->getVersion()?></div>
                 <div class="col-1">
-                    <a href="<?= "?action=listGamesToVerify&delete=" . $game->getId() ?>" class="btn btn-danger">X</a>
+                    <a href="<?= "?action=listGamesToVerify&deleteGame=" . $game->getId() ?>" class="btn btn-danger">X</a>
                 </div>
                 <div class="col-1">
-                    <a href="<?= "?action=listGamesToVerify&verify=" . $game->getId() ?>" class="btn btn-success">&#10003;</a>
+                    <a href="<?= "?action=listGamesToVerify&verifyGame=" . $game->getId() ?>" class="btn btn-success">&#10003;</a>
                 </div>
                 <div class="col-1">
                     <a href="?action=viewGame&id=<?=$game->getId()?>" class="btn btn-primary"><i class="bi bi-search"></i></a>
