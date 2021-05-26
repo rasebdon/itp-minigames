@@ -61,7 +61,8 @@ class GameService
             $gameData['Rating'] == null ? 0 : $gameData['Rating'],
             array(), // TODO !
             $gameData['PlayCount'],
-            $gameData['Verified']
+            $gameData['Verified'],
+            $genres
         );
     }
 
@@ -307,8 +308,68 @@ class GameService
         }
     }
 
-    function uploadGame()
-    {
+    function editGame() {
+        $gameID = $_POST['game-id'];
+        $oldData = GameService::$instance->getGame($gameID);
+
+        // Need to check that if something is uploaded,
+        // that the version is newer
+
+        // Edit game
+        // Check for platforms
+        $windowsFile = $_FILES["game-file-windows"];
+        $linuxFile = $_FILES["game-file-linux"];
+        $macFile = $_FILES["game-file-mac"];
+
+        // Upload games
+        $platforms = array();
+
+        $sourcePath = "resources/games/" . str_replace(' ', '', $oldData->getTitle()) . "/";
+
+        if(isset($windowsFile) && $windowsFile != null && $windowsFile['error'] == 0) {
+            $this->uploadGameFile($windowsFile, $sourcePath, $_POST['game-version'], Platform::Windows());
+            $platforms[sizeof($platforms)] = Platform::Windows()->id;
+        }
+        if(isset($linuxFile) && $linuxFile != null && $linuxFile['error'] == 0) {
+            $this->uploadGameFile($linuxFile, $sourcePath, $_POST['game-version'], Platform::Linux());
+            $platforms[sizeof($platforms)] = Platform::Linux()->id;
+        }
+        if(isset($macFile) && $macFile != null && $macFile['error'] == 0) {
+            $this->uploadGameFile($macFile, $sourcePath, $_POST['game-version'], Platform::Mac());
+            $platforms[sizeof($platforms)] = Platform::Mac()->id;
+        }
+
+        $now = new DateTime('now');
+        $now = $now->format("Y-m-d H:m:s");
+
+        // Update game data
+        $this->db->query("UPDATE `game`
+        SET `Description` = ?, `Version` = ?, `UpdateDate` = ?
+        WHERE `game`.`GameID` = ?", $_POST['game-description'],
+        $_POST['game-version'], $now, $gameID);
+
+        // Update genres
+        if(isset($_POST['game-genres'])) {
+            // First delete genres
+            $this->db->query("DELETE FROM game_genre WHERE FK_GameID = ?", $gameID);
+            // Insert genres
+            $genres = $_POST['game-genres'];
+            for ($i=0; $i < sizeof($genres); $i++) { 
+                $this->db->query("INSERT INTO game_genre VALUES ( ? , ? )", $gameID, $genres[$i]);
+            }
+        }
+
+        // Check which games were uploaded and update platforms
+        // // Insert platforms
+        // for ($i=0; $i < sizeof($platforms); $i++) { 
+        //     $this->db->query("INSERT INTO game_platform VALUES ( ? , ? )", $gameID, $platforms[$i]);
+        // }
+
+        // Also auto redirect possible
+        echo "<h3>Game edit succesful!</h3><a class='btn btn-primary' href='index.php?action=viewGame&id=$gameID'>View Game</a>";
+    }
+
+    function uploadGame() {
         $userID = $_SESSION['UserID'];
 
         // Upload game

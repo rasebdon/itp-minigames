@@ -217,6 +217,7 @@ if ($showDebug) {
             // Game creator components
             if ($accessStrength >= UserType::Creator()->getAccessStrength()) {
                 require_once "utility/GameUploadInterface.php";
+                require_once "utility/GameEditInterface.php";
                 require_once "utility/GameList.php";
             }
             // Admin components
