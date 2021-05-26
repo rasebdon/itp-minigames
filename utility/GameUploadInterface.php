@@ -1,6 +1,6 @@
 <?php
 /**
- * Class that holds game rendering functions
+ * Class that manages the initial game upload
  */
 class GameUploadInterface {
 
