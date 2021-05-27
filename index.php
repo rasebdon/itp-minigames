@@ -14,14 +14,12 @@ require_once "models/Game.php";
 require_once "models/User.php";
 require_once "models/Picture.php";
 require_once "models/Post.php";
-
 require_once "models/Comment.class.php";
-
 require_once "models/Rating.php";
 
 require_once "utility/PictureUpload.class.php";
 require_once "utility/Validation.class.php";
-
+require_once "utility/favoritelogic.php";
 
 require_once "services/UserService.class.php";
 require_once "services/ProfilePictureService.class.php";
@@ -30,17 +28,8 @@ require_once "services/GameService.class.php";
 require_once "services/ForumService.class.php";
 require_once "services/RatingService.class.php";
 
-
-// GET/SET session
-session_set_cookie_params(0, "/", $_SERVER['HTTP_HOST'], (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'on'), true);
-session_start();
-
-require_once "utility/favoritelogic.php";
-
-
 //BOOL FOR DEBUGGIG MODE
 $showDebug = false;
-
 
 // GET LOGIN STATUS
 $loggedIn = false;
