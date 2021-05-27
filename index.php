@@ -14,10 +14,12 @@ require_once "models/Game.php";
 require_once "models/User.php";
 require_once "models/Picture.php";
 require_once "models/Post.php";
+require_once "models/Comment.class.php";
 require_once "models/Rating.php";
 
 require_once "utility/PictureUpload.class.php";
 require_once "utility/Validation.class.php";
+require_once "utility/favoritelogic.php";
 
 require_once "services/UserService.class.php";
 require_once "services/ProfilePictureService.class.php";
@@ -26,11 +28,8 @@ require_once "services/GameService.class.php";
 require_once "services/ForumService.class.php";
 require_once "services/RatingService.class.php";
 
-require_once "utility/favoritelogic.php";
-
 //BOOL FOR DEBUGGIG MODE
 $showDebug = false;
-
 
 // GET LOGIN STATUS
 $loggedIn = false;
@@ -114,7 +113,17 @@ if ($showDebug) {
     <link rel="stylesheet" type="text/css" href="css/rating.css">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
- 
+
+
+
+    <link rel="stylesheet" type="text/css" href="css/userAdministration.css" />
+    <link rel="stylesheet" type="text/css" href="css/game.css" />
+    <link rel="stylesheet" type="text/css" href="css/gameUploadInterface.css" />
+
+
+
+    <!-- IMPORT JS -->
+
     <!-- JQUERY -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- IMPORT JS -->
@@ -210,6 +219,7 @@ if ($showDebug) {
 
         //make this for users only, this is public for debugg only
         require_once "utility/ForumMainPage.php";
+        require_once "utility/postRenderer.php";
 
 
         // Load logged in components

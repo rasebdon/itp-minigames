@@ -22,6 +22,7 @@ class GameService
             WHERE FK_UserID = ?;",
             $userID
         );
+      
         $gamesData = $this->db->fetchAll();
 
         return $this->getGameArrayFromData($gamesData);
@@ -36,6 +37,7 @@ class GameService
             WHERE GameID = ?;",
             $gameID
         );
+
         $gameData = $this->db->fetchArray();
 
         return GameService::$instance->getGameFromData($gameData);
