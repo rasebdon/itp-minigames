@@ -22,6 +22,7 @@ class UserService
             $user['Username'],
             $user['FirstName'],
             $user['LastName'],
+            $user['FK_PictureID'],
             array(),
             new UserType($user['Usertype'])
         );
@@ -41,6 +42,7 @@ class UserService
             $user['Username'],
             $user['FirstName'],
             $user['LastName'],
+            $user['FK_PictureID'],
             array(),
             new UserType($user['Usertype'])
         );
@@ -63,6 +65,7 @@ class UserService
                 $userData[$i]['Username'],
                 $userData[$i]['FirstName'],
                 $userData[$i]['LastName'],
+                $userData[$i]['FK_PictureID'],
                 array(),
                 new UserType($userData[$i]['Usertype'])
             );
@@ -85,6 +88,7 @@ class UserService
                 $userData[$i]['Username'],
                 $userData[$i]['FirstName'],
                 $userData[$i]['LastName'],
+                $userData[$i]['FK_PictureID'],
                 array(),
                 new UserType($userData[$i]['Usertype'])
             );
@@ -103,6 +107,7 @@ class UserService
             $userArray['Username'],
             $userArray['FirstName'],
             $userArray['LastName'],
+            $userArray['FK_PictureID'],
             array(),
             new UserType($userArray['Usertype'])
         );
@@ -125,24 +130,47 @@ class UserService
         $this->db->query("DELETE FROM user WHERE UserID = ?", $uid);
     }
 
+    // returns inserted id to auto login after registration
     public function insertUserData($userData)
     {
+        $this->db->query("SELECT * FROM picture WHERE SourcePath LIKE 'resources/profilePictures/default%'");
+        $defaultPictureID = $this->db->fetchArray()['PictureID'];
+
         $this->db->query(
             "INSERT INTO user 
         (FirstName, LastName, Username, Email, Usertype, Password, SessionID, FK_PictureID)
-         VALUES (?, ?, ?, ?, 'user', ?, ?, 1)",
+         VALUES (?, ?, ?, ?, 'user', ?, ?, ?)",
             $userData['FirstName'],
             $userData['LastName'],
             $userData['Username'],
             $userData['Email'],
             password_hash($userData['Password'], PASSWORD_DEFAULT),
-            session_id() . time()
+            session_id() . time(),
+            $defaultPictureID
         );
+
+        return $this->db->lastInsertID();
     }
 
     public function updateSessionID($sessionID, $userID)
     {
         $this->db->query("UPDATE user SET SessionID = ? WHERE UserID = ?", $sessionID, $userID);
+    }
+
+    public function updateProfileData($userData, $uid)
+    {
+        $this->db->query(
+            "UPDATE user SET FirstName = ?, LastName = ?, Username = ? WHERE UserID = ?",
+            $userData['FirstName'],
+            $userData['LastName'],
+            $userData['Username'],
+            $uid
+        );
+    }
+
+    public function updatePassword($password, $uid)
+    {
+        $this->db->query("UPDATE user SET Password = ? WHERE UserID = ?", password_hash($password, PASSWORD_DEFAULT), $uid);
     }
 }
 

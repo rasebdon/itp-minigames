@@ -4,7 +4,7 @@
  */
 class Game {
     private $id;
-    private $name;
+    private $title;
     private $author;
     private $description;
     /** Associative bool array with keys: `windows`, `linux`, `mac` */
@@ -12,13 +12,16 @@ class Game {
     private $version;
     private $rating;
     private $playCount;
+    private $verified;
     /** Array with all screenshot paths */
     private $screenshots;
+    /** Array with genres */
+    private $genres;
 
-    function __construct(int $id, string $name, User $author, string $description, array $plattforms, string $version, float $rating, array $screenshots, int $playCount)
+    function __construct(int $id, string $title, User $author, string $description, array $plattforms, string $version, $rating, array $screenshots, int $playCount, bool $verified, $genres)
     {
         $this->id = $id;
-        $this->name = $name;
+        $this->title = $title;
         $this->author = $author;
         $this->description = $description;
         $this->plattforms = $plattforms;
@@ -26,6 +29,8 @@ class Game {
         $this->rating = $rating;
         $this->screenshots = $screenshots;
         $this->playCount = $playCount;
+        $this->verified = $verified;
+        $this->genres = $genres;
     }
 
     /**
@@ -37,11 +42,11 @@ class Game {
     }
 
     /**
-     * Get the value of name
+     * Get the value of title
      */ 
-    public function getName()
+    public function getTitle()
     {
-        return $this->name;
+        return $this->title;
     }
 
     /**
@@ -81,7 +86,7 @@ class Game {
      */ 
     public function hasMac()
     {
-        return isset($this->plattforms['Mac']) && $this->plattforms['Mac'] === true;
+        return isset($this->plattforms['Mac OS']) && $this->plattforms['Mac OS'] === true;
     }
 
     /**
@@ -125,5 +130,21 @@ class Game {
     public function getPlayCount()
     {
         return $this->playCount;
+    }
+
+    /**
+     * Get the value of verified
+     */ 
+    public function isVerified()
+    {
+        return $this->verified;
+    }
+
+    /**
+     * Get the value of genres (array)
+     */ 
+    public function getGenres()
+    {
+        return $this->genres;
     }
 }

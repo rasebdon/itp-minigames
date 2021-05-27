@@ -4,6 +4,7 @@
 
 class Database
 {
+    /** @var Database */
     public static $instance;
 	protected $connection;
 	protected $query;
@@ -13,11 +14,18 @@ class Database
 
 	public function __construct($dbhost = 'localhost', $dbuser = 'root', $dbpass = '', $dbname = '', $charset = 'utf8')
 	{
-		$this->connection = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
-		if ($this->connection->connect_error) {
-			$this->error('Failed to connect to MySQL - ' . $this->connection->connect_error);
-		}
-		$this->connection->set_charset($charset);
+        $this->connection = new mysqli($dbhost, $dbuser, $dbpass);
+        if ($this->connection->connect_error) {
+            $this->error('Failed to connect to MySQL Server - ' . $this->connection->connect_error);
+            exit();
+        }
+        $this->connection = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
+        if ($this->connection->connect_error) {
+            $this->error('Database ' . $dbname . ' not found - ' . $this->connection->connect_error);
+            exit();
+        }
+        $this->connection->set_charset($charset);
+
 	}
 
 	public function query($query)

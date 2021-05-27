@@ -15,7 +15,20 @@ class GameRenderer {
         switch($_GET['action']) {
             case "viewGame":
                 $game = GameService::$instance->getGame($_GET['id']);
-                $this->RenderGame($game);
+                if($game != null && ($game->isVerified() || (isset($_SESSION['AccessStrength']) && $_SESSION['AccessStrength'] >= UserType::Admin()->getAccessStrength()
+                || (isset($_SESSION['UserID']) && $game->getAuthor()->getId() == $_SESSION['UserID']))))
+                    $this->RenderGame($game);
+                break;
+            case "rateGame":
+               //var_dump($_POST['rateGame']);
+                if(isset($_POST['rateGame']) && isset($_SESSION['UserID'])){
+                    if(RatingService::$instance->insertRating(new Rating(UserService::$instance->getUser($_SESSION['UserID']), $_GET['id'], $_POST['rating-text'], date("Y-m-d H:i:s"), $_POST['rating-value']))){
+                        //do something for error handeling
+                    }
+                    
+                }
+                header('Location: index.php?action=viewGame&id='. $_GET['id']);
+                
                 break;
         }
     }
@@ -25,47 +38,22 @@ class GameRenderer {
      * 
      * @param Game|null $game
      */
-    function RenderGame($game = null, $debug = false) {
-        // DEBUG -> Game should be given as variable
-        if($debug) {
-            echo "DEBUG VERSION - DISABLE ON RELEASE";
-            $game = new Game(
-                0,
-                "Minecraft",
-                new User(
-                    0,
-                    "Notch",
-                    "Markus",
-                    "Persson",
-                    array(  "twitter" => "https://twitter.com/notch/",
-                        "instagram" => "https://instagram.com/notchite/"),
-                    UserType::Creator()),
-                "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. 
-                \n\n\n
-                Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. 
-                
-                Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. ",
-                array("windows" => true),
-                "RTX Windows 10 Beta",
-                4.722415,
-                array(  0 => "https://news.xbox.com/de-de/wp-content/uploads/sites/3/2020/04/Minecraft-RTX-Beta_Hero.jpg?fit=1920%2C1080",
-                        1 => "https://i1.wp.com/www.minecraftrocket.com/wp-content/uploads/2015/03/LikeMinecraft-Shaders-Screenshot-1.png"),
-                      275);
-
-        }
+    function RenderGame($game = null) {
         // Do not render if function is called without game
-        if(!$debug && $game === null) {
+        if($game == null) {
             return;
         }
         ?>
         <div class="row border game-display mt-5 mb-5">
             <div class="md-12 mb-2">
                 <h1 class="m-0">
-                    <span class="d-inline-block"><?= $game->getName() ?></span>
+                    <span class="d-inline-block"><?= $game->getTitle() ?></span>
                     <span class="d-inline-block game-version">
                         <?= $game->getVersion() ?>
                     </span>
-                   
+                    <span class="d-inline-block game-verified">
+                        <?= $game->isVerified() == 0 ? "Not verified" : "" ?>
+                    </span>
                 </h1>
             </div>
             <div class="col-12">
@@ -74,14 +62,36 @@ class GameRenderer {
                 <span class="author">Author: <?= $game->getAuthor()->getUsername(); ?></span>
             </div>
             <div class="col-12 pb-2">
+
+                <script>
+                    $(document).ready(function(){
+                        var options = {
+                        max_value: 5,
+                        step_size: 0.5,
+                        selected_symbol_type: 'fontawesome_star',
+                        url: 'http://localhost/itproject/itp-minigames/services/ratingService.php',
+                        readonly: true,
+                    }
+                    $(".rate").rate(options);
+                });
+                    
+                </script>
+                
+                <div class="rate" data-rate-value=<?= $game->getRating() ?>>
+                
+                </div>
                 <!-- RATING -->
                 <?php 
+
+                /*
+                *old rating code :
                 for ($i=0; $i < 5; $i++) { 
                     echo '<span class="fa fa-star';
                     if($i < (int)$game->getRating())
                     echo ' checked';
                     echo '"></span>';
                 }
+                */
                 ?>
                 <span class="rating"><?php printf("%.2f/5", $game->getRating()); ?></span>
 
@@ -141,6 +151,20 @@ class GameRenderer {
                 <p>
                     <?= $game->getDescription() ?>
                 </p>
+                <p>
+                    <?php 
+                        if(($genres = $game->getGenres()) != null){
+                            echo 'Genres: ';
+                            foreach($genres as &$genre){
+                                echo '<span> '.$genre.',</span>';
+                                
+                            }
+                        } else {
+                            echo '<span>No Genres added</span>';
+                        }
+                    ?>
+
+                </p>
             </div>
             <!-- DOWNLOADS -->
             <div class="col-10 mt-3 mb-3">
@@ -156,7 +180,7 @@ class GameRenderer {
                             </span>
                         </div>
                         <div class="col-6 text-end">
-                            <a class="btn btn-download" href="<?= "resources/games/" . urlencode(str_replace(' ', '', $game->getName())) . "/" . $game->getVersion() . "_" . Platform::Windows()->name . ".zip"?>">
+                            <a class="btn btn-download" href="<?= "resources/games/" . urlencode(str_replace(' ', '', $game->getTitle())) . "/" . $game->getVersion() . "_" . Platform::Windows()->name . ".zip"?>">
                                 Download
                             </a>
                         </div>
@@ -173,7 +197,7 @@ class GameRenderer {
                             </span>
                         </div>
                         <div class="col-6 text-end">
-                        <a class="btn btn-download" href="<?= "resources/games/" . urlencode(str_replace(' ', '', $game->getName())) . "/" . $game->getVersion() . "_" . Platform::Mac()->name . ".zip"?>">
+                        <a class="btn btn-download" href="<?= "resources/games/" . urlencode(str_replace(' ', '', $game->getTitle())) . "/" . $game->getVersion() . "_" . Platform::Mac()->name . ".zip"?>">
                                 Download
                             </a>
                         </div>
@@ -190,7 +214,7 @@ class GameRenderer {
                             </span>
                         </div>
                         <div class="col-6 text-end">
-                            <a class="btn btn-download" href="<?= "resources/games/" . urlencode(str_replace(' ', '', $game->getName())) . "/" . $game->getVersion() . "_" . Platform::Linux()->name . ".zip"?>">
+                            <a class="btn btn-download" href="<?= "resources/games/" . urlencode(str_replace(' ', '', $game->getTitle())) . "/" . $game->getVersion() . "_" . Platform::Linux()->name . ".zip"?>">
                                 Download
                             </a>
                         </div>
@@ -242,9 +266,134 @@ class GameRenderer {
                 }
                 ?>
             </div>
-        </div>
-
+        </div>            
         <?php
+        if(isset($_SESSION['UserID']) &&  $_SESSION['UserID'] != null){
+            $this->renderRating($game);
+        }
+    }
+
+    function renderRating($game){
+        $rating5 = GameService::$instance->getRatingByStars($game->getId(), 5);
+        $rating4 = GameService::$instance->getRatingByStars($game->getId(), 4);
+        $rating3 = GameService::$instance->getRatingByStars($game->getId(), 3);
+        $rating2 = GameService::$instance->getRatingByStars($game->getId(), 2);
+        $rating1 = GameService::$instance->getRatingByStars($game->getId(), 1);
+        $rating_total = ($rating5+$rating4+$rating3+$rating2+$rating1);
+        if($rating_total == 0)$rating_total = 1;
+
+        ?>
+        <div class="row rating-display mb-5">
+            <div class="col-md-3">
+                    <h1 class="m-0">Rating</h1>
+                    <div class="row mb-3">
+                        <div class="col">Average</div> 
+                        <div class="col">
+                            <div class="rate" data-rate-value=<?= $game->getRating() ?>></div>
+                        </div>
+                    </div>
+                        
+                    <div>
+                        <span>5 Stars</span>
+                        <div class="rating-bar-outer">
+                            <div class="rating-bar-inner" style="width: <?= $rating5/$rating_total*100 ?>%;"></div>
+                            <div class="rating-bar-percent"><?= round($rating5/$rating_total*100) ?>%</div>
+                        </div>
+                    </div>
+                    <div>
+                        <span>4 Stars</span>
+                        <div class="rating-bar-outer">
+                            <div class="rating-bar-inner" style="width: <?= $rating4/$rating_total*100 ?>%;"></div>
+                            <div class="rating-bar-percent"><?= round($rating4/$rating_total*100) ?>%</div>
+                        </div>
+                    </div>
+                    <div>
+                        <span>3 Stars</span>
+                        <div class="rating-bar-outer">
+                            <div class="rating-bar-inner" style="width: <?= $rating3/$rating_total*100 ?>%;"></div>
+                            <div class="rating-bar-percent"><?= round($rating3/$rating_total*100) ?>%</div>
+                        </div>
+                    </div>
+                    <div>
+                        <span>2 Stars</span>
+                        <div class="rating-bar-outer">
+                            <div class="rating-bar-inner" style="width: <?= $rating2/$rating_total*100 ?>%;"></div>
+                            <div class="rating-bar-percent"><?= round($rating2/$rating_total*100) ?>%</div>
+                        </div>
+                    </div>
+                    <div>
+                        <span>1 Star</span>
+                        <div class="rating-bar-outer">
+                            <div class="rating-bar-inner" style="width: <?= $rating1/$rating_total*100 ?>%;"></div>
+                            <div class="rating-bar-percent"><?= round($rating1/$rating_total*100) ?>%</div>
+                        </div>
+                    </div>
+            </div>
+            <div class="col-md-9">
+                <h1 class="m-0">
+                    Feedback
+                </h1>
+                <div class="row">
+                    <script>
+                        $(document).ready(function(){
+                            var options2 = {
+                            max_value: 5,
+                            step_size: 1.0,
+                            selected_symbol_type: 'fontawesome_star',
+                            readonly: false,                        
+                        }
+                        $(".rate2").rate(options2);
+                    });                                    
+                    </script>
+                    <span>Add own feedback:</span>
+                    <div class="col-4">Rating</div> 
+                    <div class="col">
+                        <div class="rate2"></div>
+                    </div>
+                    <form action="index.php?action=rateGame&id=<?= $game->getId() ?>" method="POST">                        
+                        <textarea name="rating-text" id="rating-text" class="form-control" cols="30" rows="3" placeholder="Type some feedback"></textarea>
+                        <button class="btn-primary btn mt-1" name="rateGame">Submit</button>
+                        <input type="number" name="rating-value" id="rating-value" value="0" hidden>
+                    </form>
+                </div>
+                <div class="feedbacklist">
+
+                <?php
+                $feedbacks = RatingService::$instance->getRatings($game->getId());
+                //var_dump($feedbacks);
+                foreach($feedbacks as $feedback){
+                    ?>
+                    <div class="feedback-single">                   
+                    <div class="row mt-4">
+                        <div class="col"><?= $feedback->getUser()->getUsername() ?></div> 
+                        <div class="col">
+                            <div class="rate" data-rate-value=<?= $feedback->getRating() ?>></div>
+                        </div>
+                    </div>
+                    <?php
+                    if($feedback->getText() != NULL){
+                        ?>
+                        <div><?= $feedback->getText() ?></div>
+                        </div>
+
+                        <?php                        
+                    }
+                }
+
+
+                ?>
+
+
+
+                </div>
+
+
+
+            </div>
+        </div>
+        <?php
+
+
     }
 }
 

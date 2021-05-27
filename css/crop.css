@@ -1,0 +1,108 @@
+.crop__cropper {
+    box-sizing: border-box;
+    position: absolute;
+    border: 2px solid red;
+    touch-action: none;
+    background: transparent;
+    z-index: 3;
+}
+
+.crop input[type="submit"] {
+    display: none;
+}
+
+.crop__crop-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 1;
+    background: rgba(0, 0, 0, 0.548);
+}
+
+.crop__cropper:hover {
+    cursor: move;
+}
+
+
+.crop__cropper-container {
+    background-color: darkgrey;
+    box-sizing: content-box;
+    width: 90vw;
+    height: 90vh;
+    position: relative;
+    border: 2px solid blue;
+    text-align: center;
+    overflow: hidden;
+    user-select: none;
+}
+
+#cropProfilePicture .crop__cropper-container{
+    width: 30rem;
+    height: 30rem;
+}
+
+.crop__cropper-image-clipped {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 2;
+    clip-path: inset(76px 343px 312px 65px);
+}
+
+
+.crop__cropper-image {
+    position: absolute;
+}
+
+span[class|="crop__crophandle"] {
+    display: block;
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background-color: green;
+    z-index: 4;
+}
+
+span.crop__crophandle--tl {
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -50%);
+}
+
+span.crop__crophandle--tl:hover {
+    cursor: nw-resize;
+}
+
+span.crop__crophandle--tr {
+    top: 0;
+    right: 0;
+    transform: translate(50%, -50%);
+}
+
+span.crop__crophandle--tr:hover {
+    cursor: ne-resize;
+}
+
+span.crop__crophandle--br {
+    bottom: 0;
+    right: 0;
+    transform: translate(50%, 50%);
+}
+
+span.crop__crophandle--br:hover {
+    cursor: se-resize;
+}
+
+span.crop__crophandle--bl {
+    bottom: 0;
+    left: 0;
+    transform: translate(-50%, 50%);
+}
+
+span.crop__crophandle--bl:hover {
+    cursor: sw-resize;
+}

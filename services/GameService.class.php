@@ -15,10 +15,6 @@ class GameService
      */
     function getGamesFromUser(int $userID)
     {
-        // Get the author
-        $user = UserService::$instance->GetUser($userID);
-        $games = array();
-
         $this->db->query(
             "SELECT *,
             (SELECT AVG(Rating) FROM rating WHERE  rating.FK_GameID = GameID) as Rating
@@ -26,26 +22,10 @@ class GameService
             WHERE FK_UserID = ?;",
             $userID
         );
-        // Null reference catch -> Return empty array
-        if (!($gamesData = $this->db->fetchAll()))
-            return $games;
+      
+        $gamesData = $this->db->fetchAll();
 
-        for ($i = 0; $i < sizeof($gamesData); $i++) {
-            $platforms = $this->getPlatforms($gamesData[$i]['GameID']);
-
-            $games[$i] = new Game(
-                $gamesData[$i]['GameID'],
-                $gamesData[$i]['Name'],
-                $user,
-                $gamesData[$i]['Description'],
-                $platforms,
-                $gamesData[$i]['Version'],
-                $gamesData[$i]['Rating'] == null ? 0 : $gamesData[$i]['Rating'],
-                array(), // TODO !
-                $gamesData[$i]['PlayCount']
-            );
-        }
-        return $games;
+        return $this->getGameArrayFromData($gamesData);
     }
 
     function getGame($gameID)
@@ -57,12 +37,21 @@ class GameService
             WHERE GameID = ?;",
             $gameID
         );
-        // Null reference catch -> Return empty array
-        if (!($gameData = $this->db->fetchArray()))
+
+        $gameData = $this->db->fetchArray();
+
+        return GameService::$instance->getGameFromData($gameData);
+    }
+
+    function getGameFromData($gameData)
+    {
+        // Null reference catch
+        if ($gameData == null)
             return null;
 
         $user = UserService::$instance->getUser($gameData['FK_UserID']);
-        $platforms = $this->getPlatforms($gameID);
+        $platforms = $this->getPlatforms($gameData['GameID']);
+        $genres = GameService::$instance->getGameGenres($gameData['GameID']);
 
         return new Game(
             $gameData['GameID'],
@@ -73,60 +62,164 @@ class GameService
             $gameData['Version'],
             $gameData['Rating'] == null ? 0 : $gameData['Rating'],
             array(), // TODO !
-            $gameData['PlayCount']
+            $gameData['PlayCount'],
+            $gameData['Verified'],
+            $genres
         );
     }
 
-    //function with dummy data to test stuff
-    public function getAllGames()
+    function getGameArrayFromData($array)
     {
-        $this->db->query("SELECT * from game");
-
         // Null reference catch
-        if (!($gameData = $this->db->fetchAll()))
-            return null;
-
+        if ($array == null || sizeof($array) == 0)
+            return array();
 
         $gameObjs = array();
 
-        for ($i = 0; $i < sizeof($gameData); $i++) {
-            $gameObjs[$i] = new Game(
-
-                $gameData[$i]['GameID'],
-                $gameData[$i]['Name'],
-                UserService::$instance->getUser($gameData[$i]['FK_UserID']),
-                $gameData[$i]['Description'],
-                array(),
-                $gameData[$i]['Version'],
-                0,
-                array(),
-                0
-            );
+        for ($i = 0; $i < sizeof($array); $i++) {
+            $gameObjs[$i] = GameService::$instance->getGameFromData($array[$i]);
         }
+
         return $gameObjs;
+    }
+
+    function getGameGenres(int $gameID)
+    {
+        $this->db->query('SELECT *
+        FROM game_genre, genre
+        WHERE game_genre.FK_GameID = ?
+        AND genre.GenreID = game_genre.FK_GenreID', $gameID);
+        // Null reference catch -> Return empty array
+        if (!($genresData = $this->db->fetchAll()))
+            return array();
+
+        $genres = array();
+        for ($i = 0; $i < sizeof($genresData); $i++) {
+            $genres[$i] = $genresData[$i]["Name"];
+        }
+
+        return $genres;
+    }
+
+    function searchGames(string $title, bool $verified = true, bool $all = false)
+    {
+        $baseQuery = "SELECT *, (SELECT AVG(Rating) FROM rating WHERE  rating.FK_GameID = GameID) AS Rating FROM game WHERE `Name` LIKE ?";
+
+        if ($all) {
+            $this->db->query($baseQuery . " ORDER BY GameID ASC", "%" . $title . "%");
+        } else if ($verified) {
+            $this->db->query($baseQuery . " AND Verified = 1 ORDER BY GameID ASC", "%" . $title . "%");
+        } else {
+            $this->db->query($baseQuery . " AND Verified = 0 ORDER BY GameID ASC", "%" . $title . "%");
+        }
+        // Fetch data
+        $gameData = $this->db->fetchAll();
+        // Return games array
+        return GameService::$instance->getGameArrayFromData($gameData);
+    }
+
+    function getGames(int $offset, int $amount, bool $verified = true, bool $all = false)
+    {
+        $baseQuery = "SELECT *, (SELECT AVG(Rating) FROM rating WHERE  rating.FK_GameID = GameID) AS Rating FROM game";
+
+        if ($all) {
+            $query = $baseQuery . " ORDER BY GameID ASC LIMIT ?, ?";
+            $this->db->query($query, $offset, $amount);
+        }
+        else if ($verified) {
+            $query = $baseQuery . " WHERE Verified = 1 ORDER BY GameID ASC LIMIT ?, ?";
+            $this->db->query($query, $offset, $amount);
+        }
+        else {
+            $query = $baseQuery . " WHERE Verified = 0 ORDER BY GameID ASC LIMIT ?, ?";
+            $this->db->query($query, $offset, $amount);
+        }
+
+        $gameData = $this->db->fetchAll();
+
+        return $this->getGameArrayFromData($gameData);
+    }
+
+    function deleteGame(int $id)
+    {
+        $game = $this->getGame($id);
+
+        if ($game == null)
+            return;
+
+        $dirPath = "resources/games/" . str_replace(' ', '', $game->getTitle());
+
+        // Delete Games
+        try {
+            $this->deleteGameFolder($dirPath);
+        } catch (Exception $e) {
+            // echo $e->getMessage();
+        }
+
+        // Remove from Database
+        $this->db->query("DELETE FROM game WHERE GameID = ?", $id);
+    }
+
+    function deleteGameFolder(string $dirPath)
+    {
+        if (!is_dir($dirPath)) {
+            throw new InvalidArgumentException("$dirPath must be a directory");
+        }
+        if (substr($dirPath, strlen($dirPath) - 1, 1) != '/') {
+            $dirPath .= '/';
+        }
+        $files = glob($dirPath . '*', GLOB_MARK);
+        foreach ($files as $file) {
+            if (is_dir($file)) {
+                $this->deleteGameFolder($file);
+            } else {
+                unlink($file);
+            }
+        }
+        rmdir($dirPath);
+    }
+
+    function verifyGame(int $id)
+    {
+        $this->db->query("UPDATE game SET Verified = 1 WHERE GameID = ?", $id);
+    }
+
+    function getGamesCount(bool $verified = true, bool $all = false)
+    {
+        $baseQuery = "SELECT COUNT(GameID) as Amount  from game";
+
+        if ($all)
+            $this->db->query($baseQuery);
+        else if ($verified)
+            $this->db->query($baseQuery . " WHERE Verified = 1");
+        else
+            $this->db->query($baseQuery . " WHERE Verified = 0");
+
+        return $this->db->fetchArray()['Amount'];
+    }
+
+    /** @return Game[]|null */
+    public function getAllGames(bool $verified = true, bool $all = false)
+    {
+        $baseQuery = "SELECT *, (SELECT AVG(Rating) FROM rating WHERE  rating.FK_GameID = GameID) AS Rating FROM game";
+
+        if ($all)
+            $this->db->query($baseQuery);
+        else if ($verified)
+            $this->db->query($baseQuery . " WHERE Verified = 1");
+        else
+            $this->db->query($baseQuery . " WHERE Verified = 0");
+
+        $gameData = $this->db->fetchAll();
+
+        return $this->getGameArrayFromData($gameData);
     }
 
     public function getGameByForumId(int $forumid)
     {
-        $this->db->query("SELECT * from game WHERE FK_ForumID = ?", $forumid);
-
-        if (!($gameData = $this->db->fetchAll()))
-            return null;
-
-        $gameObj = new Game(
-
-            $gameData[0]['GameID'],
-            $gameData[0]['Name'],
-            UserService::$instance->getUser($gameData[0]['FK_UserID']),
-            $gameData[0]['Description'],
-            array(),
-            $gameData[0]['Version'],
-            0,
-            array(),
-            0
-        );
-
-        return $gameObj;
+        $this->db->query("SELECT *, (SELECT AVG(Rating) FROM rating WHERE  rating.FK_GameID = GameID) AS Rating from game WHERE FK_ForumID = ?", $forumid);
+        $gameData = $this->db->fetchArray();
+        return $this->getGameFromData($gameData);
     }
 
     public function getForumID(Game $game)
@@ -180,30 +273,36 @@ class GameService
     {
         $pathInfo = pathinfo($file["name"]);
         $target_file = $sourcePath . $gameVersion . "_" . $platform->name . "." . $pathInfo['extension'];
-        $uploadOk = 1;
+        $uploadOk = true;
         $mimeType = mime_content_type($file["tmp_name"]);
 
         // Check if file already exists
         if (file_exists($target_file)) {
             echo "Sorry, game version already exists.";
-            $uploadOk = 0;
+            $uploadOk = false;
         }
 
         // Check file size
         if ($file["size"] > 500000) {
             echo "Sorry, your game is too large.";
-            $uploadOk = 0;
+            $uploadOk = false;
         }
 
         // Allow certain file formats
-        if ($mimeType != 'application/zip' && $mimeType != 'application/x-rar-compressed') {
+        if (
+            $mimeType != 'application/zip' && $mimeType != 'application/x-rar-compressed'
+            && $mimeType != 'application/x-rar' && $mimeType != 'application/x-7z-compressed'
+            && $mimeType != 'application/x-7z' && $mimeType != 'application/x-tar'
+            && $mimeType != 'application/x-gtar'
+        ) {
             echo "Sorry, only zip or rar files are allowed.";
-            $uploadOk = 0;
+            $uploadOk = false;
         }
 
         // Check if $uploadOk is set to 0 by an error
-        if ($uploadOk == 0) {
+        if (!$uploadOk) {
             echo "Sorry, your game was not uploaded.";
+            exit();
             // if everything is ok, try to upload file
         } else if (!move_uploaded_file($file["tmp_name"], $target_file)) {
             echo "Sorry, there was an error uploading your file.";
@@ -211,8 +310,68 @@ class GameService
         }
     }
 
-    function uploadGame()
-    {
+    function editGame() {
+        $gameID = $_POST['game-id'];
+        $oldData = GameService::$instance->getGame($gameID);
+
+        // Need to check that if something is uploaded,
+        // that the version is newer
+
+        // Edit game
+        // Check for platforms
+        $windowsFile = $_FILES["game-file-windows"];
+        $linuxFile = $_FILES["game-file-linux"];
+        $macFile = $_FILES["game-file-mac"];
+
+        // Upload games
+        $platforms = array();
+
+        $sourcePath = "resources/games/" . str_replace(' ', '', $oldData->getTitle()) . "/";
+
+        if(isset($windowsFile) && $windowsFile != null && $windowsFile['error'] == 0) {
+            $this->uploadGameFile($windowsFile, $sourcePath, $_POST['game-version'], Platform::Windows());
+            $platforms[sizeof($platforms)] = Platform::Windows()->id;
+        }
+        if(isset($linuxFile) && $linuxFile != null && $linuxFile['error'] == 0) {
+            $this->uploadGameFile($linuxFile, $sourcePath, $_POST['game-version'], Platform::Linux());
+            $platforms[sizeof($platforms)] = Platform::Linux()->id;
+        }
+        if(isset($macFile) && $macFile != null && $macFile['error'] == 0) {
+            $this->uploadGameFile($macFile, $sourcePath, $_POST['game-version'], Platform::Mac());
+            $platforms[sizeof($platforms)] = Platform::Mac()->id;
+        }
+
+        $now = new DateTime('now');
+        $now = $now->format("Y-m-d H:m:s");
+
+        // Update game data
+        $this->db->query("UPDATE `game`
+        SET `Description` = ?, `Version` = ?, `UpdateDate` = ?
+        WHERE `game`.`GameID` = ?", $_POST['game-description'],
+        $_POST['game-version'], $now, $gameID);
+
+        // Update genres
+        if(isset($_POST['game-genres'])) {
+            // First delete genres
+            $this->db->query("DELETE FROM game_genre WHERE FK_GameID = ?", $gameID);
+            // Insert genres
+            $genres = $_POST['game-genres'];
+            for ($i=0; $i < sizeof($genres); $i++) { 
+                $this->db->query("INSERT INTO game_genre VALUES ( ? , ? )", $gameID, $genres[$i]);
+            }
+        }
+
+        // Check which games were uploaded and update platforms
+        // // Insert platforms
+        // for ($i=0; $i < sizeof($platforms); $i++) { 
+        //     $this->db->query("INSERT INTO game_platform VALUES ( ? , ? )", $gameID, $platforms[$i]);
+        // }
+
+        // Also auto redirect possible
+        echo "<h3>Game edit succesful!</h3><a class='btn btn-primary' href='index.php?action=viewGame&id=$gameID'>View Game</a>";
+    }
+
+    function uploadGame() {
         $userID = $_SESSION['UserID'];
 
         // Upload game
@@ -229,18 +388,24 @@ class GameService
             return;
         }
 
+        // Create games dir if it does not exist
+        if (!is_dir("resources/games"))
+            mkdir("resources/games");
+
         $sourcePath = "resources/games/" . str_replace(' ', '', $_POST['game-title']);
         mkdir($sourcePath);
         $sourcePath .= "/";
 
         $platforms = array();
 
-        if (isset($windowsFile) && $windowsFile != null && $windowsFile['error'] == 0)
+        if (isset($windowsFile) && $windowsFile != null && $windowsFile['error'] == 0) {
             $this->uploadGameFile($windowsFile, $sourcePath, $_POST['game-version'], Platform::Windows());
-        $platforms[sizeof($platforms)] = Platform::Windows()->id;
-        if (isset($linuxFile) && $linuxFile != null && $linuxFile['error'] == 0)
+            $platforms[sizeof($platforms)] = Platform::Windows()->id;
+        }
+        if (isset($linuxFile) && $linuxFile != null && $linuxFile['error'] == 0) {
             $this->uploadGameFile($linuxFile, $sourcePath, $_POST['game-version'], Platform::Linux());
-        $platforms[sizeof($platforms)] = Platform::Linux()->id;
+            $platforms[sizeof($platforms)] = Platform::Linux()->id;
+        }
         if (isset($macFile) && $macFile != null && $macFile['error'] == 0) {
             $this->uploadGameFile($macFile, $sourcePath, $_POST['game-version'], Platform::Mac());
             $platforms[sizeof($platforms)] = Platform::Mac()->id;
@@ -291,6 +456,38 @@ class GameService
         // Also auto redirect possible
         echo "<h3>Game upload succesful!</h3><a class='btn btn-primary' href='index.php?action=viewGame&id=$gameID'>View Game</a>";
     }
+
+
+    function insertRating($gameid, $userid, $rating){
+        $this->db->query(
+            "REPLACE INTO rating (FK_UserID, FK_GameID, Rating) VALUES (?, ?, ?)", $userid, $gameid, $rating
+        );
+    }
+
+    function getRatingByStars($gameid, $stars){
+        if($stars > 5 || $stars < 1){
+            return;
+        }
+        $this->db->query("SELECT COUNT(*) FROM rating WHERE FK_GameID = ? AND Rating = ?", $gameid, $stars);
+
+        return $this->db->fetchAll()[0]['COUNT(*)']; 
+    }
+
+    
+
+    function getFavorites($userID)
+    {
+        $this->db->query("SELECT *,
+        (SELECT AVG(Rating) FROM rating WHERE rating.FK_GameID = GameID) as Rating
+        FROM `favorite`
+        LEFT JOIN game ON favorite.FK_GameID = game.GameID
+        WHERE favorite.FK_UserID = ?", $userID);
+
+        $gameData = $this->db->fetchAll();
+
+        return GameService::$instance->getGameArrayFromData($gameData);
+    }
+
 }
 
 GameService::$instance = new GameService(Database::$instance);
