@@ -455,6 +455,24 @@ class GameService
         echo "<h3>Game upload succesful!</h3><a class='btn btn-primary' href='index.php?action=viewGame&id=$gameID'>View Game</a>";
     }
 
+
+    function insertRating($gameid, $userid, $rating){
+        $this->db->query(
+            "REPLACE INTO rating (FK_UserID, FK_GameID, Rating) VALUES (?, ?, ?)", $userid, $gameid, $rating
+        );
+    }
+
+    function getRatingByStars($gameid, $stars){
+        if($stars > 5 || $stars < 1){
+            return;
+        }
+        $this->db->query("SELECT COUNT(*) FROM rating WHERE FK_GameID = ? AND Rating = ?", $gameid, $stars);
+
+        return $this->db->fetchAll()[0]['COUNT(*)']; 
+    }
+
+    
+
     function getFavorites($userID)
     {
         $this->db->query("SELECT *,
@@ -467,6 +485,7 @@ class GameService
 
         return GameService::$instance->getGameArrayFromData($gameData);
     }
+
 }
 
 GameService::$instance = new GameService(Database::$instance);
