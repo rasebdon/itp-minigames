@@ -19,14 +19,15 @@ require_once "models/Rating.php";
 
 require_once "utility/PictureUpload.class.php";
 require_once "utility/Validation.class.php";
-require_once "utility/favoritelogic.php";
 
 require_once "services/UserService.class.php";
 require_once "services/ProfilePictureService.class.php";
 require_once "services/FavoriteService.class.php";
 require_once "services/GameService.class.php";
-require_once "services/ForumService.class.php";
 require_once "services/RatingService.class.php";
+require_once "services/ForumService.class.php";
+
+require_once "utility/favoritelogic.php";
 
 //BOOL FOR DEBUGGIG MODE
 $showDebug = false;
