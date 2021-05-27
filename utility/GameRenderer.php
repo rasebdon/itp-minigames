@@ -19,6 +19,17 @@ class GameRenderer {
                 || (isset($_SESSION['UserID']) && $game->getAuthor()->getId() == $_SESSION['UserID']))))
                     $this->RenderGame($game);
                 break;
+            case "rateGame":
+               //var_dump($_POST['rateGame']);
+                if(isset($_POST['rateGame']) && isset($_SESSION['UserID'])){
+                    if(RatingService::$instance->insertRating(new Rating(UserService::$instance->getUser($_SESSION['UserID']), $_GET['id'], $_POST['rating-text'], date("Y-m-d H:i:s"), $_POST['rating-value']))){
+                        //do something for error handeling
+                    }
+                    
+                }
+                header('Location: index.php?action=viewGame&id='. $_GET['id']);
+                
+                break;
         }
     }
 
@@ -73,6 +84,7 @@ class GameRenderer {
                 <?php 
 
                 /*
+                *old rating code :
                 for ($i=0; $i < 5; $i++) { 
                     echo '<span class="fa fa-star';
                     if($i < (int)$game->getRating())
@@ -254,10 +266,11 @@ class GameRenderer {
                 }
                 ?>
             </div>
-        </div>
-            
+        </div>            
         <?php
-        $this->renderRating($game);
+        if(isset($_SESSION['UserID']) &&  $_SESSION['UserID'] != null){
+            $this->renderRating($game);
+        }
     }
 
     function renderRating($game){
@@ -267,6 +280,7 @@ class GameRenderer {
         $rating2 = GameService::$instance->getRatingByStars($game->getId(), 2);
         $rating1 = GameService::$instance->getRatingByStars($game->getId(), 1);
         $rating_total = ($rating5+$rating4+$rating3+$rating2+$rating1);
+        if($rating_total == 0)$rating_total = 1;
 
         ?>
         <div class="row rating-display mb-5">
@@ -324,7 +338,7 @@ class GameRenderer {
                         $(document).ready(function(){
                             var options2 = {
                             max_value: 5,
-                            step_size: 0.5,
+                            step_size: 1.0,
                             selected_symbol_type: 'fontawesome_star',
                             readonly: false,                        
                         }
@@ -336,9 +350,9 @@ class GameRenderer {
                     <div class="col">
                         <div class="rate2"></div>
                     </div>
-                    <form action="index.php?action=viewGame&id=<?= $game->getId() ?>" method="POST">                        
+                    <form action="index.php?action=rateGame&id=<?= $game->getId() ?>" method="POST">                        
                         <textarea name="rating-text" id="rating-text" class="form-control" cols="30" rows="3" placeholder="Type some feedback"></textarea>
-                        <button class="btn-primary btn mt-1" id="postFeedback">Submit</button>
+                        <button class="btn-primary btn mt-1" name="rateGame">Submit</button>
                         <input type="number" name="rating-value" id="rating-value" value="0" hidden>
                     </form>
                 </div>

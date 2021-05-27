@@ -35,6 +35,20 @@ class RatingService
         return $ratings;
     }
 
+    function insertRating(Rating $rating){
+
+        $this->db->query( 
+            "REPLACE INTO rating ( FK_UserID, FK_GameID, Text, Date, Rating) 
+                VALUES (?,?,?,?,?)", //SQL Statement  
+ 
+            $rating->getUser()->getId(), 
+            $rating->getGameid(), 
+            $rating->getText(), 
+            $rating->getDate(), 
+            $rating->getRating() 
+        );
+    }
+
     
 }
 
