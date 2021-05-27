@@ -9,110 +9,113 @@ if (!isset($_GET['action'])) {
     if ($games != null) {
         //--HTML--
 ?>
-        <h1 class="headerfrontPage text-center shadow p-3 mb-5 bg-body rounded text-primary">ITP-Minigames</h1>
-        <!--Note: These will be several rows with several Items -->
-        <div class="row">
-            <?php
-            foreach ($games as $game) {
-            ?>
-                <div class="col-12 col-md-6 col-xxl-4">
-                    <div class="game-card" id="gameID">
-                        <div class="game-card__side game-card__side--front gradient-primary">
-                            <div class="game-card__image">
-                                <img class="game-card__image--default-content" src="<?= $game->getFirstScreenshot() ?>" alt="image">
-                            </div>
-                            <div class="game-card__info">
-                                <h4 class="game-card__title">
-                                    <?= $game->getTitle() ?>
-                                </h4>
-                                <h5 class="game-card__developer">
-                                    <?= $game->getAuthor()->getUsername() ?>
-                                </h5>
-                                <div class="game-card__platforms">
-                                    <?php
-                                    if ($game->hasWindows()) echo '<i class="platform-icon fa fa-windows fa-lg" aria-hidden="true"></i>';
-                                    if ($game->hasLinux()) echo '<i class="platform-icon fa fa-linux fa-lg" aria-hidden="true"></i>';
-                                    if ($game->hasMac()) echo '<i class="platform-icon fa fa-apple fa-lg" aria-hidden="true"></i>';
-                                    ?>
-                                </div>
-                                <div class="game-card__rating">
-                                    <?php
-                                    for ($i = 0; $i < 5; $i++) {
-                                        echo '<i class="fa fa-star';
-                                        if ($i < (int)$game->getRating())
-                                            echo ' checked';
-                                        echo '"></i>';
-                                    }
-                                    ?>
-                                </div>
-                                <div class="game-card__genres">
-                                    <?php
+        <section class="front-page">
 
-                                    if (($genres = GameService::$instance->getGameGenres($game->getID())) != null) {
-                                        echo '<ul>';
-                                        foreach ($genres as $genre) {
-                                            echo '<li class="genre">' . $genre . '</li>';
-                                        }
-                                        echo '</ul>';
-                                    }
-                                    ?>
+            <div class="text-box--1 gradient-secondary">
+                <h1 class="heading-primary__main">ITP-Minigames</h1>
+            </div>
+            <!--Note: These will be several rows with several Items -->
+            <div class="row">
+                <?php
+                foreach ($games as $game) {
+                    for ($j = 0; $j < 5; $j++) {
+
+                ?>
+                        <div class="col-12 col-md-6 col-xxl-4">
+                            <div class="game-card" id="gameCard<?= $game->getId() ?>">
+                                <div class="game-card__side game-card__side--front gradient-primary">
+                                    <div class="game-card__image">
+                                        <img class="game-card__image--default-content" src="<?= $game->getFirstScreenshot() ?>" alt="image">
+                                    </div>
+                                    <div class="game-card__info">
+                                        <h4 class="game-card__title">
+                                            <?= $game->getTitle() ?>
+                                        </h4>
+                                        <h5 class="game-card__developer">
+                                            <?= $game->getAuthor()->getUsername() ?>
+                                        </h5>
+                                        <div class="game-card__platforms">
+                                            <?php
+                                            if ($game->hasWindows()) echo '<i class="platform-icon fa fa-windows fa-lg" aria-hidden="true"></i>';
+                                            if ($game->hasLinux()) echo '<i class="platform-icon fa fa-linux fa-lg" aria-hidden="true"></i>';
+                                            if ($game->hasMac()) echo '<i class="platform-icon fa fa-apple fa-lg" aria-hidden="true"></i>';
+                                            ?>
+                                        </div>
+                                        <div class="game-card__rating">
+                                            <?php
+                                            for ($i = 0; $i < 5; $i++) {
+                                                echo '<i class="fa fa-star';
+                                                if ($i < (int)$game->getRating())
+                                                    echo ' checked';
+                                                echo '"></i>';
+                                            }
+                                            ?>
+                                        </div>
+                                        <div class="game-card__genres">
+                                            <?php
+
+                                            if (($genres = GameService::$instance->getGameGenres($game->getID())) != null) {
+                                                echo '<ul>';
+                                                foreach ($genres as $genre) {
+                                                    echo '<li class="genre">' . $genre . '</li>';
+                                                }
+                                                echo '</ul>';
+                                            }
+                                            ?>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="game-card__side game-card__side--back gradient-primary--reverse">
+                                    <div id="carouselFrontPage<?= $game->getId() ?>" data-bs-ride="false" class="carousel slide carousel-fade game-card__carousel" data-bs-ride="carousel">
+                                        <div class="carousel-inner">
+                                            <div class="carousel-item active">
+                                                <img class="carousel-img" src="https://cdn.akamai.steamstatic.com/steam/apps/848450/ss_5bc21362aa200d08fe25203cbe50debedd8f11a3.1920x1080.jpg?t=1621298712" class="d-block w-100" alt="...">
+                                            </div>
+                                            <div class="carousel-item">
+                                                <img class="carousel-img" src="https://cdn.akamai.steamstatic.com/steam/apps/848450/ss_69bdcf6ce29ba61650f0b2551a3494af67be09ac.1920x1080.jpg?t=1621298712" class="d-block w-100" alt="...">
+                                            </div>
+                                            <div class="carousel-item">
+                                                <img class="carousel-img" src="https://cdn.akamai.steamstatic.com/steam/apps/848450/ss_9e3d6ab0db5442f7bcbeb923da47d3a80023f50f.1920x1080.jpg?t=1621298712" class="d-block w-100" alt="...">
+                                            </div>
+                                        </div>
+                                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselFrontPage<?= $game->getId() ?>" data-bs-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Previous</span>
+                                        </button>
+                                        <button class="carousel-control-next" type="button" data-bs-target="#carouselFrontPage<?= $game->getId() ?>" data-bs-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Next</span>
+                                        </button>
+                                    </div>
+                                    <a href="index.php?action=viewGame&id=<?= $game->getId() ?>" class="button button--primary"><span>Visit Page</span><i class="fa fa-arrow-right" aria-hidden="true"></i> </a>
                                 </div>
                             </div>
+                            <script>
+                                const gameCard = document.querySelector("#gameCard<?= $game->getId() ?>");
+                                const thisCarousel = document.querySelector("#carouselFrontPage<?= $game->getId() ?>");
+                                const carouselId = new bootstrap.Carousel(thisCarousel, {
+                                    interval: 2500
+                                })
+                                gameCard.addEventListener("mouseover", function(e) {
+                                    carouselId.cycle();
+                                })
+                                gameCard.addEventListener("mouseout", function(e) {
+                                    carouselId.pause();
+                                })
+                            </script>
                         </div>
-                        <div class="game-card__side game-card__side--back gradient-primary--reverse">
-                            <div id="carouselExampleFade" data-bs-ride="false" class="carousel slide carousel-fade game-card__carousel" data-bs-ride="carousel">
-                                <div class="carousel-inner">
-                                    <div class="carousel-item active">
-                                        <img class="carousel-img" src="https://images.unsplash.com/photo-1620842934770-850803ad3d31?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=1080&ixlib=rb-1.2.1&q=80&w=1920" class="d-block w-100" alt="...">
-                                    </div>
-                                    <div class="carousel-item">
-                                        <img class="carousel-img" src="https://images.unsplash.com/photo-1621431901798-21031499dd3e?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=1080&ixlib=rb-1.2.1&q=80&w=1920" class="d-block w-100" alt="...">
-                                    </div>
-                                    <div class="carousel-item">
-                                        <img class="carousel-img" src="https://images.unsplash.com/photo-1620831041692-1b82e0e96a7f?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=1080&ixlib=rb-1.2.1&q=80&w=1920" class="d-block w-100" alt="...">
-                                    </div>
-                                </div>
-                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Previous</span>
-                                </button>
-                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Next</span>
-                                </button>
-                            </div>
-
-
-                            <a href="index.php?action=viewGame&id=<?= $game->getId() ?>" class="button button--primary"><span>Visit Page</span><i class="fa fa-arrow-right" aria-hidden="true"></i> </a>
-
-                            <!-- <div class="game-card__image">
-                    <img class="game-card__image--default-content" src="https://news.xbox.com/de-de/wp-content/uploads/sites/3/2020/04/Minecraft-RTX-Beta_Hero.jpg?fit=1920%2C1080" alt="image">
-                </div> -->
-                        </div>
-                    </div>
-                    <script>
-                        const gameCard = document.querySelector("#gameID");
-                        const thisCarousel = document.querySelector("#carouselExampleFade");
-                        const carouselId = new bootstrap.Carousel(thisCarousel, {
-                            interval: 2500
-                        })
-                        gameCard.addEventListener("mouseover", function(e) {
-                            carouselId.cycle();
-                        })
-                        gameCard.addEventListener("mouseout", function(e) {
-                            carouselId.pause();
-                        })
-                    </script>
-                </div>
-            <?php
-            }
-            ?>
-        </div>
-    <?php
+                <?php
+                    }
+                }
+                ?>
+            </div>
+        <?php
     } else {
-    ?>
-        <h1 class="headerfrontPage text-center shadow p-3 mb-5 bg-body rounded text-primary">No Games Found</h1>
-
-<?php
+        ?>
+            <h1 class="headerfrontPage text-center shadow p-3 mb-5 bg-body rounded text-primary">No Games Found</h1>
+        <?php
     }
+        ?>
+        </section>
+    <?php
 }

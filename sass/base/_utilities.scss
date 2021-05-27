@@ -20,6 +20,9 @@
     &-primary {
         background-image: linear-gradient(to right, $color-secondary, $color-tertiary);
     }
+    &-secondary {
+        background-image: radial-gradient(lighten($color-secondary, 2%) 25%, lighten($color-secondary, 20%));
+    }
     &-primary--reverse {
         background-image: linear-gradient(to left, $color-secondary, $color-tertiary);
     }

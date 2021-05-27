@@ -102,6 +102,9 @@
         position: absolute;
         top: 1rem;
         right: 0.25rem + 1rem;
+        i {
+            margin-left: 0.5rem;
+        }
     }
 
     &__rating {
@@ -127,14 +130,15 @@
 
     &__genres {
         // height = info height - title height - developer height - title & developer margins
-        height: calc(100% - 2.2rem - 1.6rem - 2rem);
+        height: 3rem;
+        margin-top: 1.75rem;
         ul {
+            align-items: flex-end;
             padding-left: 0;
             display: flex;
             flex-wrap: wrap;
             overflow: hidden;
-            align-content: flex-end;
-            height: 100%;
+            height: 3rem;
         }
     }
 }
