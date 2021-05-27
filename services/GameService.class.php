@@ -215,7 +215,7 @@ class GameService
 
     public function getGameByForumId(int $forumid)
     {
-        $this->db->query("SELECT * from game WHERE FK_ForumID = ?", $forumid);
+        $this->db->query("SELECT *, (SELECT AVG(Rating) FROM rating WHERE  rating.FK_GameID = GameID) AS Rating from game WHERE FK_ForumID = ?", $forumid);
         $gameData = $this->db->fetchArray();
         return $this->getGameFromData($gameData);
     }
