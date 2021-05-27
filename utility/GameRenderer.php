@@ -152,8 +152,8 @@ class GameRenderer {
                     <?= $game->getDescription() ?>
                 </p>
                 <p>
-                    <?php $genres = FrontPageService::$instance->getGenresToGame($game->getID()); 
-                        if($genres != null){
+                    <?php 
+                        if(($genres = $game->getGenres()) != null){
                             echo 'Genres: ';
                             foreach($genres as &$genre){
                                 echo '<span> '.$genre.',</span>';

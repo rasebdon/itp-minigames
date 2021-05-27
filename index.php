@@ -23,7 +23,6 @@ require_once "services/UserService.class.php";
 require_once "services/ProfilePictureService.class.php";
 require_once "services/FavoriteService.class.php";
 require_once "services/GameService.class.php";
-require_once "services/FrontPageService.class.php";
 require_once "services/ForumService.class.php";
 require_once "services/RatingService.class.php";
 
@@ -140,6 +139,7 @@ if ($showDebug) {
             // Normal user components
             if ($accessStrength >= UserType::User()->getAccessStrength()) {
         ?>
+                <a href="index.php?action=favorites" class="btn btn-success">View Favorites</a>
                 <a href="index.php?action=editProfile" class="btn btn-success">Edit Profile</a>
                 <a href="index.php?action=logout" class="btn btn-success">Logout</a>
             <?php
@@ -222,6 +222,7 @@ if ($showDebug) {
             // Game creator components
             if ($accessStrength >= UserType::Creator()->getAccessStrength()) {
                 require_once "utility/GameUploadInterface.php";
+                require_once "utility/GameEditInterface.php";
                 require_once "utility/GameList.php";
             }
             // Admin components
