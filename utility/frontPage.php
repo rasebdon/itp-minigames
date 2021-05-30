@@ -110,16 +110,16 @@ class FrontPage
                                 </div>
                             </div>
                             <script>
-                                const gameCard = document.querySelector("#gameCard<?= $game->getId() ?>");
-                                const thisCarousel = document.querySelector("#carouselFrontPage<?= $game->getId() ?>");
-                                const carouselId = new bootstrap.Carousel(thisCarousel, {
+                                const gameCard<?= $game->getId() ?> = document.querySelector("#gameCard<?= $game->getId() ?>");
+                                const thisCarousel<?= $game->getId() ?> = document.querySelector("#carouselFrontPage<?= $game->getId() ?>");
+                                const carouselId<?= $game->getId() ?> = new bootstrap.Carousel(thisCarousel<?= $game->getId() ?>, {
                                     interval: 2500
                                 })
-                                gameCard.addEventListener("mouseover", function(e) {
-                                    carouselId.cycle();
+                                gameCard<?= $game->getId() ?>.addEventListener("mouseover", function(e) {
+                                    carouselId<?= $game->getId() ?>.cycle();
                                 })
-                                gameCard.addEventListener("mouseout", function(e) {
-                                    carouselId.pause();
+                                gameCard<?= $game->getId() ?>.addEventListener("mouseout", function(e) {
+                                    carouselId<?= $game->getId() ?>.pause();
                                 })
                             </script>
                         </div>
