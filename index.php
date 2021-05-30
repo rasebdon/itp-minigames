@@ -14,6 +14,8 @@ require_once "models/Game.php";
 require_once "models/User.php";
 require_once "models/Picture.php";
 require_once "models/Post.php";
+require_once "models/Comment.class.php";
+require_once "models/Rating.php";
 
 require_once "utility/PictureUpload.class.php";
 require_once "utility/Validation.class.php";
@@ -22,14 +24,13 @@ require_once "services/UserService.class.php";
 require_once "services/ProfilePictureService.class.php";
 require_once "services/FavoriteService.class.php";
 require_once "services/GameService.class.php";
-require_once "services/FrontPageService.class.php";
+require_once "services/RatingService.class.php";
 require_once "services/ForumService.class.php";
 
 require_once "utility/favoritelogic.php";
 
 //BOOL FOR DEBUGGIG MODE
 $showDebug = false;
-
 
 // GET LOGIN STATUS
 $loggedIn = false;
@@ -109,6 +110,7 @@ require_once "forms/formHandler.php";
     <link rel="stylesheet" type="text/css" href="css/game.css">
     <link rel="stylesheet" type="text/css" href="css/gameUploadInterface.css" />
     <link rel="stylesheet" type="text/css" href="css/forum.css">
+    <link rel="stylesheet" type="text/css" href="css/rating.css">
 
     <link rel="stylesheet" type="text/css" href="css/styleComp.css">
 
@@ -118,13 +120,17 @@ require_once "forms/formHandler.php";
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- IMPORT JS -->
     <script src="scripts/ts/compiled/Crop.js"></script>
+    <script src="scripts/js/rater.js"></script>
+
 </head>
 
 <body>
     <?php
 
     require_once "utility/navigation.php";
-
+    ?>
+    <a href="index.php?action=favorites" class="btn btn-success">View Favorites</a>
+    <?php
     if ($showDebug) {
     ?> <div class="ps-3 mt-3 pt-2 border-top">
 
@@ -166,6 +172,7 @@ require_once "forms/formHandler.php";
 
         //make this for users only, this is public for debugg only
         require_once "utility/ForumMainPage.php";
+        require_once "utility/postRenderer.php";
 
 
         // Load logged in components
@@ -178,6 +185,7 @@ require_once "forms/formHandler.php";
             // Game creator components
             if ($accessStrength >= UserType::Creator()->getAccessStrength()) {
                 require_once "utility/GameUploadInterface.php";
+                require_once "utility/GameEditInterface.php";
                 require_once "utility/GameList.php";
             }
             // Admin components

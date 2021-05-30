@@ -22,6 +22,7 @@ class GameService
             WHERE FK_UserID = ?;",
             $userID
         );
+      
         $gamesData = $this->db->fetchAll();
 
         return $this->getGameArrayFromData($gamesData);
@@ -36,6 +37,7 @@ class GameService
             WHERE GameID = ?;",
             $gameID
         );
+
         $gameData = $this->db->fetchArray();
 
         return GameService::$instance->getGameFromData($gameData);
@@ -215,7 +217,7 @@ class GameService
 
     public function getGameByForumId(int $forumid)
     {
-        $this->db->query("SELECT * from game WHERE FK_ForumID = ?", $forumid);
+        $this->db->query("SELECT *, (SELECT AVG(Rating) FROM rating WHERE  rating.FK_GameID = GameID) AS Rating from game WHERE FK_ForumID = ?", $forumid);
         $gameData = $this->db->fetchArray();
         return $this->getGameFromData($gameData);
     }
@@ -366,7 +368,7 @@ class GameService
         // }
 
         // Also auto redirect possible
-        echo "<h3>Game edit successful!</h3><a class='btn btn-primary' href='index.php?action=viewGame&id=$gameID'>View Game</a>";
+        echo "<h3>Game edit succesful!</h3><a class='btn btn-primary' href='index.php?action=viewGame&id=$gameID'>View Game</a>";
     }
 
     function uploadGame() {
@@ -455,6 +457,24 @@ class GameService
         echo "<h3>Game upload succesful!</h3><a class='btn btn-primary' href='index.php?action=viewGame&id=$gameID'>View Game</a>";
     }
 
+
+    function insertRating($gameid, $userid, $rating){
+        $this->db->query(
+            "REPLACE INTO rating (FK_UserID, FK_GameID, Rating) VALUES (?, ?, ?)", $userid, $gameid, $rating
+        );
+    }
+
+    function getRatingByStars($gameid, $stars){
+        if($stars > 5 || $stars < 1){
+            return;
+        }
+        $this->db->query("SELECT COUNT(*) FROM rating WHERE FK_GameID = ? AND Rating = ?", $gameid, $stars);
+
+        return $this->db->fetchAll()[0]['COUNT(*)']; 
+    }
+
+    
+
     function getFavorites($userID)
     {
         $this->db->query("SELECT *,
@@ -467,6 +487,7 @@ class GameService
 
         return GameService::$instance->getGameArrayFromData($gameData);
     }
+
 }
 
 GameService::$instance = new GameService(Database::$instance);
