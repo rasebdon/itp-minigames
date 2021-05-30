@@ -14,33 +14,31 @@ body {
 }
 
 .heading-primary {
-    font-family: "Maven Pro", cursive;
-    margin-bottom: 6rem;
-    text-transform: uppercase;
-
-    
-
     &__main {
-        animation: moveInBottom .5s ease-in;
-        animation-fill-mode: backwards;
+        font-family: "Maven Pro", cursive;
         display: block;
-        font-size: 7rem;
-        letter-spacing: 2rem;
+        letter-spacing: 1.5rem;
         font-weight: 700;
-        background-image: linear-gradient(to right, $color-green-lightest, $color-green-darkest);
-        color: transparent;
-        -webkit-background-clip: text;
+        font-size: 6rem;
         transition: all 0.3s;
         width: fit-content;
         margin: 0 auto;
-
-        &:hover {
-            transform: scale(1.05);
+        text-transform: uppercase;
+        color: $color-white;
+        @include respond(lg) {
+            letter-spacing: 1rem;
+            font-weight: 600;
+            font-size: 4.5rem;
+        }
+        @include respond(sm) {
+            letter-spacing: .5rem;
+            font-weight: 500;
+            font-size: 3.8rem;
         }
     }
 
     &__sub {
-        animation: moveInBottom .5s ease-in-out .5s;
+        animation: moveInBottom 0.5s ease-in-out 0.5s;
         animation-fill-mode: backwards;
         display: block;
         font-size: 3rem;
@@ -57,15 +55,27 @@ body {
     }
 }
 
-.heading-secondary{
-    
-    font-size: 2.7rem;
+.heading-secondary {
+    color: $color-tertiary;
+    font-size: 3.3rem;
     font-family: "Maven Pro", cursive;
-    letter-spacing: .3rem;
+    font-weight: 700;
+    letter-spacing: 0.2rem;
     text-transform: uppercase;
-    text-shadow: 0 0 .5rem rgba($color-black, 0.35);
-    transition: all .2s ease-out;
-    
+    transition: all 0.2s ease-out;
+}
+
+.heading-tertiary {
+    color: $color-secondary;
+    font-size: 2.4rem;
+    font-family: "Maven Pro", cursive;
+    font-weight: 600;
+    letter-spacing: 0.12rem;
+    text-transform: uppercase;
+}
+
+.form__label {
+    color: $color-dark-1;
 }
 
 .text {
@@ -73,34 +83,29 @@ body {
     width: 100%;
     &-box {
         &--1 {
-            &:hover .heading-secondary{
-                text-shadow: 0px 0px 0 rgb(29,199,108),
-                         -1px 1px 0 rgb(4,174,83),
-                         -2px 2px  0 rgb(-21,149,58),
-                         -3px 3px 2px rgba(0,0,0,0.31),
-                         -3px 3px 1px rgba(0,0,0,0.5),
-                         0px 0px 2px rgba(0,0,0,.2);
-                transform: skewX(-12deg) scale(1.01) translate(3px);
-            }
+            // &:hover .heading-secondary {
+            //     text-shadow: 0px 0px 0 rgb(29, 199, 108), -1px 1px 0 rgb(4, 174, 83), -2px 2px 0 rgb(-21, 149, 58),
+            //         -3px 3px 2px rgba(0, 0, 0, 0.31), -3px 3px 1px rgba(0, 0, 0, 0.5), 0px 0px 2px rgba(0, 0, 0, 0.2);
+            //     transform: skewX(-12deg) scale(1.01) translate(3px);
+            // }
 
-            &:hover {
-                transform: translateX(2.2rem) scale(1.03);
-                box-shadow: 0 0 1.5rem rgba($color-black, 0.25);
-            }
-            transition: all .3s ease-out;
-            box-shadow: 0 0 1rem rgba($color-black, 0.25);
+            // &:hover {
+            //     transform: translateX(2.2rem) scale(1.03);
+            //     box-shadow: 0 0 1.5rem rgba($color-dark-1, 0.25);
+            // }
+
+            // transition: all 0.3s ease-out;
+            box-shadow: 0 0 0.3rem rgba(0, 0, 0, 0.3);
             border-radius: 2px;
             margin: 0 auto;
-            padding: 2rem;
+            padding: 2rem 0;
             display: block;
-            height: 20rem;
-            width: 80rem;
-            background-color: $color-grey-light;
-            
+            background-color: $color-secondary;
+
             p {
                 font-size: 1.8rem;
             }
-            &:not(:last-child){
+            &:not(:last-child) {
                 margin-bottom: 8rem;
             }
         }

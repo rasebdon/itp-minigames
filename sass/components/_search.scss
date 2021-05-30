@@ -1,0 +1,38 @@
+.search {
+    background-color: $color-dark-3;
+    border-radius: 2px;
+    padding: 0 1rem;
+    color: $color-white;
+    width: 40rem;
+    @include respond(xl) {
+        width: 30rem;
+    }
+    @include respond(sm) {
+        width: 100%;
+        padding: 0;
+    }
+    input {
+        width: calc(40rem - 2rem - 3rem - 1rem);
+        padding: 0.5rem;
+        @include respond(xl) {
+            width: calc(30rem - 2rem - 3rem - 1rem);
+        }
+        @include respond(sm) {
+            width: calc(100% - 4rem);
+        }
+        background-color: $color-dark-3;
+        border: none;
+        outline: none;
+        color: white;
+        &::placeholder {
+            color: darken($color-white, 20%);
+            letter-spacing: 1px;
+        }
+    }
+    button {
+        width: 3rem;
+        background-color: $color-dark-3;
+        border: none;
+        color: darken($color-white, 10%);
+    }
+}

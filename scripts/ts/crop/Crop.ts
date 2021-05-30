@@ -437,10 +437,9 @@ class Crop {
         const input = document.querySelector("#" + crop.id + " .crop__input")! as HTMLInputElement;
         const submit = document.querySelector("#" + crop.id + " .crop__submit")! as HTMLButtonElement;
         this.form = document.querySelector("#" + crop.id + " .crop__form")! as HTMLFormElement;
-        submit.disabled = true;
+        submit.style.display = "none";
         submit.addEventListener("click", () => {
-            const cropped = this.submitCropped();
-            document.body.append(cropped);
+            this.submitCropped();
         });
         this.cropper = new Cropper(document.querySelector("#" + crop.id + " .crop__cropper")!);
         this.cropper.el.style.display = "none";
@@ -461,7 +460,7 @@ class Crop {
                     document.querySelector("#" + crop.id + " .crop__cropper-image-clipped")!,
                     this.cropperBox,
                     () => {
-                        submit.disabled = false;
+                        submit.style.display = "block";
                         this.setAspectRatio(ar);
                         this.cropper.el.style.display = "block";
                         this.cropper.resize(this.cropperImage);
@@ -518,6 +517,7 @@ class Crop {
 
         imageOut.toBlob((blob: Blob) => {
             const formDataImage = document.createElement("input");
+            formDataImage.style.display = "none";
             formDataImage.name = "file";
             formDataImage.type = "file";
 
@@ -528,8 +528,6 @@ class Crop {
             this.form.append(formDataImage)
             this.form.submit();
         }, 'image/jpeg', 1.0)
-
-        return imageOut;
     }
 
 }

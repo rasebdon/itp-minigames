@@ -363,10 +363,9 @@ var Crop = /** @class */ (function () {
         var input = document.querySelector("#" + crop.id + " .crop__input");
         var submit = document.querySelector("#" + crop.id + " .crop__submit");
         this.form = document.querySelector("#" + crop.id + " .crop__form");
-        submit.disabled = true;
+        submit.style.display = "none";
         submit.addEventListener("click", function () {
-            var cropped = _this.submitCropped();
-            document.body.append(cropped);
+            _this.submitCropped();
         });
         this.cropper = new Cropper(document.querySelector("#" + crop.id + " .crop__cropper"));
         this.cropper.el.style.display = "none";
@@ -383,7 +382,7 @@ var Crop = /** @class */ (function () {
                 crop.dataset.src = URL.createObjectURL(input.files[0]);
                 document.querySelector("#" + crop.id + " .crop__cropper-image").dataset.src = URL.createObjectURL(input.files[0]);
                 _this.cropperImage = new CropperImage(document.querySelector("#" + crop.id + " .crop__cropper-image"), document.querySelector("#" + crop.id + " .crop__cropper-image-clipped"), _this.cropperBox, function () {
-                    submit.disabled = false;
+                    submit.style.display = "block";
                     _this.setAspectRatio(ar);
                     _this.cropper.el.style.display = "block";
                     _this.cropper.resize(_this.cropperImage);
@@ -430,6 +429,7 @@ var Crop = /** @class */ (function () {
         ctx.drawImage(this.cropperImage.el, -(this.cropper.pos.rel.left - this.cropperImage.pos.rel.left) * this.cropperImage.imageWidth / this.cropperImage.el.width, -(this.cropper.pos.rel.top - this.cropperImage.pos.rel.top) * this.cropperImage.imageHeight / this.cropperImage.el.height);
         imageOut.toBlob(function (blob) {
             var formDataImage = document.createElement("input");
+            formDataImage.style.display = "none";
             formDataImage.name = "file";
             formDataImage.type = "file";
             var container = new DataTransfer();
@@ -439,7 +439,6 @@ var Crop = /** @class */ (function () {
             _this.form.append(formDataImage);
             _this.form.submit();
         }, 'image/jpeg', 1.0);
-        return imageOut;
     };
     return Crop;
 }());

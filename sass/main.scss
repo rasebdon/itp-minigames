@@ -7,13 +7,17 @@
 @import "base/typography";
 @import "base/utilities";
 
-@import "base/utilities";
-
 @import "components/genre";
-@import "components/card";
+@import "components/checkbox";
+@import "components/button";
+@import "components/form";
+@import "components/game-card";
+@import "components/nav";
+@import "components/search";
+@import "components/crop";
+@import "components/profile-picture";
 
-@import "layout/demo-heading";
-@import "layout/demo-games";
-@import "layout/demo-text";
-
-@import "pages/test";
+@import "pages/register";
+@import "pages/login";
+@import "pages/edit-profile";
+@import "pages/front-page";

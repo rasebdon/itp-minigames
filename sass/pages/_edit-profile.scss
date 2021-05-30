@@ -1,0 +1,58 @@
+.edit-profile {
+    animation: moveInBottom .5s ease-out;
+    margin: 5rem auto 0 auto;
+    @include respond(sm) {
+        margin-top: 1rem;
+    }
+    width: 100%;
+    padding: 4rem;
+    background-color: $color-white;
+    border-radius: 2px;
+
+    &:hover .heading-secondary {
+        text-shadow: 0px 0px 0 $color-tertiary, -1px 1px 0 $color-primary, -2px 2px 0 $color-secondary,
+            -3px 3px 2px rgba(0, 0, 0, 0.31), -3px 3px 1px rgba(0, 0, 0, 0.5), 0px 0px 2px rgba(0, 0, 0, 0.2);
+        transform: skewX(-12deg) scale(1.01) translate(9px);
+    }
+
+    .file__label {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+
+        @include respond(lg) {
+            margin-left: auto;
+            margin-right: auto;
+        }
+    }
+
+    &__profile-picture {
+        padding-bottom: 2.5rem;
+        border-bottom: solid 1px $color-dark-1;
+        margin-top: 2.5rem;
+        padding-top: 2.5rem;
+        border-top: solid 1px $color-dark-1;
+
+        .button {
+            margin-top: 1rem;
+            @include respond(lg) {
+                margin-left: auto;
+                margin-right: auto;
+                margin-bottom: 3rem;
+            }
+        }
+    }
+    &__change-data {
+        padding-bottom: 2.5rem;
+        border-bottom: solid 1px $color-dark-1;
+        margin-top: 2.5rem;
+    }
+    &__change-password {
+        margin-top: 2.5rem;
+    }
+
+    .form {
+        .button {
+            margin-top: 1rem;
+        }
+    }
+}

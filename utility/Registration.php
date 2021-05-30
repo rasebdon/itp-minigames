@@ -2,46 +2,50 @@
 if (isset($_GET['action'])) {
     if ($_GET['action'] == 'register') {
 ?>
-        <h1>Register</h1>
-        <form action="" method="post">
-            <div class="form-row">
-                <div class="form-group col-6">
-                    <label for="Email">Email</label>
-                    <input type="email" class="form-control" name="Email" id="" aria-describedby="emailHelpId" placeholder="" value="<?= $_SESSION['register']['Email'] ?? "" ?>">
-                    <small id="emailHelpId" class="form-text text-muted"><?= $_SESSION['registerErrors']['Email'] ?? '' ?></small>
-                </div>
-                <div class="form-group col-6">
-                    <label for="Username">Username</label>
-                    <input type="text" class="form-control" name="Username" id="" aria-describedby="helpId" placeholder="" value="<?= $_SESSION['register']['Username'] ?? "" ?>">
-                    <small id="helpId" class="form-text text-muted"><?= $_SESSION['registerErrors']['Username'] ?? '' ?></small>
-                </div>
+        <section class="register">
+            <h2 class="heading-secondary">Register</h2>
+            <div class="register__form">
+                <form class="form" method="post">
+                    <div class="form__group">
+                        <input class="form__input" id="registerEmail" type="email" name="Email" placeholder="Email" value="<?= $_SESSION['register']['Email'] ?? "" ?>">
+                        <label class="form__label" for="registerEmail">Email</label>
+                        <span class="form__separator"></span>
+                    </div>
+                    <small><?= $_SESSION['registerErrors']['Email'] ?? '' ?></small>
+                    <div class="form__group">
+                        <input class="form__input" id="registerUsername" type="text" name="Username" placeholder="Username" value="<?= $_SESSION['register']['Username'] ?? "" ?>">
+                        <label class="form__label" for="registerUsername">Username</label>
+                        <span class="form__separator"></span>
+                    </div>
+                    <small><?= $_SESSION['registerErrors']['Username'] ?? '' ?></small>
+                    <div class="form__group">
+                        <input class="form__input" id="registerFirstName" type="text" name="FirstName" placeholder="First Name" value="<?= $_SESSION['register']['FirstName'] ?? "" ?>">
+                        <label class="form__label" for="registerFirstName">First Name</label>
+                        <span class="form__separator"></span>
+                    </div>
+                    <small><?= $_SESSION['registerErrors']['FirstName'] ?? '' ?></small>
+                    <div class="form__group">
+                        <input class="form__input" id="registerLastName" type="text" name="LastName" placeholder="Last Name" value="<?= $_SESSION['register']['LastName'] ?? "" ?>">
+                        <label class="form__label" for="registerLastName">Last Name</label>
+                        <span class="form__separator"></span>
+                    </div>
+                    <small><?= $_SESSION['registerErrors']['LastName'] ?? '' ?></small>
+                    <div class="form__group">
+                        <input class="form__input" id="registerPassword" type="password" name="Password" placeholder="Password" value="<?= $_SESSION['register']['Password'] ?? "" ?>">
+                        <label class="form__label" for="registerPassword">Password</label>
+                        <span class="form__separator"></span>
+                    </div>
+                    <small><?= $_SESSION['registerErrors']['Password'] ?? '' ?></small>
+                    <div class="form__group">
+                        <input class="form__input" id="registerConfirmPassword" type="password" name="ConfirmPassword" placeholder="Confirm Password" value="<?= $_SESSION['register']['ConfirmPassword'] ?? "" ?>">
+                        <label class="form__label" for="registerConfirmPassword">Confirm Password</label>
+                        <span class="form__separator"></span>
+                    </div>
+                    <small><?= $_SESSION['registerErrors']['ConfirmPassword'] ?? '' ?></small>
+                    <button class="button button--primary" type="submit" name="RegisterSubmit">Submit</button>
+                </form>
             </div>
-            <div class="form-row">
-                <div class="form-group col-6">
-                    <label for="FirstName">FirstName</label>
-                    <input type="text" class="form-control" name="FirstName" id="" aria-describedby="helpId" placeholder="" value="<?= $_SESSION['register']['FirstName'] ?? "" ?>">
-                    <small id="helpId" class="form-text text-muted"><?= $_SESSION['registerErrors']['FirstName'] ?? '' ?></small>
-                </div>
-                <div class="form-group col-6">
-                    <label for="LastName">LastName</label>
-                    <input type="text" class="form-control" name="LastName" id="" aria-describedby="helpId" placeholder="" value="<?= $_SESSION['register']['LastName'] ?? "" ?>">
-                    <small id="helpId" class="form-text text-muted"><?= $_SESSION['registerErrors']['LastName'] ?? '' ?></small>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-6">
-                    <label for="Password">Password</label>
-                    <input type="password" class="form-control" name="Password" id="" placeholder="" value="<?= $_SESSION['register']['Password'] ?? "" ?>">
-                    <small id="helpId" class="form-text text-muted"><?= $_SESSION['registerErrors']['Password'] ?? '' ?></small>
-                </div>
-                <div class="form-group col-6">
-                    <label for="ConfirmPassword">ConfirmPassword</label>
-                    <input type="password" class="form-control" name="ConfirmPassword" id="" placeholder="" value="<?= $_SESSION['register']['ConfirmPassword'] ?? "" ?>">
-                    <small id="helpId" class="form-text text-muted"><?= $_SESSION['registerErrors']['ConfirmPassword'] ?? '' ?></small>
-                </div>
-            </div>
-            <button type="submit" name="RegisterSubmit" class="btn btn-primary">Submit</button>
-        </form>
+        </section>
 <?php
     }
 }
