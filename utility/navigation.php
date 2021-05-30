@@ -21,12 +21,16 @@
                         // Normal user components
                         if ($accessStrength >= UserType::User()->getAccessStrength()) {
                     ?>
-                            <li class="nav-side__list-item nav-side__list-item--edit-profile">
-                                <a class="button--secondary" href="index.php?action=editProfile">Edit Profile</a>
+                            <li class="nav-side__list-item nav-side__list-item--favorites">
+                                <a href="index.php?action=favorites" class="button--secondary">Favorites</a>
                             </li>
-                            <li class="nav-side__list-item nav-side__list-item--logout">
+                            <li class="nav-side__list-item nav-side__list-item--edit-profile">
+                                <a class="button--secondary" href="index.php?action=editProfile">Profile</a>
+                            </li>
+                            <li class="nav-side__list-item nav-side__list-item--logout inverted">
                                 <a class="button--secondary" href="index.php?action=logout">Logout</a>
                             </li>
+
                         <?php
                         }
                         // Game creator components
@@ -100,7 +104,7 @@
             // Normal user components
             if ($accessStrength >= UserType::User()->getAccessStrength()) {
         ?>
-                <li class="nav-top__list-item nav-top__list-item--logout">
+                <li class="nav-top__list-item nav-top__list-item--logout inverted">
                     <a class="button--secondary" href="index.php?action=logout">Logout</a>
                 </li>
             <?php

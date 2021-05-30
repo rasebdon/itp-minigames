@@ -80,3 +80,11 @@ if (isset($_POST['SubmitPassword'])) {
         $_SESSION['passwordErrors'] = Validation::$instance->getReturnErrors();
     }
 }
+
+
+if (isset($_POST['rateGame']) && isset($_SESSION['UserID'])) {
+    if (RatingService::$instance->insertRating(new Rating(UserService::$instance->getUser($_SESSION['UserID']), $_GET['id'], $_POST['rating-text'], date("Y-m-d H:i:s"), $_POST['rating-value']))) {
+        //do something for error handeling
+    }
+    header('Location: index.php?action=viewGame&id=' . $_GET['id']);
+}

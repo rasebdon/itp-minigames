@@ -126,10 +126,8 @@ require_once "forms/formHandler.php";
 
 <body>
     <?php
-    require_once "utility/navigation.php"
-    ?>
-    <a href="index.php?action=favorites" class="btn btn-success">View Favorites</a>
-    <?php
+    require_once "utility/navigation.php";
+    
     if ($showDebug) {
     ?>
         <div class="ps-3 mt-3 pt-2 border-top">
