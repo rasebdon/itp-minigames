@@ -1,6 +1,6 @@
 <nav class="nav-top">
     <div class="nav-top__static">
-        <div class="nav-top__toggle <?= $loggedIn ? "logged-in" : "" ?>">
+        <div class="nav-top__toggle">
             <input type="checkbox" class="nav-top__checkbox" id="nav-top-toggle">
             <label for="nav-top-toggle" class="nav-top__button">
                 <span class="nav-top__icon"></span>
@@ -36,7 +36,6 @@
                                 <a class="button--secondary" href="index.php?action=listCreatedGames">Your Games</a>
                             </li>
                         <?php
-
                         }
                         // Admin components
                         if ($accessStrength >= UserType::Admin()->getAccessStrength()) {
@@ -94,7 +93,6 @@
                 <button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
             </form>
         </li>
-
         <?php
         if ($loggedIn) {
             $accessStrength = $userType->getAccessStrength();
@@ -114,13 +112,9 @@
                     <a class="button--secondary" href="index.php?action=listCreatedGames">Your Games</a>
                 </li>
             <?php
-
             }
             // Admin components
             if ($accessStrength >= UserType::Admin()->getAccessStrength()) {
-            ?>
-
-            <?php
             }
         } else {
             // if someone isn´t logged in
@@ -134,6 +128,5 @@
         <?php
         }
         ?>
-
     </ul>
 </nav>
