@@ -1,6 +1,9 @@
 .register {
     animation: moveInBottom .5s ease-out;
     margin: 5rem auto 0 auto;
+    @include respond(sm) {
+        margin-top: 1rem;
+    }
     width: 100%;
     padding: 4rem;
     background-color: $color-white;

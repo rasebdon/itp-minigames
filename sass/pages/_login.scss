@@ -1,6 +1,9 @@
 .login {
     animation: moveInBottom 0.5s ease-out;
     margin: 5rem auto 0 auto;
+    @include respond(sm) {
+        margin-top: 1rem;
+    }
     width: 70%;
     @include respond(xxl) {
         width: 70%;

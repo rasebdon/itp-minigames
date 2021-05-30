@@ -17,7 +17,7 @@
         width: 100%;
         transition: all 0.7s ease;
         backface-visibility: hidden;
-        box-shadow: 0 0 1rem rgba($color-black, 0.24);
+        box-shadow: 0 0 1rem rgba($color-dark-1, 0.24);
 
         &--front {
             background-color: $color-grey-light;
@@ -31,14 +31,20 @@
 
     &:hover &__side--front {
         transform: rotateY(-180deg) scale(1.05);
+        @include respond(sm) {
+            transform: rotateY(-180deg) scale(1);
+        }
         // transform: scale(1.05);
-        box-shadow: 0 0 2rem rgba($color-black, 0.24);
+        box-shadow: 0 0 2rem rgba($color-dark-1, 0.24);
     }
-
+    
     &:hover &__side--back {
         transform: rotateY(0) scale(1.05);
+        @include respond(sm) {
+            transform: rotateY(0) scale(1);
+        }
         // transform: rotateY(180deg) scale(1.05);
-        box-shadow: 0 0 2rem rgba($color-black, 0.24);
+        box-shadow: 0 0 2rem rgba($color-dark-1, 0.24);
     }
 
     &__image {
@@ -113,7 +119,7 @@
         top: 4rem;
         .checked {
             color: $color-yellow-light;
-            text-shadow: 0 0 1rem rgba($color-black, 0.24);
+            text-shadow: 0 0 1rem rgba($color-dark-1, 0.24);
         }
     }
 
