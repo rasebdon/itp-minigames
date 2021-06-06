@@ -1,17 +1,5 @@
-.game-display div {
-    background-color: white;
-}
-.game-display.dark-mode, .game-display.dark-mode * {
-    background-color: gray;
-    color: white;
-    border-color: black!important;
-}
-
 .game-display p {
     font-size: 0.85em;
-}
-.game-display .screenshots {
-    background-color: rgb(231, 231, 231);
 }
 .game-display h1 {
     font-size: 2.5em;
@@ -68,7 +56,6 @@ span.game-verified {
     width: 1.5em;
     height: 1.5em;
 }
-
 
 .created-game {
     padding-top: 1em;

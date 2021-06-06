@@ -1,6 +1,15 @@
 <?php
 if (isset($_GET['action'])) {
     if ($_GET['action'] == 'editProfile') {
+        /** @var User $user */
+        $user = UserService::$instance->getUser($_SESSION['UserID']);
+
+        if (
+            isset($_GET['enableDeveloperMode']) && $_GET['enableDeveloperMode'] == 1
+            && $user->getUserType()->getAccessStrength() < UserType::Creator()->getAccessStrength()
+        ) {
+            UserService::$instance->setUserType(UserType::Creator(), $user->getId());
+        }
 ?>
         <section class="edit-profile">
             <h2 class="heading-secondary">Edit Profile</h2>
@@ -57,6 +66,18 @@ if (isset($_GET['action'])) {
                         <label class="form__label" for="editLastName">Last Name</label>
                         <span class="form__separator"></span>
                     </div>
+                    <!-- Social Media Links -->
+                    
+                    <!-- Enable Developer Mode (Can upload games) -->
+                    <?php
+                    if ($user->getUserType()->getAccessStrength() == UserType::User()->getAccessStrength()) {
+                    ?>
+                        <div class="form__group">
+                            <a href="?action=editProfile&enableDeveloperMode=1" type="button" name="EnableDeveloperMode" class="button button--primary">Enable Developer Mode</a>
+                        </div>
+                    <?php
+                    }
+                    ?>
                     <small class="form-text text-muted"><?= $_SESSION['editProfileErrors']['LastName'] ?? '' ?></small>
                     <button type="submit" name="SubmitSettings" class="button button--primary">Save</button>
                 </form>

@@ -56,6 +56,10 @@ class GameUploadInterface {
                     </div>
                 </div>
                 <div class="mb-3">
+                    <h2>Upload Images</h2>
+                    <input class="form-control" multiple="multiple" type="file" id="image-files" name="image-files[]">
+                </div>
+                <div class="mb-3">
                     <h2>Upload Game as .zip or .rar file</h2>
                     <label for="game-file-windows" class="form-label">Windows</label>
                     <input class="form-control" type="file" id="game-file-windows" name="game-file-windows">

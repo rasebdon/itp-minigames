@@ -23,7 +23,10 @@ class GameEditInterface {
                 if(isset($_GET['id']) && $_GET['id'] != null &&
                 isset($_SESSION['UserID']) && $_SESSION['UserID'] != null &&
                 $rightToEdit) {
-                    GameService::$instance->editGame();
+                    if(isset($_GET['deleteGame']))
+                        GameService::$instance->deleteGame($_GET['id']);
+                    else
+                        GameService::$instance->editGame();
                 }
                 break;
         }
@@ -81,7 +84,8 @@ class GameEditInterface {
                     <input class="form-control" type="file" id="game-file-mac" name="game-file-mac">
                 </div>
                 <input type="hidden" name="game-id" value="<?=$game->getId()?>">
-                <button type="submit" class="btn btn-primary">Edit</button>
+                <button type="submit" class="button button--primary w-25">Save</button>
+                <a href="index.php?action=editGame&id=<?=$game->getId()?>&deleteGame=1" type="button" class="button button--primary w-25 mt-3">Delete</a>
             </form>
         <?php
     }    

@@ -65,8 +65,8 @@ class GameList {
                         <span class="playcount">Played times: <?= $game->getPlayCount(); ?></span>
                     </div>
                     <div class="col-12">
-                        <a class="btn btn-primary" href="index.php?action=editGameInterface&id=<?=$game->getId()?>">Edit</a>
-                        <a class="btn btn-primary" href="index.php?action=viewGameDetails&id=<?=$game->getId()?>">Analytics</a>
+                        <a class="button button--primary" href="index.php?action=editGameInterface&id=<?=$game->getId()?>">Edit</a>
+                        <!-- <a class="btn btn-primary" href="index.php?action=viewGameDetails&id=<?=$game->getId()?>">Analytics</a> -->
                     </div>
                 </div>
             </div>
