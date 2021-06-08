@@ -864,6 +864,8 @@ a.button {
   padding: 4rem;
   background-color: #F3F3F3;
   border-radius: 2px; }
+  .edit-profile .heading-secondary {
+    text-align: center; }
   @media only screen and (max-width: 575px) {
     .edit-profile {
       margin-top: 1rem; } }
