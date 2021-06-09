@@ -66,7 +66,7 @@ class GameList {
                     </div>
                     <div class="col-12">
                         <a class="button button--primary" href="index.php?action=editGameInterface&id=<?=$game->getId()?>">Edit</a>
-                        <!-- <a class="btn btn-primary" href="index.php?action=viewGameDetails&id=<?=$game->getId()?>">Analytics</a> -->
+                        <a class="button button--primary" href="index.php?action=editGame&id=<?=$game->getId()?>&deleteGame=1">Delete</a>
                     </div>
                 </div>
             </div>

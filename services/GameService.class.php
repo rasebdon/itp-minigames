@@ -218,17 +218,31 @@ class GameService
         if ($game == null)
             return;
 
-        $dirPath = "resources/games/" . str_replace(' ', '', $game->getTitle());
+        $gamesPath = "resources/games/" . str_replace(' ', '', $game->getTitle());
+        $screenshotsPath = "resources/images/" . str_replace(' ', '', $game->getTitle());
 
-        // Delete Games
+
+        // Remove from Database
+        $screenshots = $game->getScreenshots();
+        for ($i=0; $i < sizeof($screenshots); $i++) { 
+            $this->db->query("DELETE FROM picture WHERE SourcePath = ?", $screenshots[$i]);
+        } 
+
+        $this->db->query("DELETE FROM game WHERE GameID = ?", $id);
+
+        // Delete game folders
         try {
-            $this->deleteGameFolder($dirPath);
+            $this->deleteGameFolder($gamesPath);
         } catch (Exception $e) {
             // echo $e->getMessage();
         }
 
-        // Remove from Database
-        $this->db->query("DELETE FROM game WHERE GameID = ?", $id);
+        // Delete pictures folder
+        try {
+            $this->deleteGameFolder($screenshotsPath);
+        } catch (Exception $e) {
+            // echo $e->getMessage();
+        }
     }
 
     function deleteGameFolder(string $dirPath)
@@ -438,6 +452,17 @@ class GameService
             }
         }
 
+        // Check for uploaded screenshots
+
+        // Re array multiple file upload
+        $images = $this->ReArrayFiles($_FILES['image-files']);
+
+        // Add screenshots
+        for ($i = 0; $i < sizeof($images); $i++) {
+            $this->addScreenshot($gameID, $images[$i]);
+        }
+
+
         // Check which games were uploaded and update platforms
         // // Insert platforms
         // for ($i=0; $i < sizeof($platforms); $i++) { 
@@ -533,14 +558,15 @@ class GameService
 
         // Re array multiple file upload
         $files = $this->ReArrayFiles($_FILES['image-files']);
-        var_dump($files);
+
         // Add screenshots
         for ($i = 0; $i < sizeof($files); $i++) {
             $this->addScreenshot($gameID, $files[$i]);
         }
 
         // Also auto redirect possible
-        echo "<h3>Game upload succesful!</h3><a class='btn btn-primary' href='index.php?action=viewGame&id=$gameID'>View Game</a>";
+        echo "<script>location.replace('index.php?action=viewGame&id=$gameID');</script>";
+        // echo "<h3>Game upload succesful!</h3><a class='btn btn-primary' href='index.php?action=viewGame&id=$gameID'>View Game</a>";
     }
 
     function ReArrayFiles(&$file_post)
@@ -593,6 +619,13 @@ class GameService
         $gameData = $this->db->fetchAll();
 
         return GameService::$instance->getGameArrayFromData($gameData);
+    }
+
+    function deleteScreenshot($screenshotPath) {
+        // Remove db entry
+        $this->db->query("DELETE FROM picture WHERE SourcePath = ?", $screenshotPath);
+        // Delete file
+        unlink($screenshotPath);
     }
 }
 
