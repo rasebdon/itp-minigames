@@ -86,18 +86,6 @@ class GameRenderer
 
                 </div>
                 <!-- RATING -->
-                <?php
-
-                /*
-                *old rating code :
-                for ($i=0; $i < 5; $i++) { 
-                    echo '<span class="fa fa-star';
-                    if($i < (int)$game->getRating())
-                    echo ' checked';
-                    echo '"></span>';
-                }
-                */
-                ?>
                 <span class="rating"><?php printf("%.2f/5", $game->getRating()); ?></span>
 
                 <!-- Favorites Buton-->
@@ -112,7 +100,7 @@ class GameRenderer
                     } else {
                     ?>
                         <form action="index.php?action=viewGame&id=<?= $_GET['id'] ?>" method="POST" class="mb-1 mt-1">
-                            <button type="submit" class="btn btn-primary" value="<?= $_SESSION['UserID'] ?>" name="addFavorite">Add to Favorites</button>
+                            <button type="submit" class="button button--primary" value="<?= $_SESSION['UserID'] ?>" name="addFavorite">Add to Favorites</button>
                         </form>
                 <?php
                     }
@@ -125,6 +113,7 @@ class GameRenderer
                     <div class="carousel-inner">
                         <?php
                         $screenshots = $game->getScreenshots();
+
                         // Add carousel items with screenshots as src
                         for ($i = 0; $i < sizeof($screenshots); $i++) {
                         ?>
@@ -184,7 +173,7 @@ class GameRenderer
                             </span>
                         </div>
                         <div class="col-6 text-end">
-                            <a class="btn btn-download" href="<?= "resources/games/" . urlencode(str_replace(' ', '', $game->getTitle())) . "/" . $game->getVersion() . "_" . Platform::Windows()->name . ".zip" ?>">
+                            <a class="button button--primary" href="<?= "resources/games/" . urlencode(str_replace(' ', '', $game->getTitle())) . "/" . $game->getVersion() . "_" . Platform::Windows()->name . ".zip" ?>">
                                 Download
                             </a>
                         </div>
@@ -201,7 +190,7 @@ class GameRenderer
                             </span>
                         </div>
                         <div class="col-6 text-end">
-                            <a class="btn btn-download" href="<?= "resources/games/" . urlencode(str_replace(' ', '', $game->getTitle())) . "/" . $game->getVersion() . "_" . Platform::Mac()->name . ".zip" ?>">
+                            <a class="button button--primary" href="<?= "resources/games/" . urlencode(str_replace(' ', '', $game->getTitle())) . "/" . $game->getVersion() . "_" . Platform::Mac()->name . ".zip" ?>">
                                 Download
                             </a>
                         </div>
@@ -218,7 +207,7 @@ class GameRenderer
                             </span>
                         </div>
                         <div class="col-6 text-end">
-                            <a class="btn btn-download" href="<?= "resources/games/" . urlencode(str_replace(' ', '', $game->getTitle())) . "/" . $game->getVersion() . "_" . Platform::Linux()->name . ".zip" ?>">
+                            <a class="button button--primary" href="<?= "resources/games/" . urlencode(str_replace(' ', '', $game->getTitle())) . "/" . $game->getVersion() . "_" . Platform::Linux()->name . ".zip" ?>">
                                 Download
                             </a>
                         </div>
@@ -361,7 +350,7 @@ class GameRenderer
                     </div>
                     <form action="index.php?action=rateGame&id=<?= $game->getId() ?>" method="POST">
                         <textarea name="rating-text" id="rating-text" class="form-control" cols="30" rows="3" placeholder="Type some feedback"></textarea>
-                        <button class="btn-primary btn mt-1" name="rateGame">Submit</button>
+                        <button class="button button--primary mt-2" name="rateGame">Submit</button>
                         <input type="number" name="rating-value" id="rating-value" value="0" hidden>
                     </form>
                 </div>

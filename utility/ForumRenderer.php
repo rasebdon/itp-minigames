@@ -61,10 +61,10 @@ class ForumRenderer
                     background-position: center;">
           </div>
 
-        <div class="forum-header custom-shadow col-md-6 px-0">
+        <div class="forum-header col-md-6 px-0">
             <h1 class="display-4"><?= $game->getTitle()?></h1>  
             <p class="mb-0 forum-linktogame">
-                <a href="index.php?action=viewGame&id=<?= $game->getId()?>" class="custom-shadow">visit site...</a>
+                <a href="index.php?action=viewGame&id=<?= $game->getId()?>" class="button button--primary">View Game</a>
             </p>   
         </div>
 

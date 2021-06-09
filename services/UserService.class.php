@@ -172,6 +172,10 @@ class UserService
     {
         $this->db->query("UPDATE user SET Password = ? WHERE UserID = ?", password_hash($password, PASSWORD_DEFAULT), $uid);
     }
+
+    public function setUserType(UserType $userType, int $uid) {
+        $this->db->query("UPDATE user SET Usertype = ? WHERE UserID = ?", $userType->getTypeString(), $uid);
+    }
 }
 
 // INIT SERVICE

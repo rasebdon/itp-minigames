@@ -57,36 +57,8 @@ if (isset($_COOKIE['sessionCookie'])) {
     $userType = $user->getUserType();
 }
 
-/// DEBUGGING
-if ($showDebug) {
-    // Debug login
-    if (isset($_GET['debugLogin'])) {
-        $_SESSION['debugLogin'] = $_GET['debugLogin'];
-    }
-    if (isset($_SESSION['debugLogin'])) {
-        $loggedIn = $_SESSION['debugLogin'];
-        // Debug role (Only available if user is logged in)
-        if ($loggedIn) {
-            if (isset($_GET['debugRole'])) {
-                $_SESSION['debugRole'] = $_GET['debugRole'];
-            }
-            if (isset($_SESSION['debugRole'])) {
-                $userType = new UserType($_SESSION['debugRole']);
-            } else {
-                $userType = new UserType("user");
-            }
-
-            //print current user 
-            if (isset($user)) {
-                echo "<br>" . $user->getUsername();
-            }
-        }
-    }
-    // Print debugging status
-    echo "DEBUGGING ENABLED<br>LOGGED IN: <b>" . ($loggedIn ? "YES" : "NO") . "</b><br>ROLE: <b>" . (($userType != null) ? $userType->getTypeString() : "none") . "</b>";
-}
-
 require_once "forms/formHandler.php";
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
