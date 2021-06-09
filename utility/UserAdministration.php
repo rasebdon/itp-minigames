@@ -11,7 +11,7 @@ class UserAdministration
         if (isset($_GET['deleteUser'])) {
             $userID = $_GET['deleteUser'];
             $userToDelete = UserService::$instance->getUser($userID);
-            if($userToDelete != null) {
+            if ($userToDelete != null) {
                 UserService::$instance->deleteUser($userID);
                 if (ProfilePictureService::$instance->getDefaultPicture()->getId() != $userToDelete->getFK_PictureID()) {
                     ProfilePictureService::$instance->deletePicture($userToDelete->getFK_PictureID());
@@ -162,7 +162,7 @@ class UserAdministration
                 </form>
             </div>
             <div class="user-administration-search mb-2 text-center">
-                <a class="btn btn-success" type="button" href="/?action=showUsers&offset=0&amount=20">Show all</a>
+                <a class="btn btn-success" type="button" href="index.php?action=showUsers&offset=0&amount=20">Show all</a>
             </div>
             <div class="user-administration-search mb-5 mt-3 text-center">
                 <h2>Showing results for "<?= $searchName ?>"</h2>
@@ -257,6 +257,9 @@ class UserAdministration
                 <div class="col-10">
                     <p class="h1"><?= $user->getFirstName() ?></p>
                 </div>
+            </div>
+            <div class="col-12 row">
+                <a href="<?= "?action=showUsers&amount=20&offset=0&deleteUser=" . $user->getId() ?>" class="button button--primary w-25">Delete user and games</a>
             </div>
         </div>
 <?php

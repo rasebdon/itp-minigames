@@ -22,7 +22,7 @@ class GameService
             WHERE FK_UserID = ?;",
             $userID
         );
-      
+
         $gamesData = $this->db->fetchAll();
 
         return $this->getGameArrayFromData($gamesData);
@@ -43,6 +43,78 @@ class GameService
         return GameService::$instance->getGameFromData($gameData);
     }
 
+    function getScreenshots($gameID)
+    {
+        $screenshots = array();
+
+        $this->db->query("SELECT SourcePath
+        FROM picture, picture_game
+        WHERE picture.PictureID = picture_game.FK_PictureID
+        AND picture_game.FK_GameID = ?", $gameID);
+
+        $result = $this->db->fetchAll();
+
+        for ($i=0; $i < sizeof($result); $i++) { 
+            $screenshots[$i] = $result[$i]['SourcePath'];
+        }
+
+        return $screenshots;
+    }
+
+    function addScreenshot($gameID, $file)
+    {
+        $game = $this->getGame($gameID);
+
+        // Create games dir if it does not exist
+        $basePath = "resources/images/games/";
+        if (!is_dir($basePath))
+            mkdir($basePath);
+
+        // Try to create folder for screenshots of game
+        $path = $basePath . str_replace(' ', '', $game->getTitle());
+
+        if (!is_dir($path))
+            mkdir($path);
+        $path .= "/";
+
+        $pathInfo = pathinfo($file["name"]);
+        // Generate screenshot name
+        $files = scandir($path);
+        $name = "image_" . (count($files) - 2);
+        // Set target copy path
+        $target_file = $path . $name . "." . $pathInfo['extension'];
+        $uploadOk = true;
+        $mimeType = mime_content_type($file["tmp_name"]);
+
+        // Check file size
+        if ($file["size"] > 500000) {
+            echo "Sorry, your image is too large.";
+            $uploadOk = false;
+        }
+
+        // Allow certain file formats
+        if (
+            $mimeType != 'image/jpeg' && $mimeType != 'image/png'
+        ) {
+            echo "Sorry, only jpg/jpeg or png files are allowed.";
+            $uploadOk = false;
+        }
+
+        // Check if $uploadOk is set to 0 by an error
+        if (!$uploadOk) {
+            echo "Sorry, your image was not uploaded.";
+            exit();
+            // if everything is ok, try to upload file
+        } else if (!move_uploaded_file($file["tmp_name"], $target_file)) {
+            echo "Sorry, there was an error uploading your image.";
+            exit();
+        }
+
+        // Add database entries
+        $this->db->query("INSERT INTO picture (SourcePath, ThumbnailPath) VALUES ( ? , ? )", $target_file, $target_file);
+        $this->db->query("INSERT INTO picture_game (FK_GameID, FK_PictureID) VALUES ( ? , ? )", $gameID, $this->db->lastInsertID());
+    }
+
     function getGameFromData($gameData)
     {
         // Null reference catch
@@ -52,6 +124,7 @@ class GameService
         $user = UserService::$instance->getUser($gameData['FK_UserID']);
         $platforms = $this->getPlatforms($gameData['GameID']);
         $genres = GameService::$instance->getGameGenres($gameData['GameID']);
+        $screenshots = GameService::$instance->getScreenshots($gameData['GameID']);
 
         return new Game(
             $gameData['GameID'],
@@ -61,7 +134,7 @@ class GameService
             $platforms,
             $gameData['Version'],
             $gameData['Rating'] == null ? 0 : $gameData['Rating'],
-            array(), // TODO !
+            $screenshots,
             $gameData['PlayCount'],
             $gameData['Verified'],
             $genres
@@ -125,12 +198,10 @@ class GameService
         if ($all) {
             $query = $baseQuery . " ORDER BY GameID ASC LIMIT ?, ?";
             $this->db->query($query, $offset, $amount);
-        }
-        else if ($verified) {
+        } else if ($verified) {
             $query = $baseQuery . " WHERE Verified = 1 ORDER BY GameID ASC LIMIT ?, ?";
             $this->db->query($query, $offset, $amount);
-        }
-        else {
+        } else {
             $query = $baseQuery . " WHERE Verified = 0 ORDER BY GameID ASC LIMIT ?, ?";
             $this->db->query($query, $offset, $amount);
         }
@@ -147,17 +218,31 @@ class GameService
         if ($game == null)
             return;
 
-        $dirPath = "resources/games/" . str_replace(' ', '', $game->getTitle());
+        $gamesPath = "resources/games/" . str_replace(' ', '', $game->getTitle());
+        $screenshotsPath = "resources/images/" . str_replace(' ', '', $game->getTitle());
 
-        // Delete Games
+
+        // Remove from Database
+        $screenshots = $game->getScreenshots();
+        for ($i=0; $i < sizeof($screenshots); $i++) { 
+            $this->db->query("DELETE FROM picture WHERE SourcePath = ?", $screenshots[$i]);
+        } 
+
+        $this->db->query("DELETE FROM game WHERE GameID = ?", $id);
+
+        // Delete game folders
         try {
-            $this->deleteGameFolder($dirPath);
+            $this->deleteGameFolder($gamesPath);
         } catch (Exception $e) {
             // echo $e->getMessage();
         }
 
-        // Remove from Database
-        $this->db->query("DELETE FROM game WHERE GameID = ?", $id);
+        // Delete pictures folder
+        try {
+            $this->deleteGameFolder($screenshotsPath);
+        } catch (Exception $e) {
+            // echo $e->getMessage();
+        }
     }
 
     function deleteGameFolder(string $dirPath)
@@ -310,7 +395,8 @@ class GameService
         }
     }
 
-    function editGame() {
+    function editGame()
+    {
         $gameID = $_POST['game-id'];
         $oldData = GameService::$instance->getGame($gameID);
 
@@ -328,15 +414,15 @@ class GameService
 
         $sourcePath = "resources/games/" . str_replace(' ', '', $oldData->getTitle()) . "/";
 
-        if(isset($windowsFile) && $windowsFile != null && $windowsFile['error'] == 0) {
+        if (isset($windowsFile) && $windowsFile != null && $windowsFile['error'] == 0) {
             $this->uploadGameFile($windowsFile, $sourcePath, $_POST['game-version'], Platform::Windows());
             $platforms[sizeof($platforms)] = Platform::Windows()->id;
         }
-        if(isset($linuxFile) && $linuxFile != null && $linuxFile['error'] == 0) {
+        if (isset($linuxFile) && $linuxFile != null && $linuxFile['error'] == 0) {
             $this->uploadGameFile($linuxFile, $sourcePath, $_POST['game-version'], Platform::Linux());
             $platforms[sizeof($platforms)] = Platform::Linux()->id;
         }
-        if(isset($macFile) && $macFile != null && $macFile['error'] == 0) {
+        if (isset($macFile) && $macFile != null && $macFile['error'] == 0) {
             $this->uploadGameFile($macFile, $sourcePath, $_POST['game-version'], Platform::Mac());
             $platforms[sizeof($platforms)] = Platform::Mac()->id;
         }
@@ -345,21 +431,37 @@ class GameService
         $now = $now->format("Y-m-d H:m:s");
 
         // Update game data
-        $this->db->query("UPDATE `game`
+        $this->db->query(
+            "UPDATE `game`
         SET `Description` = ?, `Version` = ?, `UpdateDate` = ?
-        WHERE `game`.`GameID` = ?", $_POST['game-description'],
-        $_POST['game-version'], $now, $gameID);
+        WHERE `game`.`GameID` = ?",
+            $_POST['game-description'],
+            $_POST['game-version'],
+            $now,
+            $gameID
+        );
 
         // Update genres
-        if(isset($_POST['game-genres'])) {
+        if (isset($_POST['game-genres'])) {
             // First delete genres
             $this->db->query("DELETE FROM game_genre WHERE FK_GameID = ?", $gameID);
             // Insert genres
             $genres = $_POST['game-genres'];
-            for ($i=0; $i < sizeof($genres); $i++) { 
+            for ($i = 0; $i < sizeof($genres); $i++) {
                 $this->db->query("INSERT INTO game_genre VALUES ( ? , ? )", $gameID, $genres[$i]);
             }
         }
+
+        // Check for uploaded screenshots
+
+        // Re array multiple file upload
+        $images = $this->ReArrayFiles($_FILES['image-files']);
+
+        // Add screenshots
+        for ($i = 0; $i < sizeof($images); $i++) {
+            $this->addScreenshot($gameID, $images[$i]);
+        }
+
 
         // Check which games were uploaded and update platforms
         // // Insert platforms
@@ -368,10 +470,11 @@ class GameService
         // }
 
         // Also auto redirect possible
-        echo "<h3>Game edit succesful!</h3><a class='btn btn-primary' href='index.php?action=viewGame&id=$gameID'>View Game</a>";
+        echo "<script>location.replace('index.php?action=viewGame&id=$gameID');</script>";
     }
 
-    function uploadGame() {
+    function uploadGame()
+    {
         $userID = $_SESSION['UserID'];
 
         // Upload game
@@ -453,27 +556,57 @@ class GameService
             $this->db->query("INSERT INTO game_platform VALUES ( ? , ? )", $gameID, $platforms[$i]);
         }
 
+        // Re array multiple file upload
+        $files = $this->ReArrayFiles($_FILES['image-files']);
+
+        // Add screenshots
+        for ($i = 0; $i < sizeof($files); $i++) {
+            $this->addScreenshot($gameID, $files[$i]);
+        }
+
         // Also auto redirect possible
-        echo "<h3>Game upload succesful!</h3><a class='btn btn-primary' href='index.php?action=viewGame&id=$gameID'>View Game</a>";
+        echo "<script>location.replace('index.php?action=viewGame&id=$gameID');</script>";
+        // echo "<h3>Game upload succesful!</h3><a class='btn btn-primary' href='index.php?action=viewGame&id=$gameID'>View Game</a>";
     }
 
+    function ReArrayFiles(&$file_post)
+    {
+        $isMulti = is_array($file_post['name']);
+        $file_count = $isMulti ? count($file_post['name']) : 1;
+        $file_keys = array_keys($file_post);
 
-    function insertRating($gameid, $userid, $rating){
+        $file_ary = [];
+        for ($i = 0; $i < $file_count; $i++)
+            foreach ($file_keys as $key)
+                if ($isMulti)
+                    $file_ary[$i][$key] = $file_post[$key][$i];
+                else
+                    $file_ary[$i][$key] = $file_post[$key];
+
+        return $file_ary;
+    }
+
+    function insertRating($gameid, $userid, $rating)
+    {
         $this->db->query(
-            "REPLACE INTO rating (FK_UserID, FK_GameID, Rating) VALUES (?, ?, ?)", $userid, $gameid, $rating
+            "REPLACE INTO rating (FK_UserID, FK_GameID, Rating) VALUES (?, ?, ?)",
+            $userid,
+            $gameid,
+            $rating
         );
     }
 
-    function getRatingByStars($gameid, $stars){
-        if($stars > 5 || $stars < 1){
+    function getRatingByStars($gameid, $stars)
+    {
+        if ($stars > 5 || $stars < 1) {
             return;
         }
         $this->db->query("SELECT COUNT(*) FROM rating WHERE FK_GameID = ? AND Rating = ?", $gameid, $stars);
 
-        return $this->db->fetchAll()[0]['COUNT(*)']; 
+        return $this->db->fetchAll()[0]['COUNT(*)'];
     }
 
-    
+
 
     function getFavorites($userID)
     {
@@ -488,6 +621,12 @@ class GameService
         return GameService::$instance->getGameArrayFromData($gameData);
     }
 
+    function deleteScreenshot($screenshotPath) {
+        // Remove db entry
+        $this->db->query("DELETE FROM picture WHERE SourcePath = ?", $screenshotPath);
+        // Delete file
+        unlink($screenshotPath);
+    }
 }
 
 GameService::$instance = new GameService(Database::$instance);

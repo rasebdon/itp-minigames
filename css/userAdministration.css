@@ -4,9 +4,6 @@
     margin-bottom: 2em;
 }
 
-.user-administration-list > .user-administration-list-item:nth-child(even) {
-    background-color: rgb(205, 241, 255);
-}
 .user-administration-list > .user-administration-list-item {
     padding: 0.5em 0 0.5em 0;
     border: rgb(192, 192, 192) solid 1px;
