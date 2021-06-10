@@ -94,27 +94,18 @@ class FrontPage
                                             for ($i = 0; $i < sizeof($screenshots); $i++) {
                                             ?>
                                                 <div class="carousel-item<?= $i === 0 ? " active" : "" ?>">
-                                                    <img src="<?= $screenshots[$i] ?>" class="d-block w-100" alt="screenshot<?= $i ?>">
+                                                    <img src="<?= $screenshots[$i] ?>" class="carousel-img" alt="screenshot<?= $i ?>">
                                                 </div>
                                             <?php
                                             }
                                             if (sizeof($screenshots) == 0) {
                                             ?>
                                                 <div class="carousel-item<?= $i === 0 ? " active" : "" ?>">
-                                                    <img src="resources/images/placeholder/placeholder_thumb.jpg" class="carousel-img d-block w-100" alt="image_<?= $i ?>">
+                                                    <img src="resources/images/placeholder/placeholder_thumb.jpg" class="carousel-img" alt="image_<?= $i ?>">
                                                 </div>
                                             <?php
                                             }
                                             ?>
-                                            <!-- <div class="carousel-item active">
-                                                <img class="carousel-img" src="https://cdn.akamai.steamstatic.com/steam/apps/848450/ss_5bc21362aa200d08fe25203cbe50debedd8f11a3.1920x1080.jpg?t=1621298712" class="d-block w-100" alt="...">
-                                            </div>
-                                            <div class="carousel-item">
-                                                <img class="carousel-img" src="https://cdn.akamai.steamstatic.com/steam/apps/848450/ss_69bdcf6ce29ba61650f0b2551a3494af67be09ac.1920x1080.jpg?t=1621298712" class="d-block w-100" alt="...">
-                                            </div>
-                                            <div class="carousel-item">
-                                                <img class="carousel-img" src="https://cdn.akamai.steamstatic.com/steam/apps/848450/ss_9e3d6ab0db5442f7bcbeb923da47d3a80023f50f.1920x1080.jpg?t=1621298712" class="d-block w-100" alt="...">
-                                            </div> -->
                                         </div>
                                         <button class="carousel-control-prev" type="button" data-bs-target="#carouselFrontPage<?= $game->getId() ?>" data-bs-slide="prev">
                                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>

@@ -128,7 +128,7 @@ body {
 .gradient-primary--reverse {
   background-image: linear-gradient(to left, #3c1874, #de354c); }
 
-.flex {
+.flex-container {
   display: flex !important; }
 
 .genre {
@@ -145,6 +145,7 @@ body {
 .checkbox {
   appearance: none;
   background-color: #fafafa;
+  border: 1px solid darkgray;
   padding: .9rem;
   display: inline-block;
   position: relative;
@@ -224,9 +225,10 @@ a.button {
 
 .form {
   display: block; }
-  .form__group:not(:last-child) {
-    margin-bottom: 0.5rem;
+  .form__group {
     position: relative; }
+  .form__group:not(:last-child) {
+    margin-bottom: 0.5rem; }
   .form__input {
     margin-top: 4rem;
     width: 100%;
@@ -254,10 +256,17 @@ a.button {
     position: absolute;
     top: -3rem;
     transition: all 0.3s; }
+    .form__label--file {
+      margin-left: 2rem;
+      display: block; }
   .form__input:placeholder-shown ~ .form__label {
     opacity: 0;
     visibility: hidden;
     transform: translateY(4rem); }
+  .form textarea.form__input {
+    height: 25rem; }
+  .form input.form-control {
+    font-size: 1.8rem; }
 
 .file {
   display: none; }
@@ -783,6 +792,69 @@ a.button {
   border-radius: 2px;
   border: solid 2px #3c1874; }
 
+.carousel-inner,
+.carousel-item {
+  height: 100%;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px; }
+
+.carousel-img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%; }
+
+.carousel__ui-container {
+  position: absolute;
+  left: 50%;
+  bottom: 2rem;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: space-evenly;
+  width: 70%; }
+  @media only screen and (max-width: 575px) {
+    .carousel__ui-container {
+      bottom: 1rem; } }
+
+.dropdown-check-list {
+  position: relative;
+  display: inline-block;
+  color: #34383d;
+  width: 100%; }
+  .dropdown-check-list .anchor {
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+    padding: 0.5em 3.1em 0.5em 1.1em;
+    width: 100%;
+    background-color: white; }
+    .dropdown-check-list .anchor:after {
+      position: absolute;
+      content: "";
+      border-left: 2px solid black;
+      border-top: 2px solid black;
+      padding: 5px;
+      right: 10px;
+      top: 30%;
+      -moz-transform: rotate(-135deg);
+      -ms-transform: rotate(-135deg);
+      -o-transform: rotate(-135deg);
+      -webkit-transform: rotate(-135deg);
+      transform: rotate(-135deg); }
+  .dropdown-check-list ul.items {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    padding-left: 1em;
+    padding-bottom: 0.5em;
+    padding-top: 0.5em;
+    display: block;
+    list-style: none; }
+  .dropdown-check-list.visible .items {
+    display: block; }
+
 .register {
   animation: moveInBottom .5s ease-out;
   margin: 5rem auto 0 auto;
@@ -814,6 +886,87 @@ a.button {
         width: 100%; } }
     .register__form .button {
       margin-top: 3rem; }
+
+.game-edit .heading-secondary {
+  text-align: center; }
+
+.game-edit__general, .game-edit__screenshots {
+  animation: moveInBottom 0.5s ease-out;
+  margin: 5rem auto 0 auto;
+  width: 100%;
+  padding: 4rem;
+  background-color: #F3F3F3;
+  border-radius: 2px; }
+  @media only screen and (max-width: 575px) {
+    .game-edit__general, .game-edit__screenshots {
+      margin-top: 1rem;
+      padding: 1.5rem; } }
+
+.game-edit:hover .heading-secondary {
+  text-shadow: 0px 0px 0 #de354c, -1px 1px 0 #932432, -2px 2px 0 #3c1874, -3px 3px 2px rgba(0, 0, 0, 0.31), -3px 3px 1px rgba(0, 0, 0, 0.5), 0px 0px 2px rgba(0, 0, 0, 0.2);
+  transform: skewX(-12deg) scale(1.01) translate(9px); }
+
+.game-edit__carousel {
+  margin-top: 2rem;
+  width: 100%;
+  height: calc(734.0625px); }
+  @media only screen and (max-width: 1399px) {
+    .game-edit__carousel {
+      height: 632.8125px; } }
+  @media only screen and (max-width: 1199px) {
+    .game-edit__carousel {
+      height: 531.5625px; } }
+  @media only screen and (max-width: 991px) {
+    .game-edit__carousel {
+      height: 396.5625px; } }
+  @media only screen and (max-width: 767px) {
+    .game-edit__carousel {
+      height: 295.3125px; } }
+  @media only screen and (max-width: 575px) {
+    .game-edit__carousel {
+      height: calc((100vw - 2rem) * 9 / 16); } }
+
+.game-edit__change-data {
+  padding-bottom: 2.5rem;
+  border-bottom: solid 1px #34383d;
+  margin-top: 2.5rem; }
+
+.game-edit__change-password {
+  margin-top: 2.5rem; }
+
+.game-edit__general .form .button {
+  margin-top: 1rem; }
+
+.game-edit__general .form .dropdown-check-list {
+  margin-top: 4.3rem; }
+
+.game-edit__general .flex-container {
+  justify-content: space-evenly; }
+  @media only screen and (max-width: 575px) {
+    .game-edit__general .flex-container {
+      justify-content: space-between; } }
+
+.game-edit__screenshots .heading-tertiary {
+  margin-bottom: 1rem; }
+
+.game-edit__screenshots .crop__cropper-container {
+  width: calc(100% - 4px);
+  height: 734.0625px; }
+  @media only screen and (max-width: 1399px) {
+    .game-edit__screenshots .crop__cropper-container {
+      height: 632.8125px; } }
+  @media only screen and (max-width: 1199px) {
+    .game-edit__screenshots .crop__cropper-container {
+      height: 531.5625px; } }
+  @media only screen and (max-width: 991px) {
+    .game-edit__screenshots .crop__cropper-container {
+      height: 396.5625px; } }
+  @media only screen and (max-width: 767px) {
+    .game-edit__screenshots .crop__cropper-container {
+      height: 295.3125px; } }
+  @media only screen and (max-width: 575px) {
+    .game-edit__screenshots .crop__cropper-container {
+      height: calc((100vw - 2rem) * 9 / 16); } }
 
 .login {
   animation: moveInBottom 0.5s ease-out;

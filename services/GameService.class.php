@@ -54,7 +54,7 @@ class GameService
 
         $result = $this->db->fetchAll();
 
-        for ($i=0; $i < sizeof($result); $i++) { 
+        for ($i = 0; $i < sizeof($result); $i++) {
             $screenshots[$i] = $result[$i]['SourcePath'];
         }
 
@@ -87,7 +87,7 @@ class GameService
         $mimeType = mime_content_type($file["tmp_name"]);
 
         // Check file size
-        if ($file["size"] > 500000) {
+        if ($file["size"] > 50000000) {
             echo "Sorry, your image is too large.";
             $uploadOk = false;
         }
@@ -224,9 +224,9 @@ class GameService
 
         // Remove from Database
         $screenshots = $game->getScreenshots();
-        for ($i=0; $i < sizeof($screenshots); $i++) { 
+        for ($i = 0; $i < sizeof($screenshots); $i++) {
             $this->db->query("DELETE FROM picture WHERE SourcePath = ?", $screenshots[$i]);
-        } 
+        }
 
         $this->db->query("DELETE FROM game WHERE GameID = ?", $id);
 
@@ -243,6 +243,8 @@ class GameService
         } catch (Exception $e) {
             // echo $e->getMessage();
         }
+
+        echo "<script>location.replace('index.php?action=listCreatedGames');</script>";
     }
 
     function deleteGameFolder(string $dirPath)
@@ -433,8 +435,8 @@ class GameService
         // Update game data
         $this->db->query(
             "UPDATE `game`
-        SET `Description` = ?, `Version` = ?, `UpdateDate` = ?
-        WHERE `game`.`GameID` = ?",
+            SET `Description` = ?, `Version` = ?, `UpdateDate` = ?
+            WHERE `game`.`GameID` = ?",
             $_POST['game-description'],
             $_POST['game-version'],
             $now,
@@ -450,17 +452,19 @@ class GameService
             for ($i = 0; $i < sizeof($genres); $i++) {
                 $this->db->query("INSERT INTO game_genre VALUES ( ? , ? )", $gameID, $genres[$i]);
             }
+        } else {
+            $this->db->query("DELETE FROM game_genre WHERE FK_GameID = ?", $gameID);
         }
 
         // Check for uploaded screenshots
 
-        // Re array multiple file upload
-        $images = $this->ReArrayFiles($_FILES['image-files']);
+        // // Re array multiple file upload
+        // $images = $this->ReArrayFiles($_FILES['image-files']);
 
-        // Add screenshots
-        for ($i = 0; $i < sizeof($images); $i++) {
-            $this->addScreenshot($gameID, $images[$i]);
-        }
+        // // Add screenshots
+        // for ($i = 0; $i < sizeof($images); $i++) {
+        //     $this->addScreenshot($gameID, $images[$i]);
+        // }
 
 
         // Check which games were uploaded and update platforms
@@ -470,7 +474,7 @@ class GameService
         // }
 
         // Also auto redirect possible
-        echo "<script>location.replace('index.php?action=viewGame&id=$gameID');</script>";
+        echo "<script>location.replace('index.php?action=editGameInterface&id=$gameID');</script>";
     }
 
     function uploadGame()
@@ -556,13 +560,13 @@ class GameService
             $this->db->query("INSERT INTO game_platform VALUES ( ? , ? )", $gameID, $platforms[$i]);
         }
 
-        // Re array multiple file upload
-        $files = $this->ReArrayFiles($_FILES['image-files']);
+        // // Re array multiple file upload
+        // $files = $this->ReArrayFiles($_FILES['image-files']);
 
-        // Add screenshots
-        for ($i = 0; $i < sizeof($files); $i++) {
-            $this->addScreenshot($gameID, $files[$i]);
-        }
+        // // Add screenshots
+        // for ($i = 0; $i < sizeof($files); $i++) {
+        //     $this->addScreenshot($gameID, $files[$i]);
+        // }
 
         // Also auto redirect possible
         echo "<script>location.replace('index.php?action=viewGame&id=$gameID');</script>";
@@ -621,7 +625,8 @@ class GameService
         return GameService::$instance->getGameArrayFromData($gameData);
     }
 
-    function deleteScreenshot($screenshotPath) {
+    function deleteScreenshot($screenshotPath)
+    {
         // Remove db entry
         $this->db->query("DELETE FROM picture WHERE SourcePath = ?", $screenshotPath);
         // Delete file
