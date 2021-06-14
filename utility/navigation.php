@@ -93,7 +93,7 @@
         </li>
         <li class="nav-top__list-item nav-top__list-item--search">
             <form class="search" action="index.php" method="GET">
-                <input type="search" id="search" name="search" autocomplete="off" placeholder="search...">
+                <input type="search" id="search" name="search" autocomplete="off" placeholder="Find Games...">
                 <button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
             </form>
         </li>
