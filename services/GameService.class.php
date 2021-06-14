@@ -65,6 +65,8 @@ class GameService
     {
         $game = $this->getGame($gameID);
 
+        if (!is_dir("resources/images/"))
+            mkdir("resources/images/");
         // Create games dir if it does not exist
         $basePath = "resources/images/games/";
         if (!is_dir($basePath))
