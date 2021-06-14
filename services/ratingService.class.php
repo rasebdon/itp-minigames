@@ -49,6 +49,23 @@ class RatingService
         );
     }
 
+    function getRating(int $gameid, int $userid){
+
+        $this->db->query("SELECT * FROM rating WHERE FK_GameID = ? AND FK_UserID = ? ", $gameid, $userid);
+
+        if (!($ratingData = $this->db->fetchArray()))
+            return false;
+
+        $rating = new Rating(
+            UserService::$instance->getUser($ratingData['FK_UserID']),
+            $ratingData['FK_GameID'],
+            $ratingData['Text'],
+            $ratingData['Date'],
+            $ratingData['Rating']
+        );        
+        return $rating;
+    }
+
     
 }
 
