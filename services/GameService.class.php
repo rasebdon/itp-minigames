@@ -245,8 +245,10 @@ class GameService
         } catch (Exception $e) {
             // echo $e->getMessage();
         }
-
-        echo "<script>location.replace('index.php?action=listCreatedGames');</script>";
+        if(isset($_GET['action']) && $_GET['action'] == "listGamesToVerify")
+            echo "<script>location.replace('index.php?action=listGamesToVerify&amount=20&offset=0');</script>";
+        else
+            echo "<script>location.replace('index.php?action=listCreatedGames');</script>";
     }
 
     function deleteGameFolder(string $dirPath)
