@@ -119,8 +119,18 @@ body {
 .gradient-primary--reverse {
   background-image: linear-gradient(to left, #3c1874, #de354c); }
 
-.flex-container {
+.flex {
   display: flex !important; }
+  .flex__center {
+    justify-content: center; }
+  .flex__around {
+    justify-content: space-around; }
+  .flex__between {
+    justify-content: space-between; }
+  .flex__evenly {
+    justify-content: space-evenly; }
+  .flex__wrap {
+    flex-wrap: wrap; }
 
 .no-hyperlink {
   text-decoration: none;
@@ -991,10 +1001,10 @@ a.button {
 .game-edit__general .form .dropdown-check-list {
   margin-top: 4.3rem; }
 
-.game-edit__general .flex-container {
+.game-edit__general .flex {
   justify-content: space-evenly; }
   @media only screen and (max-width: 575px) {
-    .game-edit__general .flex-container {
+    .game-edit__general .flex {
       justify-content: space-between; } }
 
 .game-edit__screenshots .heading-tertiary {

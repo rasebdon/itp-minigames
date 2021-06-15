@@ -123,7 +123,7 @@ class GameEditInterface
                         </div>
                     </div>
                     <input type="hidden" name="game-id" value="<?= $game->getId() ?>">
-                    <div class="flex-container">
+                    <div class="flex">
                         <button type="submit" class="button button--primary">Save</button>
                         <a href="index.php?action=editGame&id=<?= $game->getId() ?>&deleteGame=<?= $game->getId() ?>" type="button" class="button button--primary mt-3">Delete</a>
                     </div>

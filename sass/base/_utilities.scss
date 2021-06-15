@@ -28,8 +28,24 @@
     }
 }
 
-.flex-container {
+.flex {
     display: flex !important;
+
+    &__center {
+        justify-content: center;
+    }
+    &__around {
+        justify-content: space-around;
+    }
+    &__between {
+        justify-content: space-between;
+    }
+    &__evenly {
+        justify-content: space-evenly;
+    }
+    &__wrap {
+        flex-wrap: wrap;
+    }
 }
 
 .no-hyperlink {

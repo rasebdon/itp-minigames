@@ -66,20 +66,30 @@ if (isset($_GET['action'])) {
                         <label class="form__label" for="editLastName">Last Name</label>
                         <span class="form__separator"></span>
                     </div>
+                    <small class="form-text text-muted"><?= $_SESSION['editProfileErrors']['LastName'] ?? '' ?></small>
                     <!-- Social Media Links -->
-                    
+
                     <!-- Enable Developer Mode (Can upload games) -->
+
                     <?php
-                    if ($user->getUserType()->getAccessStrength() == UserType::User()->getAccessStrength()) {
+                    $isUser = $user->getUserType()->getAccessStrength() == UserType::User()->getAccessStrength();
+                    if ($isUser) {
                     ?>
-                        <div class="form__group">
-                            <a href="?action=editProfile&enableDeveloperMode=1" type="button" name="EnableDeveloperMode" class="button button--primary">Enable Developer Mode</a>
+                        <div class="flex flex__between flex__wrap">
+                        <?php
+                    }
+                        ?>
+                        <button type="submit" name="SubmitSettings" class="button button--primary">Save</button>
+                        <?php
+                        if ($isUser) {
+                        ?>
+                            <div class="form__group">
+                                <a href="?action=editProfile&enableDeveloperMode=1" type="button" name="EnableDeveloperMode" class="button button--primary">Enable Developer Mode</a>
+                            </div>
                         </div>
                     <?php
-                    }
+                        }
                     ?>
-                    <small class="form-text text-muted"><?= $_SESSION['editProfileErrors']['LastName'] ?? '' ?></small>
-                    <button type="submit" name="SubmitSettings" class="button button--primary">Save</button>
                 </form>
             </div>
 
