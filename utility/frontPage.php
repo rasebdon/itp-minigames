@@ -34,7 +34,11 @@ class FrontPage
 
             <?php
             if ($games == null) {
-                // TODO: add textbox "no games found"
+            ?>
+                <div class="text-box text-box--1">
+                    <p class="center"><?= isset($_GET['action']) && $_GET['action'] == "favorites" ? "Try adding a game to your favorites!" : "No games found... Come back later!" ?></p>
+                </div>
+            <?php
                 echo "</section>";
                 return;
             }

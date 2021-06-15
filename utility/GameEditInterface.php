@@ -57,6 +57,9 @@ class GameEditInterface
 
         // HTML EDIT FORM
 ?>
+        <div class="heading-primary">
+            <h1 class="heading-primary__text">creator dashboard</h1>
+        </div>
         <section class="game-edit">
 
             <div class="game-edit__general">
@@ -123,7 +126,7 @@ class GameEditInterface
                         </div>
                     </div>
                     <input type="hidden" name="game-id" value="<?= $game->getId() ?>">
-                    <div class="flex-container">
+                    <div class="flex">
                         <button type="submit" class="button button--primary">Save</button>
                         <a href="index.php?action=editGame&id=<?= $game->getId() ?>&deleteGame=<?= $game->getId() ?>" type="button" class="button button--primary mt-3">Delete</a>
                     </div>

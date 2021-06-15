@@ -35,8 +35,8 @@ class GameList
             <?php
             if (sizeof($games) == 0) {
             ?>
-                <div class="text-center col-12">
-                    Pretty empty here! Time to develop some games!
+                <div class="text-box text-box--1">
+                    <p class="center">Pretty empty here! Time to develop some games!</p>
                 </div>
             <?php
                 return;
@@ -77,7 +77,7 @@ class GameList
                                         echo $ratingStar;
                                     }
                                     ?>
-                                    <span class="rating"><?php printf("%.2f/5", $game->getRating()); ?></span>
+                                    <span><?php printf("%.2f/5", $game->getRating()); ?></span>
                                 </div>
                                 <div class="created-game__actions">
                                     <a class="button button--primary" href="index.php?action=editGameInterface&id=<?= $game->getId() ?>">Edit</a>
