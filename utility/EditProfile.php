@@ -11,8 +11,11 @@ if (isset($_GET['action'])) {
             UserService::$instance->setUserType(UserType::Creator(), $user->getId());
         }
 ?>
+        <div class="heading-primary">
+            <h1 class="heading-primary__text">Profile</h1>
+        </div>
         <section class="edit-profile">
-            <h2 class="heading-secondary">Edit Profile</h2>
+            <h2 class="heading-secondary">Edit</h2>
             <div class="edit-profile__profile-picture">
                 <h3 class="heading-tertiary">Profile Picture</h3>
                 <div class="row">

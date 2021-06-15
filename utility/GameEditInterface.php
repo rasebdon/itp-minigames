@@ -57,6 +57,9 @@ class GameEditInterface
 
         // HTML EDIT FORM
 ?>
+        <div class="heading-primary">
+            <h1 class="heading-primary__text">creator dashboard</h1>
+        </div>
         <section class="game-edit">
 
             <div class="game-edit__general">

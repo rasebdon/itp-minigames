@@ -35,8 +35,8 @@ class GameList
             <?php
             if (sizeof($games) == 0) {
             ?>
-                <div class="text-center col-12">
-                    Pretty empty here! Time to develop some games!
+                <div class="text-box text-box--1">
+                    <p class="center">Pretty empty here! Time to develop some games!</p>
                 </div>
             <?php
                 return;
