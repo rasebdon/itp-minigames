@@ -477,6 +477,23 @@ class GameService
     {
         $userID = $_SESSION['UserID'];
 
+        // Strip whitespaces from title at the end
+        $title = trim($_POST['game-title']);
+
+        try {
+            $this->db->query("SELECT COUNT(*) AS 'Count' FROM `game` WHERE `Name` = ?", $title);
+            $gameCount = $this->db->fetchArray()['Count'];
+            if($gameCount != 0) {
+                echo "A game with this name already exists. Please rename your game and try again!";
+                return;
+            }
+
+        }
+        catch (Exception $ex) {
+            // ONLY DEBUG MODE
+            // echo $ex->getMessage()
+        }
+
         // Upload game
         // Check for platforms
         $windowsFile = $_FILES["game-file-windows"];
@@ -531,7 +548,7 @@ class GameService
         ",
             $userID,
             $forumID,
-            $_POST['game-title'],
+            $title,
             $_POST['game-description'],
             $_POST['game-version'],
             $now,
