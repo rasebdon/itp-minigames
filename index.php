@@ -25,6 +25,7 @@ require_once "services/GameService.class.php";
 require_once "services/FrontPageService.class.php";
 require_once "services/ForumService.class.php";
 
+
 require_once "utility/favoritelogic.php";
 
 //BOOL FOR DEBUGGIG MODE
@@ -110,6 +111,7 @@ if ($showDebug) {
     <link rel="stylesheet" type="text/css" href="css/game.css">
     <link rel="stylesheet" type="text/css" href="css/gameUploadInterface.css"/>
     <link rel="stylesheet" type="text/css" href="css/forum.css">
+    <link rel="stylesheet" type="text/css" href="css/impressum.css">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
  
@@ -138,6 +140,8 @@ if ($showDebug) {
                 <a href="index.php?action=favorites" class="btn btn-success">View Favorites</a>
                 <a href="index.php?action=editProfile" class="btn btn-success">Edit Profile</a>
                 <a href="index.php?action=logout" class="btn btn-success">Logout</a>
+                <a href="index.php?action=impressum" class="btn btn-success">Impressum</a>
+
             <?php
             }
             // Game creator components
@@ -159,6 +163,7 @@ if ($showDebug) {
             ?>
             <a href="index.php?action=register" class="btn btn-success">Registration</a>
             <a href="index.php?action=login" class="btn btn-success">Login</a>
+            <a href="index.php?action=impressum" class="btn btn-success">Impressum</a>
         <?php
         }
         ?>
@@ -203,6 +208,8 @@ if ($showDebug) {
         require_once "utility/GameRenderer.php";
 
         require_once "utility/frontPage.php";
+
+        require_once "utility/impressumService.php";
 
         //make this for users only, this is public for debugg only
         require_once "utility/ForumMainPage.php";
