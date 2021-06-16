@@ -1,17 +1,5 @@
-.game-display div {
-    background-color: white;
-}
-.game-display.dark-mode, .game-display.dark-mode * {
-    background-color: gray;
-    color: white;
-    border-color: black!important;
-}
-
 .game-display p {
     font-size: 0.85em;
-}
-.game-display .screenshots {
-    background-color: rgb(231, 231, 231);
 }
 .game-display h1 {
     font-size: 2.5em;
@@ -70,18 +58,4 @@ span.game-verified {
 }
 
 
-.created-game {
-    padding-top: 1em;
-    padding-bottom: 1em;
-    border: 1px solid rgb(185, 185, 185);
-}
-
-.no-hyperlink {
-    text-decoration: none;
-    color: black;
-}
-.no-hyperlink:hover {
-    text-decoration: none;
-    color: black;
-}
 

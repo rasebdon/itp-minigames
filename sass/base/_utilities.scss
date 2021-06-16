@@ -17,4 +17,42 @@
     &-yellow {
         background-image: linear-gradient(to right, $color-yellow-dark, $color-yellow-light);
     }
+    &-primary {
+        background-image: linear-gradient(to right, $color-secondary, $color-tertiary);
+    }
+    &-secondary {
+        background-image: radial-gradient(lighten($color-secondary, 2%) 25%, lighten($color-secondary, 20%));
+    }
+    &-primary--reverse {
+        background-image: linear-gradient(to left, $color-secondary, $color-tertiary);
+    }
+}
+
+.flex {
+    display: flex !important;
+
+    &__center {
+        justify-content: center;
+    }
+    &__around {
+        justify-content: space-around;
+    }
+    &__between {
+        justify-content: space-between;
+    }
+    &__evenly {
+        justify-content: space-evenly;
+    }
+    &__wrap {
+        flex-wrap: wrap;
+    }
+}
+
+.no-hyperlink {
+    text-decoration: none;
+    color: black;
+}
+.no-hyperlink:hover {
+    text-decoration: none;
+    color: black;
 }

@@ -2,28 +2,32 @@
 if (isset($_GET['action'])) {
     if ($_GET['action'] == 'login') {
 ?>
-        <h1>Login</h1>
-        <form action="" method="POST">
+        <section class="login">
+            <h2 class="heading-secondary">Login</h2>
+            <div class="login__form">
+                <form class="form" method="POST">
+                    <div class="form__group">
+                        <input type="text" class="form__input" name="Username" id="loginUsername" placeholder="Username">
+                        <label class="form__label" for="loginUsername">Username</label>
+                        <span class="form__separator"></span>
+                    </div>
 
-            <div class="form-group">
-                <label for="Username"></label>
-                <input type="text" class="form-control" name="Username" id="" aria-describedby="helpId" placeholder="username">
+                    <div class="form__group">
+                        <input type="password" class="form__input" name="Password" id="loginPassword" placeholder="Password">
+                        <label class="form__label" for="loginPassword">Password</label>
+                        <span class="form__separator"></span>
+                    </div>
+                    <small class="form-text text-muted"><?= $_SESSION['loginErrors']['Password'] ?? '' ?></small>
+
+                    <div>
+                        <input class="checkbox" type="checkbox" id="loginRemember" name="rememberme">
+                        <label for="loginRemember">Remember me?</label>
+                    </div>
+
+                    <button type="submit" name="LoginSubmit" class="button button--primary">Login</button>
+                </form>
             </div>
-
-            <div class="form-group">
-                <label for="Password"></label>
-                <input type="password" class="form-control" name="Password" id="" placeholder="password">
-                <small id="helpId" class="form-text text-muted"><?= $_SESSION['loginErrors']['Password'] ?? '' ?></small>
-            </div>
-
-            <div class="checkbox">
-                <input type="checkbox" name="rememberme">
-                <label>remember me</label>
-                <?= $_SESSION['loginErrors']['rememberme'] ?? '' ?>
-            </div>
-
-            <button type="submit" name="LoginSubmit" class="btn btn-primary">login</button>
-        </form>
+        </section>
 <?php
     }
 }

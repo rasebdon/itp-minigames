@@ -61,6 +61,8 @@ function getExtension($mime_type)
 
 if (isset($_POST['SubmitSettings'])) {
     if (Validation::$instance->editProfile($_POST, $user->getId())) {
+        if (isset($_SESSION['editProfileErrors']))
+            unset($_SESSION['editProfileErrors']);
         UserService::$instance->updateProfileData($_POST, $user->getId());
         header("Location: index.php?action=editProfile");
         exit;
@@ -71,8 +73,18 @@ if (isset($_POST['SubmitSettings'])) {
 
 if (isset($_POST['SubmitPassword'])) {
     if (Validation::$instance->changePassword($_POST, $user->getUsername())) {
+        if (isset($_SESSION['passwordErrors']))
+            unset($_SESSION['passwordErrors']);
         UserService::$instance->updatePassword($_POST['ConfirmPassword'], $user->getId());
     } else {
         $_SESSION['passwordErrors'] = Validation::$instance->getReturnErrors();
     }
+}
+
+
+if (isset($_POST['rateGame']) && isset($_SESSION['UserID'])) {
+    if (RatingService::$instance->insertRating(new Rating(UserService::$instance->getUser($_SESSION['UserID']), $_GET['id'], $_POST['rating-text'], date("Y-m-d H:i:s"), $_POST['rating-value']))) {
+        //do something for error handeling
+    }
+    header('Location: index.php?action=viewGame&id=' . $_GET['id']);
 }

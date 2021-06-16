@@ -1,0 +1,387 @@
+.nav-top {
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+    height: 6rem;
+    background-color: $color-dark-2;
+    display: flex;
+    align-items: center;
+
+    &__static {
+        align-items: center;
+        width: 15rem;
+        display: flex;
+        padding: 0 1.25rem;
+        @include respond(sm) {
+            width: 10.5rem;
+        }
+    }
+
+    &__logo,
+    &__title {
+        margin-left: 1rem;
+        height: fit-content;
+    }
+
+    &__title {
+        @include respond(sm) {
+            display: none;
+        }
+    }
+
+    &__toggle {
+        display: block;
+        height: 3.5rem;
+        width: 3.5rem;
+    }
+
+    &__checkbox {
+        display: none;
+    }
+
+    &__button {
+        display: block;
+        width: 100%;
+        height: 100%;
+        padding: 0.25rem;
+        content: "";
+
+        &::selection {
+            background: none;
+            color: none;
+        }
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    &__button:hover &__icon::after {
+        top: 1.1rem;
+    }
+    &__button:hover &__icon::before {
+        top: -1.1rem;
+    }
+
+    &__icon {
+        position: relative;
+        top: -10%;
+
+        &,
+        &::after,
+        &::before {
+            content: "";
+            display: inline-block;
+            height: 2px;
+            width: 3rem;
+            background-color: $color-white;
+            transition: all 0.2s;
+        }
+
+        &::after,
+        &::before {
+            position: absolute;
+        }
+
+        &::after {
+            top: 0.8rem;
+        }
+
+        &::before {
+            top: -0.8rem;
+        }
+    }
+
+    &__checkbox:checked + &__button &__icon::before {
+        top: 0;
+        transform: rotate(135deg);
+    }
+
+    &__checkbox:checked + &__button &__icon::after {
+        top: 0;
+        transform: rotate(-135deg);
+    }
+
+    &__checkbox:checked + &__button &__icon {
+        background-color: transparent;
+        width: 0;
+    }
+
+    &__list {
+        align-items: center;
+        padding-left: 0;
+        margin-bottom: 0;
+        width: calc(100% - 15rem);
+        @include respond(sm) {
+            width: calc(100% - 11rem);
+        }
+        display: flex;
+        list-style: none;
+        justify-content: space-evenly;
+        height: 100%;
+        &-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+
+            .button--secondary {
+                &:link:hover:after,
+                &:visited:hover:after {
+                    height: 120%;
+                }
+            }
+            &:not(.nav-top__list-item--search) {
+                width: 15rem;
+            }
+            @include respond(sm) {
+                width: 100%;
+            }
+            &--register {
+                @include respond(xl) {
+                    display: none;
+                }
+            }
+            &--login {
+                @include respond(lg) {
+                    display: none;
+                }
+            }
+            &--games,
+            &--forum {
+                @include respond(md) {
+                    display: none;
+                }
+            }
+
+            &--your-games {
+                @include respond(lg) {
+                    display: none;
+                }
+            }
+
+            &--logout {
+                &:after {
+                    background: $color-tertiary;
+                }
+                order: 99;
+                @include respond(xl) {
+                    display: none;
+                }
+            }
+        }
+    }
+}
+
+.nav-side {
+    z-index: 1000;
+    position: fixed;
+    background-color: $color-dark-3;
+    display: block;
+    top: 6rem;
+    left: 0;
+    width: 0;
+    height: calc(100% - 6rem);
+    transition: all 0.4s cubic-bezier(0.075, 0.82, 0.165, 1);
+    overflow: hidden;
+    box-shadow: 0 0 0.5rem rgba($color: #000000, $alpha: 0.3);
+    overflow-y: scroll;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    &__breaker {
+        margin-top: auto;
+    }
+
+    &__breaker ~ &__breaker {
+        margin-top: 0;
+    }
+
+    &__list {
+        padding-left: 0;
+        margin-bottom: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        list-style: none;
+
+        &-item {
+            display: flex;
+            margin-top: 1rem;
+            height: 5rem;
+            width: 100%;
+            @include respond(sm) {
+                width: 100%;
+            }
+            a {
+                text-align: center;
+                text-decoration: none;
+                width: 100%;
+                display: block;
+                height: 100%;
+                padding: 1.7rem 0;
+                font-size: 0;
+                transition: all 0.4s cubic-bezier(0.075, 0.82, 0.165, 1);
+                color: $color-dark-3;
+            }
+            &--register {
+                display: none;
+                @include respond(xl) {
+                    display: flex;
+                }
+            }
+            &--login {
+                display: none;
+                @include respond(lg) {
+                    display: flex;
+                }
+            }
+            &--games,
+            &--forum {
+                display: none;
+                @include respond(md) {
+                    display: flex;
+                }
+            }
+
+            &--imprint {
+                order: 97;
+            }
+
+            &--contact {
+                order: 98;
+            }
+
+            &--your-games {
+                display: none;
+                @include respond(lg) {
+                    display: flex;
+                }
+            }
+
+            &--logout {
+                order: 96;
+                display: none;
+                @include respond(xl) {
+                    display: flex;
+                }
+                height: 6rem;
+                border-bottom: solid 1px darkgrey;
+                padding-bottom: 1rem;
+            }
+
+            &--imprint,
+            &--contact {
+                height: 4rem;
+                margin-top: 0;
+            }
+
+            &--imprint a,
+            &--contact a {
+                padding: 1rem 0;
+            }
+        }
+    }
+}
+
+.nav-overlay {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100%;
+    background: transparent;
+    z-index: -2;
+}
+
+.nav-top__checkbox:checked ~ .nav-side {
+    width: 25rem;
+    @include respond(sm) {
+        width: 100%;
+    }
+}
+.nav-top__checkbox:checked ~ .nav-overlay {
+    display: block;
+    animation: fadeIn 0.4s cubic-bezier(0.075, 0.82, 0.165, 1);
+    background-color: #00000036;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+.nav-top__checkbox:checked ~ .nav-side .nav-side__list-item {
+    a {
+        font-size: 14px;
+        color: $color-white;
+    }
+
+    &--imprint,
+    &--contact,
+    &--imprint a,
+    &--contact a {
+        font-size: 14px;
+    }
+}
+
+.container {
+    z-index: 0;
+}
+
+.nav-side {
+    a:link,
+    a:visited {
+        font-size: 0;
+    }
+}
+
+.nav-side,
+.nav-top {
+    .inverted {
+        position: relative;
+        &:after {
+            position: absolute;
+            top: 0.5rem;
+            left: 0.5rem;
+            bottom: 0.5rem;
+            right: 0.5rem;
+            // margin: 0.5rem;
+            // width: calc(100% - 1rem);
+            // height: 5rem;
+            // position: absolute;
+            background: $color-tertiary;
+            content: "";
+            z-index: -2;
+        }
+
+        & > .button--secondary {
+            &:after {
+                background: $color-dark-2;
+                transform: translateX(-50%) translateY(-50%) rotate(-25deg);
+            }
+        }
+    }
+}
+
+.nav-top {
+    .nav-side {
+        .inverted {
+            & > .button--secondary {
+                &:after {
+                    background-color: $color-dark-3;
+                }
+            }
+        }
+    }
+}

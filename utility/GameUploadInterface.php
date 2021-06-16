@@ -1,18 +1,20 @@
 <?php
+
 /**
- * Class that holds game rendering functions
+ * Class that manages the initial game upload
  */
-class GameUploadInterface {
+class GameUploadInterface
+{
 
     /** @var GameUploadInterface */
     public static $instance;
 
     function __construct()
     {
-        if(!isset($_GET['action'])) 
+        if (!isset($_GET['action']))
             return;
-     
-        switch($_GET['action']) {
+
+        switch ($_GET['action']) {
             case "uploadGameInterface":
                 $this->showForm();
                 break;
@@ -22,52 +24,76 @@ class GameUploadInterface {
         }
     }
 
-    function showForm() {
+    function showForm()
+    {
         // HTML FORM
-        ?>
-            <h1 class="mb-5">Upload Game</h1>
-            <form method="post" enctype="multipart/form-data" action="index.php?action=uploadGame">
-                <div class="mb-3">
-                    <label for="game-title" class="form-label">Game Title</label>
-                    <input type="text" class="form-control" name="game-title" id="game-title" aria-describedby="game-title">
+?>
+        <div class="heading-primary">
+            <h1 class="heading-primary__text">creator dashboard</h1>
+        </div>
+        <section class="game-upload">
+            <h2 class="heading-secondary">Upload Game</h2>
+            <form class="form" method="post" enctype="multipart/form-data" action="index.php?action=uploadGame">
+                <div class="form__group">
+                    <input type="text" class="form__input" placeholder="Game Title" name="game-title" id="game-title" aria-describedby="game-title">
+                    <label for="game-title" class="form__label">Game Title</label>
+                    <span class="form__separator"></span>
                 </div>
-                <div class="mb-3">
-                    <label for="game-description" class="form-label">Description</label>
-                    <textarea type="text" class="form-control" name="game-description" id="game-description" aria-describedby="game-description"></textarea>
+                <div class="form__group">
+                    <textarea type="text" placeholder="Description" class="form__input" name="game-description" id="game-description" aria-describedby="game-description"></textarea>
+                    <label for="game-description" class="form__label">Description</label>
+                    <span class="form__separator"></span>
                 </div>
-                <div class="mb-3">
-                    <label for="game-version" class="form-label">Version</label>
-                    <input type="text" class="form-control" name="game-version" id="game-version" aria-describedby="game-version">
-                </div>
-                <div class="mb-3">
-                    <label for="game-genres" class="form-label">Genre</label>
-                    <div id="game-genres" class="dropdown-check-list" tabindex="100">
-                        <span onclick='$("#genres").toggle();' class="anchor">Select Genres</span>
-                        <ul class="items show" id="genres">
-                            <?php
+                <div class="row">
+                    <div class="col-12 col-lg-6">
+                        <div class="form__group">
+                            <input type="text" class="form__input" name="game-version" id="game-version" autocomplete="off" aria-describedby="game-version" placeholder="Version">
+                            <label for="game-version" class="form__label">Version</label>
+                            <span class="form__separator"></span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6">
+                        <div id="game-genres" class="dropdown-check-list" tabindex="100">
+                            <span onclick='$("#genres").toggle();' class="anchor">Select Genres</span>
+                            <ul class="items" style="display:none;" id="genres">
+                                <?php
                                 // Get genres from database and print selection
                                 $genres = GameService::$instance->getAllGenres();
-                                for ($i = 0; $i < sizeof($genres); $i++) { 
+                                for ($i = 0; $i < sizeof($genres); $i++) {
                                     $genre = $genres[$i];
-                                    echo '<li><input id="genre-' . $genre['Name'] . '" class="form-check-input" type="checkbox" name="game-genres[]" value="' . $genre['GenreID'] . '"><label  class="form-check-label ms-2" for="genre-' . $genre['Name'] . '">' . $genre['Name'] . '</label></li>';
+                                ?>
+                                    <li>
+                                        <input id="genre-<?= $genre['Name'] ?>" class="checkbox" type="checkbox" name="game-genres[]" value="<?= $genre['GenreID'] ?>">
+                                        <label for="genre-<?= $genre['Name'] ?>"><?= $genre['Name'] ?></label>
+                                    </li>
+                                <?php
                                 }
-                            ?>
-                        </ul>
+                                ?>
+
+                            </ul>
+                        </div>
                     </div>
                 </div>
                 <div class="mb-3">
-                    <h2>Upload Game as .zip or .rar file</h2>
-                    <label for="game-file-windows" class="form-label">Windows</label>
-                    <input class="form-control" type="file" id="game-file-windows" name="game-file-windows">
-                    <label for="game-file-linux" class="form-label">Linux</label>
-                    <input class="form-control" type="file" id="game-file-linux" name="game-file-linux">
-                    <label for="game-file-mac" class="form-label">Mac OS</label>
-                    <input class="form-control" type="file" id="game-file-mac" name="game-file-mac">
+                    <h2>Upload new Game version as .zip or .rar file</h2>
+                    <div class="form__group">
+                        <label for="game-file-windows" class="form__label--file">Windows</label>
+                        <input class="form-control" type="file" id="game-file-windows" name="game-file-windows">
+                    </div>
+                    <div class="form__group">
+                        <label for="game-file-linux" class="form__label--file">Linux</label>
+                        <input class="form-control" type="file" id="game-file-linux" name="game-file-linux">
+                    </div>
+                    <div class="form__group">
+                        <label for="game-file-mac" class="form__label--file">Mac OS</label>
+                        <input class="form-control" type="file" id="game-file-mac" name="game-file-mac">
+                    </div>
                 </div>
-                <button type="submit" class="btn btn-primary">Create</button>
+                <button type="submit" class="button button--primary">Create</button>
             </form>
-        <?php
-    }    
+        </section>
+<?php
+    }
 }
 
 GameUploadInterface::$instance = new GameUploadInterface();
