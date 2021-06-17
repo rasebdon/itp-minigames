@@ -1,4 +1,8 @@
 .edit-profile {
+    .heading-secondary {
+        text-align: center;
+    }
+
     animation: moveInBottom .5s ease-out;
     margin: 5rem auto 0 auto;
     @include respond(sm) {

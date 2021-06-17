@@ -22,7 +22,10 @@ class Validation
         "PASSWORD_MATCH" => "<div class='mt-1 alert alert-danger' role='alert'> Password does not match </div>",
         "PASSWORD_WRONG" => "<div class='mt-1 alert alert-danger' role='alert'> Wrong Password! </div>",
         "USERNAME_WRONG" => "<div class='mt-1 alert alert-danger' role='alert'> Wrong username / password! </div>",
-        "MIME_TYPE" => "<div class='mt-1 alert alert-danger' role='alert'> Invalid File Type! </div>"
+        "MIME_TYPE" => "<div class='mt-1 alert alert-danger' role='alert'> Invalid File Type! </div>",
+        "GAME_EXISTS" => "<div class='mt-1 alert alert-danger' role='alert'> Game already exists! </div>",     
+        "GAME_FILE_EMPTY" => "<div class='mt-1 alert alert-danger' role='alert'> You need to have at least one game file! </div>", 
+        "GAME_NOPIC" => "<div class='mt-1 alert alert-danger' role='alert'> Picture missing </div>",    
     ];
 
     // bool tracking successful validation, MUST BE RESET EVERY VALIDATION CALL, using the clearErrors() function
@@ -262,6 +265,45 @@ class Validation
             $this->returnErrors['MimeType'] = Validation::error['MIME_TYPE'];
             $this->success = false;
         }
+        return $this->success;
+    }
+
+    public function uploadGame($gameData, $fileData)
+    {
+
+        
+        // 1. Clear previous errors, and reset success bool
+        $this->clearErrors();
+
+        // 2. Remove submit button
+        $this->removeSubmit($gameData);
+
+        // 3. Validate input (use checkEmpty(), valueExists(), preg_match(), etc.)
+        //$this->checkEmpty($gameData); //something goes wrong here dont know why
+
+        if (!isset($this->returnErrors['game-title']))
+            if (preg_match('/^(?!\s*$).+/i', $gameData['game-title']) === 0) {
+                $this->returnErrors['game-title'] = Validation::error['EMPTY'];
+                $this->success = false;
+            }
+
+        if (!isset($this->returnErrors['game-title']))
+            if ($this->valueExists("game", "Name", $gameData['game-title'])) {
+                $this->returnErrors['game-title'] = Validation::error['GAME_EXISTS'];
+                $this->success = false;
+            }
+
+        if (!isset($this->returnErrors['game-file']))
+            if (empty($fileData['game-file-windows']['name']) && empty($fileData['game-file-linux']['name']) && empty($fileData['game-file-mac']['name'])) {
+                $this->returnErrors['game-file'] = Validation::error['GAME_FILE_EMPTY'];
+                $this->success = false;
+            }
+        
+
+        // 4. fill error message array with success messages for each valid value
+        $this->fillSuccessful($gameData);
+
+        // 5. return success bool
         return $this->success;
     }
 }

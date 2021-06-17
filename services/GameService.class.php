@@ -54,7 +54,7 @@ class GameService
 
         $result = $this->db->fetchAll();
 
-        for ($i=0; $i < sizeof($result); $i++) { 
+        for ($i = 0; $i < sizeof($result); $i++) {
             $screenshots[$i] = $result[$i]['SourcePath'];
         }
 
@@ -65,6 +65,8 @@ class GameService
     {
         $game = $this->getGame($gameID);
 
+        if (!is_dir("resources/images/"))
+            mkdir("resources/images/");
         // Create games dir if it does not exist
         $basePath = "resources/images/games/";
         if (!is_dir($basePath))
@@ -87,7 +89,7 @@ class GameService
         $mimeType = mime_content_type($file["tmp_name"]);
 
         // Check file size
-        if ($file["size"] > 500000) {
+        if ($file["size"] > 50000000) {
             echo "Sorry, your image is too large.";
             $uploadOk = false;
         }
@@ -174,19 +176,23 @@ class GameService
         return $genres;
     }
 
-    function searchGames(string $title, bool $verified = true, bool $all = false)
+    function searchGames(string $title)
     {
         $baseQuery = "SELECT *, (SELECT AVG(Rating) FROM rating WHERE  rating.FK_GameID = GameID) AS Rating FROM game WHERE `Name` LIKE ?";
 
-        if ($all) {
-            $this->db->query($baseQuery . " ORDER BY GameID ASC", "%" . $title . "%");
-        } else if ($verified) {
-            $this->db->query($baseQuery . " AND Verified = 1 ORDER BY GameID ASC", "%" . $title . "%");
-        } else {
-            $this->db->query($baseQuery . " AND Verified = 0 ORDER BY GameID ASC", "%" . $title . "%");
-        }
+        $this->db->query($baseQuery . " AND Verified = 1 ORDER BY GameID ASC", "%" . $title . "%");
+        
         // Fetch data
         $gameData = $this->db->fetchAll();
+        
+        //in case no game found with the title this takes the title and looks for genres and fetches all games with matching genreID
+        if($gameData == null){
+            $this->db->query("SELECT GenreID from genre WHERE `Name` Like ?", "%" . $title . "%");
+            $genreID = $this->db->fetchArray();
+            $this->db->query("SELECT * , (SELECT AVG(Rating) FROM rating WHERE  rating.FK_GameID = GameID) AS Rating
+            From game LEFT JOIN game_genre ON game.GameID = game_genre.FK_GameID WHERE FK_GenreID = ?", $genreID['GenreID']);
+            $gameData = $this->db->fetchALL();
+        }
         // Return games array
         return GameService::$instance->getGameArrayFromData($gameData);
     }
@@ -224,9 +230,9 @@ class GameService
 
         // Remove from Database
         $screenshots = $game->getScreenshots();
-        for ($i=0; $i < sizeof($screenshots); $i++) { 
+        for ($i = 0; $i < sizeof($screenshots); $i++) {
             $this->db->query("DELETE FROM picture WHERE SourcePath = ?", $screenshots[$i]);
-        } 
+        }
 
         $this->db->query("DELETE FROM game WHERE GameID = ?", $id);
 
@@ -243,6 +249,10 @@ class GameService
         } catch (Exception $e) {
             // echo $e->getMessage();
         }
+        if(isset($_GET['action']) && $_GET['action'] == "listGamesToVerify")
+            echo "<script>location.replace('index.php?action=listGamesToVerify&amount=20&offset=0');</script>";
+        else
+            echo "<script>location.replace('index.php?action=listCreatedGames');</script>";
     }
 
     function deleteGameFolder(string $dirPath)
@@ -433,8 +443,8 @@ class GameService
         // Update game data
         $this->db->query(
             "UPDATE `game`
-        SET `Description` = ?, `Version` = ?, `UpdateDate` = ?
-        WHERE `game`.`GameID` = ?",
+            SET `Description` = ?, `Version` = ?, `UpdateDate` = ?
+            WHERE `game`.`GameID` = ?",
             $_POST['game-description'],
             $_POST['game-version'],
             $now,
@@ -450,17 +460,19 @@ class GameService
             for ($i = 0; $i < sizeof($genres); $i++) {
                 $this->db->query("INSERT INTO game_genre VALUES ( ? , ? )", $gameID, $genres[$i]);
             }
+        } else {
+            $this->db->query("DELETE FROM game_genre WHERE FK_GameID = ?", $gameID);
         }
 
         // Check for uploaded screenshots
 
-        // Re array multiple file upload
-        $images = $this->ReArrayFiles($_FILES['image-files']);
+        // // Re array multiple file upload
+        // $images = $this->ReArrayFiles($_FILES['image-files']);
 
-        // Add screenshots
-        for ($i = 0; $i < sizeof($images); $i++) {
-            $this->addScreenshot($gameID, $images[$i]);
-        }
+        // // Add screenshots
+        // for ($i = 0; $i < sizeof($images); $i++) {
+        //     $this->addScreenshot($gameID, $images[$i]);
+        // }
 
 
         // Check which games were uploaded and update platforms
@@ -470,7 +482,7 @@ class GameService
         // }
 
         // Also auto redirect possible
-        echo "<script>location.replace('index.php?action=viewGame&id=$gameID');</script>";
+        echo "<script>location.replace('index.php?action=editGameInterface&id=$gameID');</script>";
     }
 
     function uploadGame()
@@ -573,13 +585,13 @@ class GameService
             $this->db->query("INSERT INTO game_platform VALUES ( ? , ? )", $gameID, $platforms[$i]);
         }
 
-        // Re array multiple file upload
-        $files = $this->ReArrayFiles($_FILES['image-files']);
+        // // Re array multiple file upload
+        // $files = $this->ReArrayFiles($_FILES['image-files']);
 
-        // Add screenshots
-        for ($i = 0; $i < sizeof($files); $i++) {
-            $this->addScreenshot($gameID, $files[$i]);
-        }
+        // // Add screenshots
+        // for ($i = 0; $i < sizeof($files); $i++) {
+        //     $this->addScreenshot($gameID, $files[$i]);
+        // }
 
         // Also auto redirect possible
         echo "<script>location.replace('index.php?action=viewGame&id=$gameID');</script>";
@@ -638,7 +650,8 @@ class GameService
         return GameService::$instance->getGameArrayFromData($gameData);
     }
 
-    function deleteScreenshot($screenshotPath) {
+    function deleteScreenshot($screenshotPath)
+    {
         // Remove db entry
         $this->db->query("DELETE FROM picture WHERE SourcePath = ?", $screenshotPath);
         // Delete file
