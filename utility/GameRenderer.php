@@ -264,10 +264,10 @@ class GameRenderer
                 ?>
             </div>
         </div>
-        <?php
-        if (isset($_SESSION['UserID']) &&  $_SESSION['UserID'] != null) {
-            $this->renderRating($game);
-        }
+        <?php 
+
+        $this->renderRating($game);
+        
     }
 
     function renderRating($game)
@@ -331,29 +331,52 @@ class GameRenderer
                 <h1 class="m-0">
                     Feedback
                 </h1>
-                <div class="row">
+
+                <?php
+                if (isset($_SESSION['UserID']) &&  $_SESSION['UserID'] != null) {
+
+                    $userRating = RatingService::$instance->getRating($game->getId(), $_SESSION['UserID']);
+                    ?>
+                    <div class="row">
+                        
+
+                    <?php
+                    if($userRating){
+                        $oldRating = $userRating->getRating();
+                        $oldText = $userRating->getText();
+                        echo "<span>Edit own feedback:</span>";
+                    }else{
+                        $oldRating = 0;
+                        $oldText = "";
+                        echo "<span>Add own feedback:</span>";
+                    }                    
+                ?>      
                     <script>
                         $(document).ready(function() {
                             var options2 = {
                                 max_value: 5,
                                 step_size: 1.0,
+                                initial_value: <?= $oldRating ?>,
                                 selected_symbol_type: 'fontawesome_star',
                                 readonly: false,
                             }
                             $(".rate2").rate(options2);
                         });
-                    </script>
-                    <span>Add own feedback:</span>
+                    </script>          
+                    
                     <div class="col-4">Rating</div>
                     <div class="col">
-                        <div class="rate2"></div>
+                    <div class="rate2" data-rate-value=<?= $oldRating ?>></div>
                     </div>
                     <form action="index.php?action=rateGame&id=<?= $game->getId() ?>" method="POST">
-                        <textarea name="rating-text" id="rating-text" class="form-control" cols="30" rows="3" placeholder="Type some feedback"></textarea>
+                        <textarea name="rating-text" id="rating-text" class="form-control" cols="30" rows="3" placeholder="Type some feedback"><?= $oldText ?></textarea>
                         <button class="button button--primary mt-2" name="rateGame">Submit</button>
-                        <input type="number" name="rating-value" id="rating-value" value="0" hidden>
+                        <input type="number" name="rating-value" id="rating-value" value="<?= $oldRating ?>" hidden>
                     </form>
                 </div>
+                <?php
+                }
+                ?>
                 <div class="feedbacklist">
 
                     <?php

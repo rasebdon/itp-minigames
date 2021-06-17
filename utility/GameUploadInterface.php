@@ -19,14 +19,17 @@ class GameUploadInterface
                 $this->showForm();
                 break;
             case "uploadGame":
-                GameService::$instance->uploadGame();
+                /*
+                GameService::$instance->uploadGame(); 
                 break;
+                */
         }
     }
 
     function showForm()
     {
         // HTML FORM
+
 ?>
         <div class="heading-primary">
             <h1 class="heading-primary__text">creator dashboard</h1>
@@ -39,6 +42,7 @@ class GameUploadInterface
                     <label for="game-title" class="form__label">Game Title</label>
                     <span class="form__separator"></span>
                 </div>
+                <small><?= $_SESSION['uploadGameErrors']['game-title'] ?? '' ?></small>
                 <div class="form__group">
                     <textarea type="text" placeholder="Description" class="form__input" name="game-description" id="game-description" aria-describedby="game-description"></textarea>
                     <label for="game-description" class="form__label">Description</label>
@@ -57,6 +61,7 @@ class GameUploadInterface
                             <span onclick='$("#genres").toggle();' class="anchor">Select Genres</span>
                             <ul class="items" style="display:none;" id="genres">
                                 <?php
+
                                 // Get genres from database and print selection
                                 $genres = GameService::$instance->getAllGenres();
                                 for ($i = 0; $i < sizeof($genres); $i++) {
@@ -89,6 +94,7 @@ class GameUploadInterface
                         <input class="form-control" type="file" id="game-file-mac" name="game-file-mac">
                     </div>
                 </div>
+                <small><?= $_SESSION['uploadGameErrors']['game-file'] ?? '' ?></small>
                 <button type="submit" class="button button--primary">Create</button>
             </form>
         </section>
