@@ -17,27 +17,32 @@ class GameUploadInterface {
                 $this->showForm();
                 break;
             case "uploadGame":
-                GameService::$instance->uploadGame();
+                /*
+                GameService::$instance->uploadGame(); 
                 break;
+                */
         }
     }
 
     function showForm() {
         // HTML FORM
+        //var_dump($_SESSION['uploadGameErrors']);
         ?>
+            
             <h1 class="mb-5">Upload Game</h1>
             <form method="post" enctype="multipart/form-data" action="index.php?action=uploadGame">
                 <div class="mb-3">
                     <label for="game-title" class="form-label">Game Title</label>
-                    <input type="text" class="form-control" name="game-title" id="game-title" aria-describedby="game-title">
+                    <input type="text" class="form-control" name="game-title" id="game-title" aria-describedby="game-title" value="<?= $_SESSION['gameUpload']['game-title'] ?? "" ?>">
                 </div>
+                <small><?= $_SESSION['uploadGameErrors']['game-title'] ?? '' ?></small>
                 <div class="mb-3">
                     <label for="game-description" class="form-label">Description</label>
-                    <textarea type="text" class="form-control" name="game-description" id="game-description" aria-describedby="game-description"></textarea>
+                    <textarea type="text" class="form-control" name="game-description" id="game-description" aria-describedby="game-description" ><?= $_SESSION['gameUpload']['game-description'] ?? "" ?></textarea>
                 </div>
                 <div class="mb-3">
                     <label for="game-version" class="form-label">Version</label>
-                    <input type="text" class="form-control" name="game-version" id="game-version" aria-describedby="game-version">
+                    <input type="text" class="form-control" name="game-version" id="game-version" aria-describedby="game-version" value="<?= $_SESSION['gameUpload']['game-version'] ?? "" ?>">
                 </div>
                 <div class="mb-3">
                     <label for="game-genres" class="form-label">Genre</label>
@@ -59,6 +64,7 @@ class GameUploadInterface {
                     <h2>Upload Images</h2>
                     <input class="form-control" multiple="multiple" type="file" id="image-files" name="image-files[]">
                 </div>
+                <small><?= $_SESSION['uploadGameErrors']['game-pic'] ?? '' ?></small>
                 <div class="mb-3">
                     <h2>Upload Game as .zip or .rar file</h2>
                     <label for="game-file-windows" class="form-label">Windows</label>
@@ -68,7 +74,8 @@ class GameUploadInterface {
                     <label for="game-file-mac" class="form-label">Mac OS</label>
                     <input class="form-control" type="file" id="game-file-mac" name="game-file-mac">
                 </div>
-                <button type="submit" class="btn btn-primary">Create</button>
+                <small><?= $_SESSION['uploadGameErrors']['game-file'] ?? '' ?></small>
+                <button type="submit" name="uploadGame" class="btn btn-primary">Create</button>
             </form>
         <?php
     }    

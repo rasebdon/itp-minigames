@@ -38,3 +38,5 @@ if (isset($_POST['LoginSubmit'])) {
         $_SESSION['loginErrors'] = Validation::$instance->getReturnErrors();
     }
 }
+
+

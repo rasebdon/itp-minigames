@@ -5,6 +5,7 @@ if ($loggedIn) {
     // Normal user components
     if ($accessStrength >= UserType::User()->getAccessStrength()) {
         require_once "forms/formUserUpdate.php";
+        require_once "forms/formGame.php";
     }
     // Game creator components
     if ($accessStrength >= UserType::Creator()->getAccessStrength()) {
