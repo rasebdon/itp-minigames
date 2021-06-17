@@ -83,8 +83,8 @@ require_once "forms/formHandler.php";
     <link rel="stylesheet" type="text/css" href="css/game.css">
     <link rel="stylesheet" type="text/css" href="css/gameUploadInterface.css" />
     <link rel="stylesheet" type="text/css" href="css/forum.css">
-    <link rel="stylesheet" type="text/css" href="css/impressum.css">
     <link rel="stylesheet" type="text/css" href="css/rating.css">
+    <link rel="stylesheet" type="text/css" href="css/impressum.css">
     <link rel="stylesheet" type="text/css" href="css/styleComp.css">
 
 

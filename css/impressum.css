@@ -2,10 +2,16 @@
     margin: 0px;
     padding: 0px;
     border: 0px;
-    margin-top: 10px;
-    background-color: white;
+    background-color: #34383d;
 }
 .impressum-container{
     margin: 5px;
     padding: 10px;
+}
+.title-imprint{
+    color: #F3F3F3;
+    margin-bottom: 0.6em;
+}
+.header-imprint{
+    margin-top: 1.5em;
 }
