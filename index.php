@@ -26,6 +26,7 @@ require_once "services/FavoriteService.class.php";
 require_once "services/GameService.class.php";
 require_once "services/RatingService.class.php";
 require_once "services/ForumService.class.php";
+require_once "services/ContactService.class.php";
 
 
 require_once "utility/favoritelogic.php";
@@ -86,6 +87,7 @@ require_once "forms/formHandler.php";
     <link rel="stylesheet" type="text/css" href="css/rating.css">
     <link rel="stylesheet" type="text/css" href="css/impressum.css">
     <link rel="stylesheet" type="text/css" href="css/styleComp.css">
+    <link rel="stylesheet" type="text/css" href="css/contact.css">
 
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
@@ -143,6 +145,7 @@ require_once "forms/formHandler.php";
         require_once "utility/frontPage.php";
 
         require_once "utility/impressumService.php";
+        require_once "utility/contact.service.php";
 
         //make this for users only, this is public for debugg only
         require_once "utility/ForumMainPage.php";
