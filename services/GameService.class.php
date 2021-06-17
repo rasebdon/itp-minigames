@@ -176,19 +176,23 @@ class GameService
         return $genres;
     }
 
-    function searchGames(string $title, bool $verified = true, bool $all = false)
+    function searchGames(string $title)
     {
         $baseQuery = "SELECT *, (SELECT AVG(Rating) FROM rating WHERE  rating.FK_GameID = GameID) AS Rating FROM game WHERE `Name` LIKE ?";
 
-        if ($all) {
-            $this->db->query($baseQuery . " ORDER BY GameID ASC", "%" . $title . "%");
-        } else if ($verified) {
-            $this->db->query($baseQuery . " AND Verified = 1 ORDER BY GameID ASC", "%" . $title . "%");
-        } else {
-            $this->db->query($baseQuery . " AND Verified = 0 ORDER BY GameID ASC", "%" . $title . "%");
-        }
+        $this->db->query($baseQuery . " AND Verified = 1 ORDER BY GameID ASC", "%" . $title . "%");
+        
         // Fetch data
         $gameData = $this->db->fetchAll();
+        
+        //in case no game found with the title this takes the title and looks for genres and fetches all games with matching genreID
+        if($gameData == null){
+            $this->db->query("SELECT GenreID from genre WHERE `Name` Like ?", "%" . $title . "%");
+            $genreID = $this->db->fetchArray();
+            $this->db->query("SELECT * , (SELECT AVG(Rating) FROM rating WHERE  rating.FK_GameID = GameID) AS Rating
+            From game LEFT JOIN game_genre ON game.GameID = game_genre.FK_GameID WHERE FK_GenreID = ?", $genreID['GenreID']);
+            $gameData = $this->db->fetchALL();
+        }
         // Return games array
         return GameService::$instance->getGameArrayFromData($gameData);
     }

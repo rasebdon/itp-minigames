@@ -66,7 +66,7 @@
                     ?>
                     <div class="nav-side__breaker"></div>
                     <li class="nav-side__list-item nav-side__list-item--imprint">
-                        <a href="#">Imprint</a>
+                        <a href="index.php?action=imprint">Imprint</a>
                     </li>
                     <li class="nav-side__list-item nav-side__list-item--contact">
                         <a href="#">Contact</a>
