@@ -88,7 +88,7 @@ class GameRenderer
                 <!-- RATING -->
                 <span class="rating"><?php printf("%.2f/5", $game->getRating()); ?></span>
 
-                <!-- Favorites Buton-->
+                <!-- Favorite Button-->
                 <?php
                 if (isset($_SESSION['UserID']) &&  $_SESSION['UserID'] != null) {
                     if (FavoriteService::$instance->isFavorite($_GET['id'],  $_SESSION['UserID'])) {
@@ -103,6 +103,15 @@ class GameRenderer
                             <button type="submit" class="button button--primary" value="<?= $_SESSION['UserID'] ?>" name="addFavorite">Add to Favorites</button>
                         </form>
                 <?php
+                    }
+                    // Check for rights
+                    $user = UserService::$instance->getUser($_SESSION['UserID']);
+                    if($_SESSION['UserID'] == $game->getAuthor()->getId() ||
+                       $user->getUserType()->getAccessStrength() == UserType::Admin()->getAccessStrength()){
+                        ?> 
+                        <!-- Delete Button -->
+                        <a href="index.php?action=editGame&id=<?=$game->getId()?>&deleteGame=true" type="button" class="button button--primary w-25 mt-3">Delete</a>
+                        <?php
                     }
                 }
                 ?>

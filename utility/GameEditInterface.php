@@ -31,14 +31,16 @@ class GameEditInterface
                     $this->showForm(GameService::$instance->getGame($_GET['id']));
                 break;
             case "editGame":
-                // Get game author
-                $rightToEdit = $_SESSION['UserID'] == GameService::$instance->getGame($_GET['id'])->getAuthor()->getId();
-                if (
-                    isset($_GET['id']) && $_GET['id'] != null &&
-                    isset($_SESSION['UserID']) && $_SESSION['UserID'] != null &&
-                    $rightToEdit
-                ) {
-                    if (isset($_GET['deleteGame']))
+                if(!isset($_GET['id']) || $_GET['id'] != null || !isset($_SESSION['UserID']) || $_SESSION['UserID'] == null)
+                    break;
+
+                // Check if game can be edited (From author or admin)
+                $rightToEdit = (($game = GameService::$instance->getGame($_GET['id'])) != null && $_SESSION['UserID'] == $game->getAuthor()->getId()) ||
+                    UserService::$instance->getUser($_SESSION['UserID'])->getUserType()->getAccessStrength() == UserType::Admin()->getAccessStrength();                
+                if(isset($_GET['id']) && $_GET['id'] != null &&
+                isset($_SESSION['UserID']) && $_SESSION['UserID'] != null &&
+                $rightToEdit) {
+                    if(isset($_GET['deleteGame']))
                         GameService::$instance->deleteGame($_GET['id']);
                     else if (isset($_GET['deleteScreenshot'])) {
                         GameService::$instance->deleteScreenshot($_GET['deleteScreenshot']);

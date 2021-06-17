@@ -217,7 +217,7 @@ class GameService
         return $this->getGameArrayFromData($gameData);
     }
 
-    function deleteGame(int $id)
+    function deleteGame($id)
     {
         $game = $this->getGame($id);
 
