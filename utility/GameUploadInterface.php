@@ -38,13 +38,13 @@ class GameUploadInterface
             <h2 class="heading-secondary">Upload Game</h2>
             <form class="form" method="post" enctype="multipart/form-data" action="index.php?action=uploadGame">
                 <div class="form__group">
-                    <input type="text" class="form__input" placeholder="Game Title" name="game-title" id="game-title" aria-describedby="game-title">
+                    <input type="text" class="form__input" placeholder="Game Title" name="game-title" id="game-title" aria-describedby="game-title" value="<?= $_SESSION['gameUpload']['game-title'] ?? "" ?>">
                     <label for="game-title" class="form__label">Game Title</label>
                     <span class="form__separator"></span>
                 </div>
                 <small><?= $_SESSION['uploadGameErrors']['game-title'] ?? '' ?></small>
                 <div class="form__group">
-                    <textarea type="text" placeholder="Description" class="form__input" name="game-description" id="game-description" aria-describedby="game-description"></textarea>
+                    <textarea type="text" placeholder="Description" class="form__input" name="game-description" id="game-description" aria-describedby="game-description"><?= $_SESSION['gameUpload']['game-description'] ?? "" ?></textarea>
                     <label for="game-description" class="form__label">Description</label>
                     <span class="form__separator"></span>
                 </div>
@@ -95,7 +95,7 @@ class GameUploadInterface
                     </div>
                 </div>
                 <small><?= $_SESSION['uploadGameErrors']['game-file'] ?? '' ?></small>
-                <button type="submit" class="button button--primary">Create</button>
+                <button type="submit" class="button button--primary" name="uploadGame">Create</button>
             </form>
         </section>
 <?php

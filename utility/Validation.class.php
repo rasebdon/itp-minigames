@@ -270,6 +270,8 @@ class Validation
 
     public function uploadGame($gameData, $fileData)
     {
+
+        
         // 1. Clear previous errors, and reset success bool
         $this->clearErrors();
 
@@ -292,16 +294,11 @@ class Validation
             }
 
         if (!isset($this->returnErrors['game-file']))
-            if (empty($fileData['game-file-windows']) && empty($fileData['game-file-linux']) && empty($fileData['game-file-mac'])) {
+            if (empty($fileData['game-file-windows']['name']) && empty($fileData['game-file-linux']['name']) && empty($fileData['game-file-mac']['name'])) {
                 $this->returnErrors['game-file'] = Validation::error['GAME_FILE_EMPTY'];
                 $this->success = false;
             }
-
-        if (!isset($this->returnErrors['game-pic']))
-            if (empty($fileData['image-files']['name'][0]) ) {
-                $this->returnErrors['game-pic'] = Validation::error['GAME_NOPIC'];
-                $this->success = false;
-            }
+        
 
         // 4. fill error message array with success messages for each valid value
         $this->fillSuccessful($gameData);
