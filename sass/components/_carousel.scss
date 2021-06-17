@@ -1,0 +1,28 @@
+.carousel-inner,
+.carousel-item {
+    height: 100%;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+}
+
+.carousel-img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.carousel {
+    &__ui-container {
+        position: absolute;
+        left: 50%;
+        bottom: 2rem;
+        transform: translateX(-50%);
+        display: flex;
+        justify-content: space-evenly;
+        width: 70%;
+
+        @include respond(sm) {
+            bottom: 1rem;
+        }
+    }
+}

@@ -11,8 +11,11 @@ if (isset($_GET['action'])) {
             UserService::$instance->setUserType(UserType::Creator(), $user->getId());
         }
 ?>
+        <div class="heading-primary">
+            <h1 class="heading-primary__text">Profile</h1>
+        </div>
         <section class="edit-profile">
-            <h2 class="heading-secondary">Edit Profile</h2>
+            <h2 class="heading-secondary">Edit</h2>
             <div class="edit-profile__profile-picture">
                 <h3 class="heading-tertiary">Profile Picture</h3>
                 <div class="row">
@@ -66,20 +69,30 @@ if (isset($_GET['action'])) {
                         <label class="form__label" for="editLastName">Last Name</label>
                         <span class="form__separator"></span>
                     </div>
+                    <small class="form-text text-muted"><?= $_SESSION['editProfileErrors']['LastName'] ?? '' ?></small>
                     <!-- Social Media Links -->
-                    
+
                     <!-- Enable Developer Mode (Can upload games) -->
+
                     <?php
-                    if ($user->getUserType()->getAccessStrength() == UserType::User()->getAccessStrength()) {
+                    $isUser = $user->getUserType()->getAccessStrength() == UserType::User()->getAccessStrength();
+                    if ($isUser) {
                     ?>
-                        <div class="form__group">
-                            <a href="?action=editProfile&enableDeveloperMode=1" type="button" name="EnableDeveloperMode" class="button button--primary">Enable Developer Mode</a>
+                        <div class="flex flex__between flex__wrap">
+                        <?php
+                    }
+                        ?>
+                        <button type="submit" name="SubmitSettings" class="button button--primary">Save</button>
+                        <?php
+                        if ($isUser) {
+                        ?>
+                            <div class="form__group">
+                                <a href="?action=editProfile&enableDeveloperMode=1" type="button" name="EnableDeveloperMode" class="button button--primary">Enable Developer Mode</a>
+                            </div>
                         </div>
                     <?php
-                    }
+                        }
                     ?>
-                    <small class="form-text text-muted"><?= $_SESSION['editProfileErrors']['LastName'] ?? '' ?></small>
-                    <button type="submit" name="SubmitSettings" class="button button--primary">Save</button>
                 </form>
             </div>
 

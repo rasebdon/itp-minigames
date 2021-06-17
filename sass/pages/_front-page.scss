@@ -10,7 +10,6 @@
         0px 0px 4px rgba(0,0,0,.2);
         transform: skewX(-12deg) scale(1.01) translate(9px);
     }
-    margin-top: 4rem;
     @include respond(sm) {
         margin-top: 1rem;
     }

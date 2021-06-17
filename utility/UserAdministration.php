@@ -50,8 +50,9 @@ class UserAdministration
 
 ?>
         <div class="row user-administration-list">
-            <div class="mb-3 col-12 text-center">
-                <h1 class="display-3">User Administration System</h1>
+
+            <div class="heading-primary">
+                <h1 class="heading-primary__text">User Administration System</h1>
             </div>
             <div class="user-administration-search mb-5 mt-3">
                 <form class="d-flex row justify-content-center">
@@ -147,8 +148,8 @@ class UserAdministration
 
     ?>
         <div class="row user-administration-list">
-            <div class="mb-3 col-12 text-center">
-                <h1 class="display-3">User Administration System</h1>
+            <div class="heading-primary">
+                <h1 class="heading-primary__text">User Administration System</h1>
             </div>
             <div class="user-administration-search mb-4 mt-3">
                 <form class="d-flex row justify-content-center">

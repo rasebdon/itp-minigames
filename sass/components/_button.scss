@@ -7,7 +7,12 @@
     font-size: 1.5rem;
     border: none;
     border-radius: 1px;
-    transition: all 0.25s ease-in-out;
+    transition: all 0.2s ease;
+    width: fit-content;
+
+    i {
+        margin-left: 1rem;
+    }
 
     &--primary {
         background-color: $color-tertiary;
@@ -75,6 +80,6 @@ a.button {
     text-decoration: none;
     text-align: center;
     &:hover {
-        color: inherit;
+        color: $color-white;
     }
 }

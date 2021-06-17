@@ -27,6 +27,7 @@ require_once "services/GameService.class.php";
 require_once "services/RatingService.class.php";
 require_once "services/ForumService.class.php";
 
+
 require_once "utility/favoritelogic.php";
 
 //BOOL FOR DEBUGGIG MODE
@@ -74,7 +75,7 @@ require_once "forms/formHandler.php";
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
 
     <!-- IMPORT CSS -->
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css">
     <script src="https://use.fontawesome.com/d95cfc3de4.js"></script>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
@@ -83,8 +84,9 @@ require_once "forms/formHandler.php";
     <link rel="stylesheet" type="text/css" href="css/gameUploadInterface.css" />
     <link rel="stylesheet" type="text/css" href="css/forum.css">
     <link rel="stylesheet" type="text/css" href="css/rating.css">
-
+    <link rel="stylesheet" type="text/css" href="css/impressum.css">
     <link rel="stylesheet" type="text/css" href="css/styleComp.css">
+
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
 
@@ -139,6 +141,8 @@ require_once "forms/formHandler.php";
         require_once "utility/GameRenderer.php";
 
         require_once "utility/frontPage.php";
+
+        require_once "utility/impressumService.php";
 
         //make this for users only, this is public for debugg only
         require_once "utility/ForumMainPage.php";
