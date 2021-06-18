@@ -69,6 +69,7 @@
     display: none;
     &__label {
         width: fit-content;
+        width: -moz-fit-content;
         color: white;
         font-weight: 600;
         letter-spacing: 0.2rem;
