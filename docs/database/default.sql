@@ -280,7 +280,7 @@ CREATE TABLE `tickets` (
   `TicketID` INT(11) NOT NULL, 
   `FK_UserID` INT(11) NOT NULL , 
   `Text` TEXT NOT NULL,
-  `Subject` TEXT NOT NULL; 
+  `Subject` TEXT NOT NULL 
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4; 
 
 --
