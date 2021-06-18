@@ -57,9 +57,16 @@ class GameRenderer
                     <span class="d-inline-block game-version">
                         Version <?= $game->getVersion() ?>
                     </span>
-                    <span class="d-inline-block game-verified">
-                        <?= $game->isVerified() == 0 ? "Not verified" : "" ?>
-                    </span>
+                    <?php
+                    if ($game->isVerified() == 0) {
+                    ?>
+                        <span class="d-inline-block game-verified">
+                            "Not verified"
+                        </span>
+                    <?php
+                    }
+
+                    ?>
                 </h1>
             </div>
             <div class="col-12">
@@ -102,16 +109,18 @@ class GameRenderer
                         <form action="index.php?action=viewGame&id=<?= $_GET['id'] ?>" method="POST" class="mb-1 mt-1">
                             <button type="submit" class="button button--primary" value="<?= $_SESSION['UserID'] ?>" name="addFavorite">Add to Favorites</button>
                         </form>
-                <?php
+                    <?php
                     }
                     // Check for rights
                     $user = UserService::$instance->getUser($_SESSION['UserID']);
-                    if($_SESSION['UserID'] == $game->getAuthor()->getId() ||
-                       $user->getUserType()->getAccessStrength() == UserType::Admin()->getAccessStrength()){
-                        ?> 
+                    if (
+                        $_SESSION['UserID'] == $game->getAuthor()->getId() ||
+                        $user->getUserType()->getAccessStrength() == UserType::Admin()->getAccessStrength()
+                    ) {
+                    ?>
                         <!-- Delete Button -->
-                        <a href="index.php?action=editGame&id=<?=$game->getId()?>&deleteGame=true" type="button" class="button button--primary w-25 mt-3">Delete</a>
-                        <?php
+                        <a href="index.php?action=editGame&id=<?= $game->getId() ?>&deleteGame=true" type="button" class="button button--primary w-25 mt-3">Delete</a>
+                <?php
                     }
                 }
                 ?>
@@ -273,10 +282,9 @@ class GameRenderer
                 ?>
             </div>
         </div>
-        <?php 
+    <?php
 
         $this->renderRating($game);
-        
     }
 
     function renderRating($game)
@@ -289,7 +297,7 @@ class GameRenderer
         $rating_total = ($rating5 + $rating4 + $rating3 + $rating2 + $rating1);
         if ($rating_total == 0) $rating_total = 1;
 
-        ?>
+    ?>
         <div class="row rating-display mb-5">
             <div class="col-md-3">
                 <h1 class="m-0">Rating</h1>
@@ -345,44 +353,44 @@ class GameRenderer
                 if (isset($_SESSION['UserID']) &&  $_SESSION['UserID'] != null) {
 
                     $userRating = RatingService::$instance->getRating($game->getId(), $_SESSION['UserID']);
-                    ?>
+                ?>
                     <div class="row">
-                        
 
-                    <?php
-                    if($userRating){
-                        $oldRating = $userRating->getRating();
-                        $oldText = $userRating->getText();
-                        echo "<span>Edit own feedback:</span>";
-                    }else{
-                        $oldRating = 0;
-                        $oldText = "";
-                        echo "<span>Add own feedback:</span>";
-                    }                    
-                ?>      
-                    <script>
-                        $(document).ready(function() {
-                            var options2 = {
-                                max_value: 5,
-                                step_size: 1.0,
-                                initial_value: <?= $oldRating ?>,
-                                selected_symbol_type: 'fontawesome_star',
-                                readonly: false,
-                            }
-                            $(".rate2").rate(options2);
-                        });
-                    </script>          
-                    
-                    <div class="col-4">Rating</div>
-                    <div class="col">
-                    <div class="rate2" data-rate-value=<?= $oldRating ?>></div>
+
+                        <?php
+                        if ($userRating) {
+                            $oldRating = $userRating->getRating();
+                            $oldText = $userRating->getText();
+                            echo "<span>Edit own feedback:</span>";
+                        } else {
+                            $oldRating = 0;
+                            $oldText = "";
+                            echo "<span>Add own feedback:</span>";
+                        }
+                        ?>
+                        <script>
+                            $(document).ready(function() {
+                                var options2 = {
+                                    max_value: 5,
+                                    step_size: 1.0,
+                                    initial_value: <?= $oldRating ?>,
+                                    selected_symbol_type: 'fontawesome_star',
+                                    readonly: false,
+                                }
+                                $(".rate2").rate(options2);
+                            });
+                        </script>
+
+                        <div class="col-4">Rating</div>
+                        <div class="col">
+                            <div class="rate2" data-rate-value=<?= $oldRating ?>></div>
+                        </div>
+                        <form action="index.php?action=rateGame&id=<?= $game->getId() ?>" method="POST">
+                            <textarea name="rating-text" id="rating-text" class="form-control" cols="30" rows="3" placeholder="Type some feedback"><?= $oldText ?></textarea>
+                            <button class="button button--primary mt-2" name="rateGame">Submit</button>
+                            <input type="number" name="rating-value" id="rating-value" value="<?= $oldRating ?>" hidden>
+                        </form>
                     </div>
-                    <form action="index.php?action=rateGame&id=<?= $game->getId() ?>" method="POST">
-                        <textarea name="rating-text" id="rating-text" class="form-control" cols="30" rows="3" placeholder="Type some feedback"><?= $oldText ?></textarea>
-                        <button class="button button--primary mt-2" name="rateGame">Submit</button>
-                        <input type="number" name="rating-value" id="rating-value" value="<?= $oldRating ?>" hidden>
-                    </form>
-                </div>
                 <?php
                 }
                 ?>
