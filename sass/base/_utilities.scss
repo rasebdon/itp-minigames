@@ -18,13 +18,13 @@
         background-image: linear-gradient(to right, $color-yellow-dark, $color-yellow-light);
     }
     &-primary {
-        background-image: linear-gradient(to right, $color-secondary, $color-tertiary);
+        background-image: linear-gradient(227deg, #4c2093 65%, #3c1874 65%);
     }
     &-secondary {
         background-image: radial-gradient(lighten($color-secondary, 2%) 25%, lighten($color-secondary, 20%));
     }
     &-primary--reverse {
-        background-image: linear-gradient(to left, $color-secondary, $color-tertiary);
+        background-image: linear-gradient(133deg, #4c2093 65%, #3c1874 65%);
     }
 }
 

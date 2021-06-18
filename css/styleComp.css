@@ -31,7 +31,6 @@ body {
   color: #F3F3F3; }
 
 .heading-primary {
-  background-color: #F3F3F3;
   margin-bottom: 3rem;
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
@@ -115,13 +114,13 @@ body {
   background-image: linear-gradient(to right, #f39c12, #f1c40f); }
 
 .gradient-primary {
-  background-image: linear-gradient(to right, #3c1874, #de354c); }
+  background-image: linear-gradient(227deg, #4c2093 65%, #3c1874 65%); }
 
 .gradient-secondary {
   background-image: radial-gradient(#401a7c 25%, #6829c9); }
 
 .gradient-primary--reverse {
-  background-image: linear-gradient(to left, #3c1874, #de354c); }
+  background-image: linear-gradient(133deg, #4c2093 65%, #3c1874 65%); }
 
 .flex {
   display: flex !important; }
