@@ -269,6 +269,20 @@ CREATE TABLE `vote_post` (
   `Vote` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `tickets`
+--
+
+DROP TABLE IF EXISTS `tickets`;
+CREATE TABLE `tickets` ( 
+  `TicketID` INT(11) NOT NULL, 
+  `FK_UserID` INT(11) NOT NULL , 
+  `Text` TEXT NOT NULL,
+  `Subject` TEXT NOT NULL; 
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4; 
+
 --
 -- Indizes der exportierten Tabellen
 --
@@ -403,6 +417,13 @@ ALTER TABLE `vote_post`
   ADD KEY `vote_post_post_PostID_fk` (`FK_PostID`);
 
 --
+-- Indizes für die Tabelle `tickets`
+--
+ALTER TABLE `tickets`
+  ADD PRIMARY KEY (`TicketID`),
+  ADD KEY `tickets_user_UserID_fk` (`FK_UserID`);
+
+--
 -- AUTO_INCREMENT für exportierte Tabellen
 --
 
@@ -459,6 +480,12 @@ ALTER TABLE `social`
 --
 ALTER TABLE `user`
   MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT;
+
+-- AUTO_INCREMENT für Tabelle `user`
+--
+ALTER TABLE `tickets`
+  MODIFY `TicketID` int(11) NOT NULL AUTO_INCREMENT;
+
 
 --
 -- Constraints der exportierten Tabellen
@@ -552,6 +579,12 @@ ALTER TABLE `user`
 ALTER TABLE `vote_comment`
   ADD CONSTRAINT `vote_comment_comment_CommentID_fk` FOREIGN KEY (`FK_CommentID`) REFERENCES `comment` (`CommentID`) ON DELETE CASCADE,
   ADD CONSTRAINT `vote_comment_user_UserID_fk` FOREIGN KEY (`FK_UserID`) REFERENCES `user` (`UserID`) ON DELETE CASCADE;
+
+--
+-- Constraints der Tabelle `vote_comment`
+--
+ALTER TABLE `tickets`
+  ADD CONSTRAINT `tickets_user_UserID_fk` FOREIGN KEY (`FK_UserID`) REFERENCES `user` (`UserID`) ON DELETE CASCADE;
 
 --
 -- Constraints der Tabelle `vote_post`

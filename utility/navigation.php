@@ -69,7 +69,7 @@
                         <a href="index.php?action=imprint">Imprint</a>
                     </li>
                     <li class="nav-side__list-item nav-side__list-item--contact">
-                        <a href="#">Contact</a>
+                        <a href="index.php?action=contact">Contact</a>
                     </li>
                 </ul>
             </div>

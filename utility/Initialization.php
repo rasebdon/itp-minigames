@@ -33,7 +33,7 @@ class Initialization {
             FROM information_schema.tables
             WHERE table_schema = 'itp-minigames'");
             $result = Database::$instance->fetchAll();
-            if(sizeof($result) != 18)
+            if(sizeof($result) != 19)
                 throw new Exception("Database not complete!
                 Please add all tables that are needed to database!", 71);
             
