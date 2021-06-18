@@ -55,7 +55,7 @@ class GameRenderer
                 <h1 class="m-0">
                     <span class="d-inline-block"><?= $game->getTitle() ?></span>
                     <span class="d-inline-block game-version">
-                        <?= $game->getVersion() ?>
+                        Version <?= $game->getVersion() ?>
                     </span>
                     <span class="d-inline-block game-verified">
                         <?= $game->isVerified() == 0 ? "Not verified" : "" ?>

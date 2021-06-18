@@ -26,7 +26,7 @@ class ForumRenderer
                     ForumService::$instance->deletePost($_POST['DeletePost']);
                 }
                 if(isset($_POST['PostText'])){
-                    var_dump($_POST['PostText']);
+                    // var_dump($_POST['PostText']);
                     $post = new Post(
                         0,
                         $_POST['PostTitle'],
@@ -37,9 +37,6 @@ class ForumRenderer
                     );                                       
                     ForumService::$instance->addPost($post, $_GET['id']);
                 }
-
-
-                
                 $this->RenderForum($_GET['id']);
                 break;
         }
