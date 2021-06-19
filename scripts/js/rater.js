@@ -6,30 +6,30 @@
 /*
 * line 485 commented out since we dont need to make ajax post after updating the rating value
 */
-;(function ($, window){
-    $.fn.textWidth = function()
-    {
-        var html_calc = $('<span>' + $(this).html() + '</span>');
-        html_calc.css('font-size',$(this).css('font-size')).hide();
-        html_calc.prependTo('body');
-        var width = html_calc.width();
-        html_calc.remove();
-
-        if (width == 0)
-        {
-            var total = 0;
-            $(this).eq(0).children().each(function(){
-                total += $(this).textWidth();
-            });
-            return total;
-        }
-        return width;
+; (function ($, window) {
+    $.fn.textWidth = function () {
+        // var html_calc = $('<span>' + $(this).html() + '</span>');
+        // html_calc.css('font-size', $(this).css('font-size')).hide();
+        // html_calc.prependTo('body');
+        // // Get the width here
+        // var width = html_calc.width();
+        // html_calc.remove();
+        // console.log(width)
+        // if (width == 0) {
+        //     var total = 0;
+        //     $(this).eq(0).children().each(function () {
+        //         total += $(this).textWidth();
+        //     });
+        //     // return total;
+        //     return 83.5938; // 
+        // }
+        // // return width;
+        return 83.5938;
     };
 
-    $.fn.textHeight = function()
-    {
+    $.fn.textHeight = function () {
         var html_calc = $('<span>' + $(this).html() + '</span>');
-        html_calc.css('font-size',$(this).css('font-size')).hide();
+        html_calc.css('font-size', $(this).css('font-size')).hide();
         html_calc.prependTo('body');
         var height = html_calc.height();
         html_calc.remove();
@@ -46,16 +46,16 @@
     /*
      * Utf-32 isn't supported by default, so we have to use Utf-8 surrogates
      */
-    String.prototype.getCodePointLength = function() {
-        return this.length-this.split(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g).length+1;
+    String.prototype.getCodePointLength = function () {
+        return this.length - this.split(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g).length + 1;
     };
 
-    String.fromCodePoint= function() {
-        var chars= Array.prototype.slice.call(arguments);
-        for (var i= chars.length; i-->0;) {
-            var n = chars[i]-0x10000;
-            if (n>=0)
-                chars.splice(i, 1, 0xD800+(n>>10), 0xDC00+(n&0x3FF));
+    String.fromCodePoint = function () {
+        var chars = Array.prototype.slice.call(arguments);
+        for (var i = chars.length; i-- > 0;) {
+            var n = chars[i] - 0x10000;
+            if (n >= 0)
+                chars.splice(i, 1, 0xD800 + (n >> 10), 0xDC00 + (n & 0x3FF));
         }
         return String.fromCharCode.apply(null, chars);
     };
@@ -63,29 +63,23 @@
     /*
      * Starting the plugin itself
      */
-    $.fn.rate = function(options)
-    {
-        if (options === undefined || typeof options === 'object')
-        {
-            return this.each(function(){
-                if (!$.data(this, "rate"))
-                {
+    $.fn.rate = function (options) {
+        if (options === undefined || typeof options === 'object') {
+            return this.each(function () {
+                if (!$.data(this, "rate")) {
                     $.data(this, "rate", new Rate(this, options));
                 }
             });
         }
-        else if (typeof options === 'string')
-        {
+        else if (typeof options === 'string') {
             var args = arguments;
             var returns;
-            this.each(function(){
+            this.each(function () {
                 var instance = $.data(this, "rate");
-                if (instance instanceof Rate && typeof instance[options] === 'function')
-                {
+                if (instance instanceof Rate && typeof instance[options] === 'function') {
                     returns = instance[options].apply(instance, Array.prototype.slice.call(args, 1));
                 }
-                if (options === 'destroy')
-                {
+                if (options === 'destroy') {
                     // Unbind all events and empty the plugin data from instance
                     $(instance.element).off();
                     $.data(this, 'rate', null);
@@ -96,26 +90,22 @@
         }
     };
 
-    function Rate(element, options)
-    {
+    function Rate(element, options) {
         this.element = element;
         this.settings = $.extend({}, $.fn.rate.settings, options);
         this.set_faces = {}; // value, symbol pairs
         this.build();
     }
 
-    Rate.prototype.build = function()
-    {
+    Rate.prototype.build = function () {
         this.layers = {};
         this.value = 0;
         this.raise_select_layer = false;
 
-        if (this.settings.initial_value)
-        {
+        if (this.settings.initial_value) {
             this.value = this.settings.initial_value;
         }
-        if ($(this.element).attr("data-rate-value"))
-        {
+        if ($(this.element).attr("data-rate-value")) {
             this.value = $(this.element).attr("data-rate-value");
         }
 
@@ -127,8 +117,7 @@
         /*
          * Let's support single strings as symbols as well as objects
          */
-        if (typeof this.settings.symbols[this.settings.selected_symbol_type] === 'string')
-        {
+        if (typeof this.settings.symbols[this.settings.selected_symbol_type] === 'string') {
             var symbol = this.settings.symbols[this.settings.selected_symbol_type];
             this.settings.symbols[this.settings.selected_symbol_type] = {};
             this.settings.symbols[this.settings.selected_symbol_type]['base'] = symbol;
@@ -177,8 +166,7 @@
         /*
          * Update custom input field if provided
          */
-        if (this.settings.hasOwnProperty("update_input_field_name"))
-        {
+        if (this.settings.hasOwnProperty("update_input_field_name")) {
             this.settings.update_input_field_name.val(this.value);
         }
     }
@@ -186,23 +174,17 @@
     /*
      * Function to add a layer
      */
-    Rate.prototype.addLayer = function(layer_name, visible_width, symbol, visible)
-    {
+    Rate.prototype.addLayer = function (layer_name, visible_width, symbol, visible) {
         var layer_body = "<div>";
-        for (var i = 0; i < this.settings.max_value; i++)
-        {
-            if (Array.isArray(symbol))
-            {
-                if (this.settings.convert_to_utf8)
-                {
+        for (var i = 0; i < this.settings.max_value; i++) {
+            if (Array.isArray(symbol)) {
+                if (this.settings.convert_to_utf8) {
                     symbol[i] = String.fromCodePoint(symbol[i]);
                 }
                 layer_body += "<span>" + (symbol[i]) + "</span>";
             }
-            else
-            {
-                if (this.settings.convert_to_utf8)
-                {
+            else {
+                if (this.settings.convert_to_utf8) {
                     symbol = String.fromCodePoint(symbol);
                 }
                 layer_body += "<span>" + symbol + "</span>";
@@ -230,53 +212,45 @@
         return layer;
     }
 
-    Rate.prototype.updateServer = function()
-    {
-        if (this.settings.url != undefined)
-        {
+    Rate.prototype.updateServer = function () {
+        if (this.settings.url != undefined) {
             $.ajax({
                 url: this.settings.url,
                 type: this.settings.ajax_method,
                 data: $.extend({}, { value: this.getValue() }, this.settings.additional_data),
-                success: $.proxy(function(data){
+                success: $.proxy(function (data) {
                     $(this.element).trigger("updateSuccess", [data]);
                 }, this),
-                error: $.proxy(function(jxhr, msg, err){
+                error: $.proxy(function (jxhr, msg, err) {
                     $(this.element).trigger("updateError", [jxhr, msg, err]);
                 }, this)
             });
         }
     }
 
-    Rate.prototype.getValue = function()
-    {
+    Rate.prototype.getValue = function () {
         return this.value;
     }
 
-    Rate.prototype.hover = function(ev)
-    {
+    Rate.prototype.hover = function (ev) {
         var pad = parseInt($(this.element).css("padding-left").replace("px", ""));
         var x = ev.pageX - $(this.element).offset().left - pad;
         var val = this.toValue(x, true);
 
-        if (val != this.value)
-        {
+        if (val != this.value) {
             this.raise_select_layer = false;
         }
 
-        if (!this.raise_select_layer && !this.settings.readonly)
-        {
+        if (!this.raise_select_layer && !this.settings.readonly) {
             var visible_width = this.toWidth(val);
-            this.layers.select_layer.css({display: 'none'});
-            if (!this.settings.only_select_one_symbol)
-            {
+            this.layers.select_layer.css({ display: 'none' });
+            if (!this.settings.only_select_one_symbol) {
                 this.layers.hover_layer.css({
                     width: visible_width + "%",
                     display: 'block'
                 });
             }
-            else
-            {
+            else {
                 var index_value = Math.floor(val);
                 this.layers.hover_layer.css({
                     width: "100%",
@@ -295,10 +269,8 @@
     /*
      * Event for when a rating has been selected (clicked)
      */
-    Rate.prototype.select = function(ev)
-    {
-        if (!this.settings.readonly)
-        {
+    Rate.prototype.select = function (ev) {
+        if (!this.settings.readonly) {
             var old_value = this.getValue();
             var pad = parseInt($(this.element).css("padding-left").replace("px", ""));
             var x = ev.pageX - $(this.element).offset().left - pad;
@@ -309,40 +281,34 @@
         }
     }
 
-    Rate.prototype.mouseout = function()
-    {
-        this.layers.hover_layer.css({display: 'none'});
-        this.layers.select_layer.css({display: 'block'});
+    Rate.prototype.mouseout = function () {
+        this.layers.hover_layer.css({ display: 'none' });
+        this.layers.select_layer.css({ display: 'block' });
     }
 
     /*
      * Takes a width (px) and returns the value it resembles
      */
-    Rate.prototype.toWidth = function(val)
-    {
+    Rate.prototype.toWidth = function (val) {
         return val / this.settings.max_value * 100;
     }
 
     /*
      * Takes a value and calculates the width of the selected/hovered layer
      */
-    Rate.prototype.toValue = function(width, in_pixels)
-    {
+    Rate.prototype.toValue = function (width, in_pixels) {
         var val;
-        if (in_pixels)
-        {
+        if (in_pixels) {
             val = width / this.layers.base_layer.textWidth() * this.settings.max_value;
         }
-        else
-        {
+        else {
             val = width / 100 * this.settings.max_value;
         }
 
         // Make sure the division doesn't cause some small numbers added by
         // comparing to a small arbitrary number.
         var temp = val / this.settings.step_size;
-        if (temp - Math.floor(temp) < 0.00005)
-        {
+        if (temp - Math.floor(temp) < 0.00005) {
             val = Math.round(val / this.settings.step_size) * this.settings.step_size;
         }
         val = (Math.ceil(val / this.settings.step_size)) * this.settings.step_size;
@@ -350,46 +316,36 @@
         return val;
     }
 
-    Rate.prototype.getElement = function(layer_name, index)
-    {
+    Rate.prototype.getElement = function (layer_name, index) {
         return $(this.element).find(".rate-" + layer_name + " span").eq(index - 1);
     }
 
-    Rate.prototype.getLayers = function()
-    {
+    Rate.prototype.getLayers = function () {
         return this.layers;
     }
 
-    Rate.prototype.setFace = function(value, face)
-    {
+    Rate.prototype.setFace = function (value, face) {
         this.set_faces[value] = face;
     }
 
-    Rate.prototype.setAdditionalData = function(data)
-    {
+    Rate.prototype.setAdditionalData = function (data) {
         this.settings.additional_data = data;
     }
 
-    Rate.prototype.getAdditionalData = function()
-    {
+    Rate.prototype.getAdditionalData = function () {
         return this.settings.additional_data;
     }
 
-    Rate.prototype.removeFace = function(value)
-    {
+    Rate.prototype.removeFace = function (value) {
         delete this.set_faces[value];
     }
 
-    Rate.prototype.setValue = function(value)
-    {
-        if (!this.settings.readonly)
-        {
-            if (value < 0)
-            {
+    Rate.prototype.setValue = function (value) {
+        if (!this.settings.readonly) {
+            if (value < 0) {
                 value = 0;
             }
-            else if (value > this.settings.max_value)
-            {
+            else if (value > this.settings.max_value) {
                 value = this.settings.max_value;
             }
 
@@ -412,8 +368,7 @@
                 visibility: 'visible'
             });
             var index_value = Math.ceil(this.value);
-            if (this.set_faces.hasOwnProperty(index_value))
-            {
+            if (this.set_faces.hasOwnProperty(index_value)) {
                 var face = "<div>" + this.set_faces[index_value] + "</div>";
                 var base_layer_element = this.getElement('base-layer', index_value);
                 var select_layer_element = this.getElement('select-layer', index_value);
@@ -442,8 +397,7 @@
             /*
              * Set styles based on width and value
              */
-            if (!this.settings.only_select_one_symbol)
-            {
+            if (!this.settings.only_select_one_symbol) {
                 var width = this.toWidth(this.value);
                 this.layers.select_layer.css({
                     display: 'block',
@@ -455,8 +409,7 @@
                     height: this.layers.base_layer.css("height")
                 });
             }
-            else
-            {
+            else {
                 var width = this.toWidth(this.settings.max_value);
                 this.layers.select_layer.css({
                     display: 'block',
@@ -478,8 +431,7 @@
             // Update the data-rate-value attribute
             $(this.element).attr("data-rate-value", this.value);
 
-            if (this.settings.change_once)
-            {
+            if (this.settings.change_once) {
                 this.settings.readonly = true;
             }
             //this.updateServer();
@@ -495,21 +447,18 @@
             /*
              * Update custom input field if provided
              */
-            if (this.settings.hasOwnProperty("update_input_field_name"))
-            {
+            if (this.settings.hasOwnProperty("update_input_field_name")) {
                 this.settings.update_input_field_name.val(this.value);
             }
 
         }
     }
 
-    Rate.prototype.increment = function()
-    {
+    Rate.prototype.increment = function () {
         this.setValue(this.getValue() + this.settings.step_size);
     }
 
-    Rate.prototype.decrement = function()
-    {
+    Rate.prototype.decrement = function () {
         this.setValue(this.getValue() - this.settings.step_size);
     }
 
