@@ -3,10 +3,10 @@
 /**
  * Class that manages the initial game upload
  */
-class GameUploadInterface
+class GameUploadComponent
 {
 
-    /** @var GameUploadInterface */
+    /** @var GameUploadComponent */
     public static $instance;
 
     function __construct()
@@ -102,4 +102,4 @@ class GameUploadInterface
     }
 }
 
-GameUploadInterface::$instance = new GameUploadInterface();
+GameUploadComponent::$instance = new GameUploadComponent();

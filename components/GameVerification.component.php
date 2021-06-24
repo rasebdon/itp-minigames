@@ -1,8 +1,7 @@
 <?php
-class GameVerificationList
+class GameVerificationComponent
 {
-
-    /** @var GameVerificationList */
+    /** @var GameVerificationComponent */
     public static $instance;
 
     function __construct()
@@ -222,4 +221,4 @@ class GameVerificationList
     }
 }
 
-GameVerificationList::$instance = new GameVerificationList();
+GameVerificationComponent::$instance = new GameVerificationComponent();

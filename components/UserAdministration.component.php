@@ -1,8 +1,7 @@
 <?php
-class UserAdministration
+class UserAdministrationComponent
 {
-
-    /** @var UserAdminstration */
+    /** @var UserAdministrationComponent */
     public static $instance;
 
     function __construct()
@@ -267,4 +266,4 @@ class UserAdministration
     }
 }
 
-UserAdministration::$instance = new UserAdministration();
+UserAdministrationComponent::$instance = new UserAdministrationComponent();

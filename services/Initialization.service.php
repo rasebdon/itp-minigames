@@ -1,6 +1,6 @@
 <?php
 
-class Initialization {
+class InitializationService {
 
     public static $defaultAdminUsername = "admin";
     public static $defaultAdminPassword = "admin";
@@ -9,7 +9,7 @@ class Initialization {
 
     public static function RunConfiguration() {
         try {
-            Initialization::DatabaseCheck();
+            InitializationService::DatabaseCheck();
         }
         catch(Exception $e) {
             // Clear cookies
@@ -91,8 +91,8 @@ class Initialization {
                     AND `ThumbnailPath` = 'resources/profilePictures/defaultThumbnail.jpeg';");
                     $result = Database::$instance->fetchArray();
                     $pictureId = $result['PictureID'];
-                    $password = password_hash(Initialization::$defaultAdminPassword, PASSWORD_DEFAULT);
-                    $username = Initialization::$defaultAdminUsername;
+                    $password = password_hash(InitializationService::$defaultAdminPassword, PASSWORD_DEFAULT);
+                    $username = InitializationService::$defaultAdminUsername;
                     Database::$instance->query("INSERT INTO `user` (`FirstName`, `LastName`, `Username`, `Email`, `Usertype`, `Password`, `FK_PictureID`) VALUES ('admin', 'admin', '$username', 'admin@admin.admin', 'admin', '$password', $pictureId)");
                     break;
             }
@@ -104,4 +104,4 @@ class Initialization {
 }
 
 // Check for right setup of page
-Initialization::RunConfiguration();
+InitializationService::RunConfiguration();

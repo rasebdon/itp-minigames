@@ -1,7 +1,17 @@
 <?php
-if (isset($_GET['action'])) {
-    if ($_GET['action'] == 'login') {
-?>
+class LoginComponent
+{
+    /** @var LoginComponent */
+    public static $instance;
+    function __construct()
+    {
+        if (isset($_GET['action']) && $_GET['action'] == 'login') {
+            $this->showLogin();
+        }
+    }
+
+    function showLogin() {
+        ?>
         <section class="login">
             <h2 class="heading-secondary">Login</h2>
             <div class="login__form">
@@ -28,6 +38,9 @@ if (isset($_GET['action'])) {
                 </form>
             </div>
         </section>
-<?php
+    <?php
     }
 }
+
+// INIT COMPONENT
+LoginComponent::$instance = new LoginComponent();

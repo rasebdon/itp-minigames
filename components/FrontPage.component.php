@@ -1,7 +1,7 @@
 <?php
-class FrontPage
+class FrontPageComponent
 {
-    /** @var FrontPage */
+    /** @var FrontPageComponent */
     public static $instance;
 
     function __construct()
@@ -21,10 +21,9 @@ class FrontPage
         }
     }
 
-
     function displayFrontPage($games)
     {
-?>
+    ?>
         <section class="front-page">
             <div class="heading-primary">
                 <h1 class="heading-primary__text">
@@ -154,4 +153,4 @@ class FrontPage
     }
 }
 
-FrontPage::$instance = new FrontPage();
+FrontPageComponent::$instance = new FrontPageComponent();

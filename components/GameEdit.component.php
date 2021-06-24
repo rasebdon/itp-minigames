@@ -1,12 +1,12 @@
 <?php
 
 /**
- * Class that manages the initial game upload
+ * Class that manages the game edit interface and submit of changes
  */
-class GameEditInterface
+class GameEditComponent
 {
 
-    /** @var GameEditInterface */
+    /** @var GameEditComponent */
     public static $instance;
 
     function __construct()
@@ -201,4 +201,4 @@ class GameEditInterface
     }
 }
 
-GameEditInterface::$instance = new GameEditInterface();
+GameEditComponent::$instance = new GameEditComponent();

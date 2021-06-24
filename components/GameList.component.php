@@ -1,8 +1,8 @@
 <?php
-class GameList
+class GameListComponent
 {
 
-    /** @var GameList */
+    /** @var GameListComponent */
     public static $instance;
 
     function __construct()
@@ -97,4 +97,4 @@ class GameList
     }
 }
 
-GameList::$instance = new GameList();
+GameListComponent::$instance = new GameListComponent();

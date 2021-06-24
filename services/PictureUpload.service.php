@@ -1,7 +1,7 @@
 <?php
-class PictureService
+class PictureUploadService
 {
-    /** @var PictureService  */
+    /** @var PictureUploadService  */
     public static $instance;
     /** @var Database  */
     protected $db;
@@ -64,4 +64,4 @@ class PictureService
     }
 }
 
-PictureService::$instance = new PictureService(Database::$instance);
+PictureUploadService::$instance = new PictureUploadService(Database::$instance);

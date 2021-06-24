@@ -9,6 +9,13 @@ class FavoriteService {
     function __construct(Database $database)
     {
         $this->db = $database;
+
+        if(isset($_POST['addFavorite'])){
+            $this->insertFavorite($_GET['id'], $_POST['addFavorite']);
+        }
+        if(isset($_POST['removeFavorite'])){
+            $this->removeFavorite($_GET['id'], $_POST['removeFavorite']);
+        }
     }
     
 

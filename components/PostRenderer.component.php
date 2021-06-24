@@ -1,12 +1,11 @@
 <?php
 
 /**
- * Static class that holds forum rendering functions
+ * Class that holds post rendering functions
  */
-class PostRenderer
+class PostRendererComponent
 {
-
-    /** @var PostRenderer */
+    /** @var PostRendererComponent */
     public static $instance;
 
     function __construct()
@@ -24,8 +23,6 @@ class PostRenderer
     function renderPost($onePost)
     {
         $post = ForumService::$instance->getPost($onePost);
-
-
 
         if (isset($_POST['commentText']) && !empty($_POST['commentText'])) {
 
@@ -58,7 +55,6 @@ class PostRenderer
         }
         $allComment = ForumService::$instance->getComments($post->getId());
 
-
 ?>
         <form id="DeleteComment" action="index.php?action=post&id=<?= $post->getId() ?>" method="POST"></form>
         <form id="ToggleCommentLike" action="index.php?action=post&id=<?= $post->getID() ?>" method="POST"></form>
@@ -71,7 +67,7 @@ class PostRenderer
 
         <?php
         if (isset($_SESSION['UserID']) &&  $_SESSION['UserID'] != null) {
-        ?> <div class"row">
+        ?> <div class="row">
                 <div class="col-md-12">
                     <form method="POST">
                         <textarea name="commentText" id="mainComment" class="form-control" placeholder="add comment - be friendly" cols="40" rows="5"></textarea><br>
@@ -180,4 +176,4 @@ class PostRenderer
 }
 
 
-PostRenderer::$instance = new PostRenderer();
+PostRendererComponent::$instance = new PostRendererComponent();

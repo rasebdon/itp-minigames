@@ -3,10 +3,10 @@
 /**
  * Static class that holds forum rendering functions
  */
-class ForumRenderer
+class ForumRendererComponent
 {
 
-    /** @var ForumRenderer */
+    /** @var ForumRendererComponent */
     public static $instance;
 
     function __construct()
@@ -167,4 +167,4 @@ class ForumRenderer
     }
 }
 
-ForumRenderer::$instance = new ForumRenderer();
+ForumRendererComponent::$instance = new ForumRendererComponent();

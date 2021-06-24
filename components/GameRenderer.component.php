@@ -3,10 +3,10 @@
 /**
  * Class that holds game rendering functions
  */
-class GameRenderer
+class GameRendererComponent
 {
 
-    /** @var GameRenderer */
+    /** @var GameRendererComponent */
     public static $instance;
 
     function __construct()
@@ -424,4 +424,4 @@ class GameRenderer
     }
 }
 
-GameRenderer::$instance = new GameRenderer();
+GameRendererComponent::$instance = new GameRendererComponent();

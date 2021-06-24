@@ -5,34 +5,30 @@ session_set_cookie_params(0, "/", $_SERVER['HTTP_HOST'], (isset($_SERVER['HTTPS'
 session_start();
 
 // REQUIREMENTS
-require_once "utility/database.class.php";
-require_once "utility/Initialization.php";
+require_once "services/Database.service.php";
+require_once "services/Initialization.service.php";
 
-require_once "models/Platform.php";
-require_once "models/UserType.php";
-require_once "models/Game.php";
-require_once "models/User.php";
-require_once "models/Picture.php";
-require_once "models/Post.php";
-require_once "models/Comment.class.php";
-require_once "models/Rating.php";
+// Load Models
+require_once "models/Platform.model.php";
+require_once "models/UserType.model.php";
+require_once "models/Game.model.php";
+require_once "models/User.model.php";
+require_once "models/Picture.model.php";
+require_once "models/Post.model.php";
+require_once "models/Comment.model.php";
+require_once "models/Rating.model.php";
 
-require_once "utility/PictureUpload.class.php";
 require_once "utility/Validation.class.php";
 
-require_once "services/UserService.class.php";
-require_once "services/ProfilePictureService.class.php";
-require_once "services/FavoriteService.class.php";
-require_once "services/GameService.class.php";
-require_once "services/RatingService.class.php";
-require_once "services/ForumService.class.php";
-require_once "services/ContactService.class.php";
-
-
-require_once "utility/favoritelogic.php";
-
-//BOOL FOR DEBUGGIG MODE
-$showDebug = false;
+// Load Services
+require_once "services/User.service.php";
+require_once "services/ProfilePicture.service.php";
+require_once "services/PictureUpload.service.php";
+require_once "services/Favorite.service.php";
+require_once "services/Game.service.php";
+require_once "services/Rating.service.php";
+require_once "services/Forum.service.php";
+require_once "services/Contact.service.php";
 
 // GET LOGIN STATUS
 $loggedIn = false;
@@ -102,76 +98,46 @@ require_once "forms/formHandler.php";
 
 <body>
     <?php
-    require_once "utility/navigation.php";
-    
-    if ($showDebug) {
+    // Load navbar
+    require_once "components/Navigation.component.php";
     ?>
-        <div class="ps-3 mt-3 pt-2 border-top">
-
-            <p class="h5">Components</p>
-
-            <a class="button--secondary" href="index.php?action=showUsers&amount=20&offset=0" class="btn btn-success">User List</a>
-            <a class="button--secondary" href="index.php?action=viewGame&id=1" class="btn btn-success">View Game</a>
-            <a class="button--secondary" href="index.php?action=viewFrontPage" class="btn btn-success">View Front Page</a>
-            <a class="button--secondary" href="index.php?action=forum" class="btn btn-success">Forum</a>
-            <a class="button--secondary" href="index.php?action=listCreatedGames" class="btn btn-success">Created Games List</a>
-            <a class="button--secondary" href="index.php?action=register" class="btn btn-success">Registration</a>
-            <a class="button--secondary" href="index.php?action=editProfile" class="btn btn-success">Edit Profile</a>
-            <a class="button--secondary" href="index.php?action=login" class="btn btn-success">Login</a>
-            <a class="button--secondary" href="index.php?action=logout" class="btn btn-success">Logout</a>
-
-        </div>
-        <div class="ps-3 mt-2 mb-3 pb-3 border-bottom">
-            <p class="h5">Roles</p>
-            <a class="button--secondary" href="index.php?debugLogin=<?= !$loggedIn ?>" class="btn btn-success">Toggle Login</a>
-            <a class="button--secondary" href="index.php?debugRole=user" class="btn btn-success">User Role</a>
-            <a class="button--secondary" href="index.php?debugRole=creator" class="btn btn-success">Creator Role</a>
-            <a class="button--secondary" href="index.php?debugRole=admin" class="btn btn-success">Admin Role</a>
-        </div>
-    <?php
-    } ?>
-
 
     <!-- Main container -->
     <div class="container">
-
         <?php
 
         /// Load components
         // Check which sites can be seen
         // Load public components
-        require_once "utility/GameRenderer.php";
-
-        require_once "utility/frontPage.php";
-
-        require_once "utility/impressumService.php";
-        require_once "utility/contact.service.php";
-        require_once "utility/ForumMainPage.php";
-        require_once "utility/postRenderer.php";
-
+        require_once "components/GameRenderer.component.php";
+        require_once "components/FrontPage.component.php";
+        require_once "components/Imprint.component.php";
+        require_once "components/Contact.component.php";
+        require_once "components/ForumMainPage.component.php";
+        require_once "components/PostRenderer.component.php";
 
         // Load logged in components
         if ($loggedIn) {
             $accessStrength = $userType->getAccessStrength();
             // Normal user components
             if ($accessStrength >= UserType::User()->getAccessStrength()) {
-                require_once "utility/EditProfile.php";
+                require_once "components/EditProfile.component.php";
             }
             // Game creator components
             if ($accessStrength >= UserType::Creator()->getAccessStrength()) {
-                require_once "utility/GameUploadInterface.php";
-                require_once "utility/GameEditInterface.php";
-                require_once "utility/GameList.php";
+                require_once "components/GameUpload.component.php";
+                require_once "components/GameEdit.component.php";
+                require_once "components/GameList.component.php";
             }
             // Admin components
             if ($accessStrength >= UserType::Admin()->getAccessStrength()) {
-                require_once "utility/UserAdministration.php";
-                require_once "utility/GameVerificationList.php";
+                require_once "components/UserAdministration.component.php";
+                require_once "components/GameVerification.component.php";
             }
         } else {
-            // if someone isn´t logged in
-            require_once "utility/Registration.php";
-            require_once "utility/Login.php";
+            // if someone isn't logged in
+            require_once "components/Registration.component.php";
+            require_once "components/Login.component.php";
         }
         ?>
     </div>

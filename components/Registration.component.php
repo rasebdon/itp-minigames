@@ -1,6 +1,17 @@
 <?php
-if (isset($_GET['action'])) {
-    if ($_GET['action'] == 'register') {
+class RegistrationComponent
+{
+    /** @var RegistrationComponent */
+    public static $instance;
+    function __construct()
+    {
+        if (isset($_GET['action']) && $_GET['action'] == 'register') {
+            $this->showRegistration();
+        }
+    }
+
+    function showRegistration()
+    {
 ?>
         <section class="register">
             <h2 class="heading-secondary">Register</h2>
@@ -49,4 +60,6 @@ if (isset($_GET['action'])) {
 <?php
     }
 }
-?>
+
+// INIT COMPONENT
+RegistrationComponent::$instance = new RegistrationComponent();
