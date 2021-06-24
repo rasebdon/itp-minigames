@@ -146,8 +146,6 @@ require_once "forms/formHandler.php";
 
         require_once "utility/impressumService.php";
         require_once "utility/contact.service.php";
-
-        //make this for users only, this is public for debugg only
         require_once "utility/ForumMainPage.php";
         require_once "utility/postRenderer.php";
 

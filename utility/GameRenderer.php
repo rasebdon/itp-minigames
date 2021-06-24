@@ -101,7 +101,7 @@ class GameRenderer
                     if (FavoriteService::$instance->isFavorite($_GET['id'],  $_SESSION['UserID'])) {
                 ?>
                         <form action="index.php?action=viewGame&id=<?= $_GET['id'] ?>" method="POST" class="mb-1 mt-1">
-                            <button type="submit" class="btn btn-warning" value="<?= $_SESSION['UserID'] ?>" name="removeFavorite">Remove from Favorites</button>
+                            <button type="submit" class="button button--primary" value="<?= $_SESSION['UserID'] ?>" name="removeFavorite">Remove from Favorites</button>
                         </form>
                     <?php
                     } else {
@@ -119,7 +119,7 @@ class GameRenderer
                     ) {
                     ?>
                         <!-- Delete Button -->
-                        <a href="index.php?action=editGame&id=<?= $game->getId() ?>&deleteGame=true" type="button" class="button button--primary w-25 mt-3">Delete</a>
+                        <a href="index.php?action=editGame&id=<?= $game->getId() ?>&deleteGame=true" type="button" class="button button--primary mt-3">Delete</a>
                 <?php
                     }
                 }

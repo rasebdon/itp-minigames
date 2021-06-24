@@ -474,12 +474,10 @@ class GameService
         //     $this->addScreenshot($gameID, $images[$i]);
         // }
 
-
-        // Check which games were uploaded and update platforms
-        // // Insert platforms
-        // for ($i=0; $i < sizeof($platforms); $i++) { 
-        //     $this->db->query("INSERT INTO game_platform VALUES ( ? , ? )", $gameID, $platforms[$i]);
-        // }
+        // Insert platforms
+        for ($i=0; $i < sizeof($platforms); $i++) { 
+            $this->db->query("INSERT INTO game_platform VALUES ( ? , ? )", $gameID, $platforms[$i]);
+        }
 
         // Also auto redirect possible
         echo "<script>location.replace('index.php?action=editGameInterface&id=$gameID');</script>";
