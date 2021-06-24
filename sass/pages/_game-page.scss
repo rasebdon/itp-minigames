@@ -95,12 +95,8 @@
     }
 
     .rate {
-        margin-top: 1rem;
         width: 85px;
         margin-left: auto;
-        @include respond(sm){
-            margin-left: 0;
-        }
     }
 
     .genre {

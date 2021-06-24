@@ -1120,12 +1120,8 @@ a.button {
       margin-top: 1rem;
       border-top: solid 2px #dee2e6; }
   .game-page .rate {
-    margin-top: 1rem;
     width: 85px;
     margin-left: auto; }
-    @media only screen and (max-width: 575px) {
-      .game-page .rate {
-        margin-left: 0; } }
   .game-page .genre {
     display: inline-block; }
 
