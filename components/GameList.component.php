@@ -65,7 +65,7 @@ class GameListComponent
                         $game = $games[$i];
 
                         // Todo -> Thumbnail
-                        $thumbnail = "resources/images/placeholder/placeholder_thumb.jpg";
+                        $thumbnail = "resources/images/placeholder/placeholder_big.jpg";
                         if (sizeof($screenshots = $game->getScreenshots()) > 0)
                             $thumbnail = $screenshots[0];
                         ?>

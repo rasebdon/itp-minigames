@@ -119,7 +119,7 @@ class Game {
     public function getFirstScreenshot()
     {
         if($this->screenshots == null){
-            return "./resources/images/placeholder/placeholder_thumb.jpg";
+            return "./resources/images/placeholder/placeholder_big.jpg";
         }else{
             return $this->screenshots[0];
         }

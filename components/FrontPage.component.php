@@ -115,7 +115,7 @@ class FrontPageComponent
                                         if (sizeof($screenshots) == 0) {
                                         ?>
                                             <div class="carousel-item<?= $i === 0 ? " active" : "" ?>">
-                                                <img src="resources/images/placeholder/placeholder_thumb.jpg" class="carousel-img" alt="image_<?= $i ?>">
+                                                <img src="resources/images/placeholder/placeholder_big.jpg" class="carousel-img" alt="image_<?= $i ?>">
                                             </div>
                                         <?php
                                         }
