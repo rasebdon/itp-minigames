@@ -51,9 +51,6 @@ class GameVerificationComponent
         }
         ?>
         <div class="row game-verification-list">
-            <div class="mb-3 col-12 text-center">
-                <h1 class="display-3">Game Verification List</h1>
-            </div>
             <div class="game-verification-list-search mb-5 mt-3">
                 <form class="d-flex row justify-content-center">
                     <div class="mt-3 row col-6">
@@ -150,9 +147,6 @@ class GameVerificationComponent
 
     ?>
         <div class="row game-verification-list">
-            <div class="mb-3 col-12 text-center">
-                <h1 class="display-3">Game Verification List</h1>
-            </div>
             <div class="game-verification-search mb-4 mt-3">
                 <form class="d-flex row justify-content-center">
                     <div class="mt-3 row col-6">

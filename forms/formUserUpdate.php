@@ -31,8 +31,8 @@ if (isset($_POST['ProfilePictureSubmit'])) {
         $newFilename = time() . hexdec(random_bytes(20)) . "." . getExtension($finfo->file($_FILES['file']['tmp_name']));
         $sourcePath = "resources/profilePictures/original/" . $user->getUsername() . $newFilename;
         $thumbnailPath = "resources/profilePictures/thumbnail/" . $user->getUsername() . $newFilename;
-        if (PictureService::$instance->uploadImage($_FILES['file'], $sourcePath)) {
-            PictureService::$instance->resizeImage($sourcePath, $thumbnailPath, 250, 250);
+        if (PictureUploadService::$instance->uploadImage($_FILES['file'], $sourcePath)) {
+            PictureUploadService::$instance->resizeImage($sourcePath, $thumbnailPath, 250, 250);
             ProfilePictureService::$instance->uploadPicture(
                 $user->getId(),
                 $sourcePath,
