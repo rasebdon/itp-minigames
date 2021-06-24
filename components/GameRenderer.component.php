@@ -101,13 +101,13 @@ class GameRendererComponent
                     if (FavoriteService::$instance->isFavorite($_GET['id'],  $_SESSION['UserID'])) {
                 ?>
                         <form action="index.php?action=viewGame&id=<?= $_GET['id'] ?>" method="POST" class="mb-1 mt-1">
-                            <button type="submit" class="button button--primary" value="<?= $_SESSION['UserID'] ?>" name="removeFavorite">Remove from Favorites</button>
+                            <button type="submit" class="btn btn-warning" value="<?= $_GET['id'] ?>" name="removeFavorite">Remove from Favorites</button>
                         </form>
                     <?php
                     } else {
                     ?>
                         <form action="index.php?action=viewGame&id=<?= $_GET['id'] ?>" method="POST" class="mb-1 mt-1">
-                            <button type="submit" class="button button--primary" value="<?= $_SESSION['UserID'] ?>" name="addFavorite">Add to Favorites</button>
+                            <button type="submit" class="button button--primary" value="<?= $_GET['id'] ?>" name="addFavorite">Add to Favorites</button>
                         </form>
                     <?php
                     }
@@ -386,7 +386,7 @@ class GameRendererComponent
                             <div class="rate2" data-rate-value=<?= $oldRating ?>></div>
                         </div>
                         <form action="index.php?action=rateGame&id=<?= $game->getId() ?>" method="POST">
-                            <textarea name="rating-text" id="rating-text" class="form-control" cols="30" rows="3" placeholder="Type some feedback"><?= $oldText ?></textarea>
+                            <textarea name="rating-text" id="rating-text" class="form-control form__input" cols="30" rows="3" placeholder="Type some feedback"><?= $oldText ?></textarea>
                             <button class="button button--primary mt-2" name="rateGame">Submit</button>
                             <input type="number" name="rating-value" id="rating-value" value="<?= $oldRating ?>" hidden>
                         </form>
