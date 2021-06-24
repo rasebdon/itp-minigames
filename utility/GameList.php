@@ -46,7 +46,21 @@ class GameList
                 <?php
                 for ($i = 0; $i < sizeof($games); $i++) {
                 ?>
+                <!--Script for game Rating -->
+
+                    <script>
+                        $(document).ready(function() {
+                            var options = {
+                                max_value: 5,
+                                step_size: 0.5,
+                                selected_symbol_type: 'fontawesome_star',
+                                readonly: true,
+                            }
+                            $(".rate").rate(options);
+                        });
+                    </script>
                     <div class="created-game">
+                        
                         <?php
                         $game = $games[$i];
 
@@ -68,16 +82,7 @@ class GameList
 
                                 <hr>
                                 <div class="rating">
-                                    <?php
-                                    for ($j = 0; $j < 5; $j++) {
-                                        $ratingStar = '<span class="fa fa-star';
-                                        if ($j < (int)$game->getRating())
-                                            $ratingStar .= ' checked';
-                                        $ratingStar .= '"></span>';
-                                        echo $ratingStar;
-                                    }
-                                    ?>
-                                    <span><?php printf("%.2f/5", $game->getRating()); ?></span>
+                                    <div class="rate" data-rate-value=<?= $game->getRating() ?>></div>  
                                 </div>
                                 <div class="created-game__actions">
                                     <a class="button button--primary" href="index.php?action=editGameInterface&id=<?= $game->getId() ?>">Edit</a>

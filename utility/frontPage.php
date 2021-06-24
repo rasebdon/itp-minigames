@@ -25,6 +25,23 @@ class FrontPage
     function displayFrontPage($games)
     {
 ?>
+        <!--Script for game Rating -->
+
+        <script>
+            $(document).ready(function() {
+                var options = {
+                    max_value: 5,
+                    step_size: 0.5,
+                    selected_symbol_type: 'fontawesome_star',
+                    readonly: true,
+                }
+                $(".rate").rate(options);
+            });
+        </script>
+
+
+
+
         <section class="front-page">
             <div class="heading-primary">
                 <h1 class="heading-primary__text">
@@ -69,15 +86,7 @@ class FrontPage
                                         ?>
                                     </div>
                                     <div class="game-card__rating">
-                                        <?php
-                                        for ($i = 0; $i < 5; $i++) {
-                                            $ratingStar = '<span class="fa fa-star';
-                                            if ($i < (int)$game->getRating())
-                                                $ratingStar .= ' checked';
-                                            $ratingStar .= '"></span>';
-                                            echo $ratingStar;
-                                        }
-                                        ?>
+                                        <div class="rate" data-rate-value=<?= $game->getRating() ?>></div>                                        
                                     </div>
                                     <div class="game-card__genres">
                                         <?php
@@ -89,7 +98,8 @@ class FrontPage
                                             }
                                             echo '</ul>';
                                         }
-                                        ?>
+                                        
+                                        ?>                                       
                                     </div>
                                 </div>
                             </div>
