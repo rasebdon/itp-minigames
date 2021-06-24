@@ -1126,6 +1126,8 @@ a.button {
     @media only screen and (max-width: 575px) {
       .game-page .rate {
         margin-left: 0; } }
+  .game-page .genre {
+    display: inline-block; }
 
 .game-list__upload {
   margin: 5rem auto 5rem auto; }

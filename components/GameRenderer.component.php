@@ -215,7 +215,7 @@ class GameRendererComponent
                 </p>
                 <?php
                 if (($genres = GameService::$instance->getGameGenres($game->getID())) != null) {
-                    echo '<ul>';
+                    echo '<ul class="mt-5 mb-0 p-0">';
                     foreach ($genres as $genre) {
                         echo '<li class="genre">' . $genre . '</li>';
                     }
