@@ -1,11 +1,12 @@
 <?php
 
 /**
- * Class that holds post rendering functions
+ * Static class that holds forum rendering functions
  */
-class PostRendererComponent
+class PostRenderer
 {
-    /** @var PostRendererComponent */
+
+    /** @var PostRenderer */
     public static $instance;
 
     function __construct()
@@ -23,6 +24,8 @@ class PostRendererComponent
     function renderPost($onePost)
     {
         $post = ForumService::$instance->getPost($onePost);
+
+
 
         if (isset($_POST['commentText']) && !empty($_POST['commentText'])) {
 
@@ -55,6 +58,7 @@ class PostRendererComponent
         }
         $allComment = ForumService::$instance->getComments($post->getId());
 
+
 ?>
         <form id="DeleteComment" action="index.php?action=post&id=<?= $post->getId() ?>" method="POST"></form>
         <form id="ToggleCommentLike" action="index.php?action=post&id=<?= $post->getID() ?>" method="POST"></form>
@@ -67,11 +71,11 @@ class PostRendererComponent
 
         <?php
         if (isset($_SESSION['UserID']) &&  $_SESSION['UserID'] != null) {
-        ?> <div class="row">
+        ?> <div class"row">
                 <div class="col-md-12">
                     <form method="POST">
                         <textarea name="commentText" id="mainComment" class="form-control" placeholder="add comment - be friendly" cols="40" rows="5"></textarea><br>
-                        <div style="text-align:right"><button class="button button--primary d-inline-block" id="addComment">Add comment</button></div>
+                        <button class="btn-primary btn" id="addComment">Add comment</button>
                     </form>
                 </div>
             </div>
@@ -111,7 +115,7 @@ class PostRendererComponent
                                             ?>
                                                     <form>
                                                         <button type='submit' class='btn' value='<?= $comment->getId() ?>' form='DeleteComment' name='DeleteComment'>
-                                                            <i class="fas fa-trash deleteButton"></i>
+                                                            <i class="fa fa-trash" style="color:red"></i>
                                                         </button>
                                                     </form>
                                             <?php
@@ -126,13 +130,13 @@ class PostRendererComponent
                                                 if (ForumService::$instance->isCommentRated($comment->getId(), $_SESSION['UserID'], 1)) {
                                             ?>
                                                     <button type='submit' class='btn' value='<?= $comment->getId() ?>' form='ToggleCommentLike' name='ToggleCommentLike'>
-                                                        <i class="fas fa-plus likeButton"></i>
+                                                        <i class="fa fa-arrow-circle-up" style="color:blue"></i>
                                                     </button>
                                                 <?php
                                                 } else {
                                                 ?>
                                                     <button type='submit' class='btn' value='<?= $comment->getId() ?>' form='ToggleCommentLike' name='ToggleCommentLike'>
-                                                        <i class=" fas fa-plus likeButton"></i>
+                                                        <i class="fa fa-arrow-circle-up" style="color:black"></i>
                                                     </button>
                                             <?php
                                                 }
@@ -148,13 +152,13 @@ class PostRendererComponent
                                                 if (ForumService::$instance->isCommentRated($comment->getId(), $_SESSION['UserID'], 0)) {
                                             ?>
                                                     <button type='submit' class='btn' value='<?= $comment->getId() ?>' form='ToggleCommentDislike' name='ToggleCommentDislike'>
-                                                        <i class="fas fa-minus" style="color: lightcoral; font-size: 25px;"></i>
+                                                        <i class="fa fa-arrow-circle-down" style="color:blue"></i>
                                                     </button>
                                                 <?php
                                                 } else {
                                                 ?>
                                                     <button type='submit' class='btn' value='<?= $comment->getId() ?>' form='ToggleCommentDislike' name='ToggleCommentDislike'>
-                                                        <i class="fas fa-minus dislikeButton"></i>
+                                                        <i class="fa fa-arrow-circle-down" style="color:black"></i>
                                                     </button>
                                             <?php
                                                 }
@@ -176,4 +180,4 @@ class PostRendererComponent
 }
 
 
-PostRendererComponent::$instance = new PostRendererComponent();
+PostRenderer::$instance = new PostRenderer();

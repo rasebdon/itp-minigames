@@ -98,8 +98,14 @@ require_once "forms/formHandler.php";
 
 <body>
     <?php
+<<<<<<< Updated upstream
     // Load navbar
     require_once "components/Navigation.component.php";
+=======
+    require_once "utility/navigation.php";
+
+    if ($showDebug) {
+>>>>>>> Stashed changes
     ?>
 
     <!-- Main container -->

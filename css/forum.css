@@ -79,3 +79,18 @@
     background-attachment: fixed;
     background-position: center;
   }
+
+  .likeButton {
+    color: greenyellow; 
+    font-size: 25px;
+  }
+
+  .dislikeButton {
+    color: lightcoral; 
+    font-size: 25px;
+  }
+
+  .deleteButton {
+    color: lightcoral; 
+    font-size: 18px;
+  }
