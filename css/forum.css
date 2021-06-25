@@ -81,16 +81,26 @@
   }
 
   .likeButton {
-    color: greenyellow; 
+    color: #2ecc71; 
     font-size: 25px;
   }
 
   .dislikeButton {
-    color: lightcoral; 
+    color: #de354c; 
     font-size: 25px;
   }
 
   .deleteButton {
-    color: lightcoral; 
+    color: #de354c; 
     font-size: 18px;
   }
+
+  .heading-quaternary {
+    color: #16a085;
+    font-size: 2.4rem;
+    font-family: "Maven Pro", cursive;
+    font-weight: 600;
+    letter-spacing: 0.12rem;
+    text-transform: uppercase;
+}
+

@@ -52,7 +52,6 @@ class PostRendererComponent
         }
 
         if (isset($_POST['ToggleCommentLike'])) {
-            echo "test";
             ForumService::$instance->toggleLikeComment($_POST['ToggleCommentLike'], $_SESSION['UserID']);
         }
         if (isset($_POST['ToggleCommentDislike'])) {
@@ -65,8 +64,8 @@ class PostRendererComponent
         <form id="ToggleCommentLike" action="index.php?action=post&id=<?= $post->getID() ?>" method="POST"></form>
         <form id="ToggleCommentDislike" action="index.php?action=post&id=<?= $post->getId() ?>" method="POST"></form>
         <div id="thePost">
-            <h1 class="display-4"><?= $post->getTitle() ?></h1>
-            <h2><?= $post->getUser()->getUsername() ?></h2>
+            <h1 class="heading-secondary"><?= $post->getTitle() ?></h1>
+            <h2 class="heading-quaternary"><?= $post->getUser()->getUsername() ?></h2>
             <p><?= $post->getText() ?></p>
         </div>
 
@@ -86,14 +85,14 @@ class PostRendererComponent
 
         if (!empty($allComment)) {
             if (count($allComment) == 1) {
-            ?><h2>1 Comment </h2>
+            ?><h1>1 Comment </h1>
             <?php
             } else if (count($allComment) > 1) {
-            ?><h2><?= count($allComment) ?> Comments </h2>
+            ?><h1><?= count($allComment) ?> Comments </h1>
             <?php
             }
         } else {
-            ?><h2>No comments added</h2>
+            ?><h1>No comments added</h1>
             <?php
         }
 
@@ -101,81 +100,89 @@ class PostRendererComponent
             foreach ($allComment as $comment) {
             ?>
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="post-banner md-12 mb-3 border-bottom rounded row" style="max-height: initial;">
                         <div class="userComments">
-                            <div class="comment">
-                                <div class="user"><?= $comment->getAuthor()->getUsername() ?><span class="time"><?= $comment->getDate() ?></span></div>
-                                <div class="userComment"><?= $comment->getText() ?></div>
+                            <div class="comment row">
+                                <div class="user col-9">
+                                    <?= $comment->getAuthor()->getUsername() ?>
 
-                                <div>
-                                    <div class="col-10 bl-1">
-                                        <span class="h1 d-block ">
-                                            <?php
-                                            //button for admin to delet comment 
-                                            if (isset($_SESSION['UserID']) &&  $_SESSION['UserID'] != null) {
-                                                if (UserService::$instance->getUser($_SESSION['UserID'])->getUserType()->getAccessStrength() >= UserType::Admin()->getAccessStrength()) {
-                                            ?>
-                                                    <form>
-                                                        <button type='submit' class='btn' value='<?= $comment->getId() ?>' form='DeleteComment' name='DeleteComment'>
-                                                            <i class="fas fa-trash deleteButton"></i>
-                                                        </button>
-                                                    </form>
-                                            <?php
-                                                }
+                                    <span class="h1 d-inline-block ">
+                                        <?php
+                                        //button for admin to delet comment 
+                                        if (isset($_SESSION['UserID']) &&  $_SESSION['UserID'] != null) {
+                                            if (UserService::$instance->getUser($_SESSION['UserID'])->getUserType()->getAccessStrength() >= UserType::Admin()->getAccessStrength()) {
+                                        ?>
+                                                <form>
+                                                    <button type='submit' class='btn' value='<?= $comment->getId() ?>' form='DeleteComment' name='DeleteComment'>
+                                                        <i class="fas fa-trash deleteButton"></i>
+                                                    </button>
+                                                </form>
+                                        <?php
                                             }
-                                            ?>
-                                        </span>
-                                        <div>
-                                            <?php
-                                            //likes
-                                            if (isset($_SESSION['UserID']) &&  $_SESSION['UserID'] != null) {
-                                                if (ForumService::$instance->isCommentRated($comment->getId(), $_SESSION['UserID'], 1)) {
-                                            ?>
-                                                    <button type='submit' class='btn' value='<?= $comment->getId() ?>' form='ToggleCommentLike' name='ToggleCommentLike'>
-                                                        <i class="fas fa-plus likeButton"></i>
-                                                    </button>
-                                                <?php
-                                                } else {
-                                                ?>
-                                                    <button type='submit' class='btn' value='<?= $comment->getId() ?>' form='ToggleCommentLike' name='ToggleCommentLike'>
-                                                        <i class=" fas fa-plus likeButton"></i>
-                                                    </button>
-                                            <?php
-                                                }
-                                            } else {
-                                                echo '<i class="fa fa-arrow-circle-up" style="color:black"></i>';
-                                            }
-                                            ?>
-                                            <!-- Number of Votes -->
-                                            <div><?= ForumService::$instance->getUpvotesFromComment($comment->getId()) ?></div>
-                                            <?php
-                                            //dislikes
-                                            if (isset($_SESSION['UserID']) &&  $_SESSION['UserID'] != null) {
-                                                if (ForumService::$instance->isCommentRated($comment->getId(), $_SESSION['UserID'], 0)) {
-                                            ?>
-                                                    <button type='submit' class='btn' value='<?= $comment->getId() ?>' form='ToggleCommentDislike' name='ToggleCommentDislike'>
-                                                        <i class="fas fa-minus" style="color: lightcoral; font-size: 25px;"></i>
-                                                    </button>
-                                                <?php
-                                                } else {
-                                                ?>
-                                                    <button type='submit' class='btn' value='<?= $comment->getId() ?>' form='ToggleCommentDislike' name='ToggleCommentDislike'>
-                                                        <i class="fas fa-minus dislikeButton"></i>
-                                                    </button>
-                                            <?php
-                                                }
-                                            } else {
-                                                echo '<i class="fa fa-arrow-circle-down" style="color:black"></i>';
-                                            }
-                                            ?>
+                                        }
+                                        ?>
+                                    </span>
+                                </div>
 
-                                        </div>
-                                    </div>
+                                <div class="col-3 bl-1 text-end">
+                                    <span class="time"><?= $comment->getDate() ?></span>
+
+                                </div>
+
+                                <div class="userComment col-11"><?= $comment->getText() ?></div>
+
+
+                                <div class="d-inline-block upvote-display col-1" style="transform: unset; align-self:flex-start; position:unset;">
+                                    <?php
+                                    //likes
+                                    if (isset($_SESSION['UserID']) &&  $_SESSION['UserID'] != null) {
+                                        if (ForumService::$instance->isCommentRated($comment->getId(), $_SESSION['UserID'], 1)) {
+                                    ?>
+                                            <button type='submit' class='btn' value='<?= $comment->getId() ?>' form='ToggleCommentLike' name='ToggleCommentLike'>
+                                                <i class="fas fa-plus likeButton"></i>
+                                            </button>
+                                        <?php
+                                        } else {
+                                        ?>
+                                            <button type='submit' class='btn' value='<?= $comment->getId() ?>' form='ToggleCommentLike' name='ToggleCommentLike'>
+                                                <i class=" fas fa-plus likeButton"></i>
+                                            </button>
+                                    <?php
+                                        }
+                                    } else {
+                                        echo '<i class="fa fa-arrow-circle-up" style="color:black"></i>';
+                                    }
+                                    ?>
+                                    <!-- Number of Votes -->
+                                    <div><?= ForumService::$instance->getUpvotesFromComment($comment->getId()) ?></div>
+                                    <?php
+                                    //dislikes
+                                    if (isset($_SESSION['UserID']) &&  $_SESSION['UserID'] != null) {
+                                        if (ForumService::$instance->isCommentRated($comment->getId(), $_SESSION['UserID'], 0)) {
+                                    ?>
+                                            <button type='submit' class='btn' value='<?= $comment->getId() ?>' form='ToggleCommentDislike' name='ToggleCommentDislike'>
+                                                <i class="fas fa-minus" style="color: lightcoral; font-size: 25px;"></i>
+                                            </button>
+                                        <?php
+                                        } else {
+                                        ?>
+                                            <button type='submit' class='btn' value='<?= $comment->getId() ?>' form='ToggleCommentDislike' name='ToggleCommentDislike'>
+                                                <i class="fas fa-minus dislikeButton"></i>
+                                            </button>
+                                    <?php
+                                        }
+                                    } else {
+                                        echo '<i class="fa fa-arrow-circle-down" style="color:black"></i>';
+                                    }
+                                    ?>
+
                                 </div>
                             </div>
+
                         </div>
                     </div>
-    <?php
+                </div>
+<?php
             }
         }
     }
