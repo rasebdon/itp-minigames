@@ -70,7 +70,7 @@ class PostRendererComponent
         ?> <div class="row">
                 <div class="col-md-12">
                     <form method="POST">
-                        <textarea name="commentText" id="mainComment" class="form-control" placeholder="add comment - be friendly" cols="40" rows="5"></textarea><br>
+                        <textarea name="commentText" id="mainComment" class="form-control form__input" placeholder="add comment - be friendly" cols="40" rows="5"></textarea><br>
                         <button class="btn-primary btn" id="addComment">Add comment</button>
                     </form>
                 </div>
