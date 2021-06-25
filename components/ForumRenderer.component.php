@@ -16,6 +16,7 @@ class ForumRendererComponent
 
         switch ($_GET['action']) {
             case "forum":
+                
                 if(isset($_POST['TogglePostLike'])){
                     ForumService::$instance->toggleLike($_POST['TogglePostLike'], $_SESSION['UserID']);
                 }
@@ -29,6 +30,7 @@ class ForumRendererComponent
                     // var_dump($_POST['PostText']);
                     if (isset($_SESSION['PostError']))
                     unset($_SESSION['PostError']);
+                    
                     $post = new Post(
                         0,
                         $_POST['PostTitle'],
@@ -38,7 +40,7 @@ class ForumRendererComponent
                         0
                     );                                       
                     ForumService::$instance->addPost($post, $_GET['id']);
-                }else{
+                }else if(isset($_POST['postPost'])){
                     $_SESSION['PostError']['textEmpty'] = "<div class='mt-1 alert alert-danger' role='alert'> Can't be empty </div>";
                 }
                 $this->RenderForum($_GET['id']);
