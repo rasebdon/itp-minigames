@@ -23,11 +23,10 @@ class PostRendererComponent
     function renderPost($onePost)
     {
         $post = ForumService::$instance->getPost($onePost);
+        if (isset($_SESSION['commentError']))
+                    unset($_SESSION['commentError']);
 
         if (isset($_POST['addComment']) && !empty($_POST['commentText'])) {
-
-            if (isset($_SESSION['commentError']))
-                    unset($_SESSION['commentError']);
 
             //var_dump($_POST);
             $commentObj = new Comment(
@@ -40,7 +39,7 @@ class PostRendererComponent
             );
 
             ForumService::$instance->insertComment($commentObj);
-        }else{
+        }else if (isset($_POST['addComment'])){
             $_SESSION['commentError']['emptyComment'] = "<div class='mt-1 alert alert-danger' role='alert'> Can't be empty </div>";
         }
         //var_dump($post);
