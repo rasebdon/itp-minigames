@@ -64,6 +64,20 @@ class InitializationService {
             $result = Database::$instance->fetchAll();
             if(sizeof($result) == 0)
                 throw new Exception("No administrator user found! Inserting default administrator.", 77);
+
+            Database::$instance->query("SELECT * FROM `forum` WHERE ForumID = 1");
+            $result = Database::$instance->fetchAll();
+            if(sizeof($result) == 0) {
+                throw new Exception("ForumID 1 is not in the Database!", 78);
+            }
+
+            // Check if developer forum is number 1
+            Database::$instance->query("SELECT * FROM `game` WHERE FK_ForumID = 1");
+            $result = Database::$instance->fetchAll();
+            if(sizeof($result) == 1) {
+                throw new Exception("ForumID 1 is reserved for the developer forum, please change the ForumID of the specific game to a new one!", 79);
+            }
+
         }
         catch(Exception $e) {
             switch($e->getCode()) {
@@ -95,6 +109,9 @@ class InitializationService {
                     $username = InitializationService::$defaultAdminUsername;
                     Database::$instance->query("INSERT INTO `user` (`FirstName`, `LastName`, `Username`, `Email`, `Usertype`, `Password`, `FK_PictureID`) VALUES ('admin', 'admin', '$username', 'admin@admin.admin', 'admin', '$password', $pictureId)");
                     break;
+                case 78:
+                    Database::$instance->query("INSERT INTO `forum` ( `ForumID` ) VALUES ( 1 )");
+                break;
             }
             throw $e;
         }
