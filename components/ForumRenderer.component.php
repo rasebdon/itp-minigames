@@ -171,7 +171,7 @@ class ForumRendererComponent
                     <input type="text" name="PostTitle" id="PostTitle" class="form__input" placeholder="Your Post needs a title">
                     <textarea name="PostText" id="PostText" class="form__input" placeholder="Text of your post" cols="40" rows="5"></textarea><br>
                      <small><?= $_SESSION['PostError']['textEmpty'] ?? '' ?></small>
-                    <div style="text-align:right"><button id="postPost" class="button button--primary d-inline-block">Post</button></div>
+                    <div style="text-align:right"><button id="postPost" name="postPost" class="button button--primary d-inline-block">Post</button></div>
                    
                 </form>
             </div>
