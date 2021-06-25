@@ -73,7 +73,8 @@ class GameService
             mkdir($basePath);
 
         // Try to create folder for screenshots of game
-        $path = $basePath . str_replace(' ', '', $game->getTitle());
+        $replaced = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '', $game->getTitle())); // Removes special chars.
+        $path = $basePath . $replaced;
 
         if (!is_dir($path))
             mkdir($path);
@@ -522,7 +523,8 @@ class GameService
         if (!is_dir("resources/games"))
             mkdir("resources/games");
 
-        $sourcePath = "resources/games/" . str_replace(' ', '', $_POST['game-title']);
+        $replaced = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '', $_POST['game-title'])); // Removes special chars.
+        $sourcePath = "resources/games/" . $replaced;
         mkdir($sourcePath);
         $sourcePath .= "/";
 
