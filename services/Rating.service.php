@@ -47,6 +47,7 @@ class RatingService
             $rating->getDate(), 
             $rating->getRating() 
         );
+        return true;
     }
 
     function getRating(int $gameid, int $userid){

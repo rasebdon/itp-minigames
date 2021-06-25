@@ -83,8 +83,18 @@ if (isset($_POST['SubmitPassword'])) {
 
 
 if (isset($_POST['rateGame']) && isset($_SESSION['UserID'])) {
-    if (RatingService::$instance->insertRating(new Rating(UserService::$instance->getUser($_SESSION['UserID']), $_GET['id'], $_POST['rating-text'], date("Y-m-d H:i:s"), $_POST['rating-value']))) {
-        //do something for error handeling
+    if($_POST['rating-value'] != 0){
+        if (isset($_SESSION['ratingError']))
+            unset($_SESSION['ratingError']);
+        if (RatingService::$instance->insertRating(new Rating(UserService::$instance->getUser($_SESSION['UserID']), $_GET['id'], $_POST['rating-text'], date("Y-m-d H:i:s"), $_POST['rating-value']))) {
+            //do something for error handeling           
+            
+        }
+    }else{
+        $_SESSION['ratingError']['valueZero'] = "<div class='mt-1 alert alert-danger' role='alert'> Can't give 0 Star rating </div>";
     }
-    header('Location: index.php?action=viewGame&id=' . $_GET['id']);
+    header('Location: index.php?action=viewGame&id=' . $_GET['id'] . '#rating-text');
+    
+    
+    
 }

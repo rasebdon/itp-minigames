@@ -384,6 +384,7 @@ class GameRendererComponent
                                 <textarea name="rating-text" id="rating-text" class="form__input mt-2" cols="30" rows="3" placeholder="Type some feedback"><?= $oldText ?></textarea>
                                 <span class="form__separator"></span>
                             </div>
+                            <small><?= $_SESSION['ratingError']['valueZero'] ?? '' ?></small>
                             <button class="button button--primary mt-2" name="rateGame">Submit</button>
                             <input type="number" name="rating-value" id="rating-value" value="<?= $oldRating ?>" hidden>
                         </form>

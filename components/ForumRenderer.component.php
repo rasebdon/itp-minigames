@@ -158,8 +158,8 @@ class ForumRendererComponent
         <div class="col-md-12">
             <p>Create your own post:</p>
             <form id="postPost" action="index.php?action=forum&id=<?= $forumid ?>" method="POST">
-                <input type="text" name="PostTitle" id="PostTitle" class="form-control mb-2" placeholder="Your Post needs a title">
-                <textarea name="PostText" id="PostText" class="form-control" placeholder="Text of your post" cols="40" rows="5"></textarea><br>
+                <input type="text" name="PostTitle" id="PostTitle" class="form-control form__input mb-2" placeholder="Your Post needs a title">
+                <textarea name="PostText" id="PostText" class="form-control form__input" placeholder="Text of your post" cols="40" rows="5"></textarea><br>
                 <button class="btn-primary btn" id="postPost">Post</button>
             </form>
         </div>
