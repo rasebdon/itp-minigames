@@ -24,7 +24,10 @@ class PostRendererComponent
     {
         $post = ForumService::$instance->getPost($onePost);
 
-        if (isset($_POST['commentText']) && !empty($_POST['commentText'])) {
+        if (isset($_POST['addComment']) && !empty($_POST['commentText'])) {
+
+            if (isset($_SESSION['commentError']))
+                    unset($_SESSION['commentError']);
 
             //var_dump($_POST);
             $commentObj = new Comment(
@@ -37,6 +40,8 @@ class PostRendererComponent
             );
 
             ForumService::$instance->insertComment($commentObj);
+        }else{
+            $_SESSION['commentError']['emptyComment'] = "<div class='mt-1 alert alert-danger' role='alert'> Can't be empty </div>";
         }
         //var_dump($post);
 
@@ -70,13 +75,9 @@ class PostRendererComponent
         ?> <div class="row">
                 <div class="col-md-12">
                     <form method="POST">
-<<<<<<< HEAD
                         <textarea name="commentText" id="mainComment" class="form-control" placeholder="add comment - be friendly" cols="40" rows="5"></textarea><br>
-                        <div style="text-align:right"><button class="button button--primary d-inline-block" id="addComment">Add comment</button></div>
-=======
-                        <textarea name="commentText" id="mainComment" class="form-control form__input" placeholder="add comment - be friendly" cols="40" rows="5"></textarea><br>
-                        <button class="btn-primary btn" id="addComment">Add comment</button>
->>>>>>> main
+                        <div style="text-align:right"><button class="button button--primary d-inline-block" id="addComment" name="addComment">Add comment</button></div>
+                        <small><?= $_SESSION['commentError']['emptyComment'] ?? '' ?></small>
                     </form>
                 </div>
             </div>

@@ -25,8 +25,10 @@ class ForumRendererComponent
                 if(isset($_POST['DeletePost'])){
                     ForumService::$instance->deletePost($_POST['DeletePost']);
                 }
-                if(isset($_POST['PostText'])){
+                if(isset($_POST['postPost']) && !empty($_POST['PostText']) && !empty($_POST['PostTitle'])){
                     // var_dump($_POST['PostText']);
+                    if (isset($_SESSION['PostError']))
+                    unset($_SESSION['PostError']);
                     $post = new Post(
                         0,
                         $_POST['PostTitle'],
@@ -36,6 +38,8 @@ class ForumRendererComponent
                         0
                     );                                       
                     ForumService::$instance->addPost($post, $_GET['id']);
+                }else{
+                    $_SESSION['PostError']['textEmpty'] = "<div class='mt-1 alert alert-danger' role='alert'> Can't be empty </div>";
                 }
                 $this->RenderForum($_GET['id']);
                 break;
@@ -160,7 +164,8 @@ class ForumRendererComponent
             <form id="postPost" action="index.php?action=forum&id=<?= $forumid ?>" method="POST">
                 <input type="text" name="PostTitle" id="PostTitle" class="form-control form__input mb-2" placeholder="Your Post needs a title">
                 <textarea name="PostText" id="PostText" class="form-control form__input" placeholder="Text of your post" cols="40" rows="5"></textarea><br>
-                <button class="btn-primary btn" id="postPost">Post</button>
+                <small><?= $_SESSION['PostError']['textEmpty'] ?? '' ?></small>
+                <button class="btn-primary btn" id="postPost" name="postPost">Post</button>
             </form>
         </div>
         <?php
