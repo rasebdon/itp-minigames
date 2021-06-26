@@ -42,46 +42,48 @@ class ForumMainPageComponent
                     <h1 class="heading-primary__text">Forum</h1>
                 </div>
 
+                <div class="forum-list">
+                    <?php
 
-                <?php
-
-                if ($games == null) {
-                ?>
-                    <h1 class="text-center mt-5">There are no forums yet! Check back later.</h1>
-                <?php
-                    return;
-                }
-                foreach ($games as $game) {
-                ?>
+                    if ($games == null) {
+                    ?>
+                        <h1 class="text-center mt-5">There are no forums yet! Check back later.</h1>
+                    <?php
+                        return;
+                    }
+                    foreach ($games as $game) {
+                    ?>
 
 
-                    <div class="forum-banner md-12 mb-3 row justify-content-between" onclick="location.href='index.php?action=forum&id=<?= GameService::$instance->getForumID($game) ?>';">
-                        <h1 class="m-0 col-11" style="line-break: anywhere;">
-                            <span class="d-inline-block"><?= $game->getTitle() ?></span>
-                            <span class="d-inline-block text-muted forum-banner-author">by
-                                <?= $game->getAuthor()->getUsername(); ?>
-                            </span>
-                        </h1>
+                        <div class="forum forum-banner md-12 mb-3 row justify-content-between" onclick="location.href='index.php?action=forum&id=<?= GameService::$instance->getForumID($game) ?>';">
+                            <h1 class="m-0 col-11 " style="line-break: anywhere;">
+                                <span class="d-inline-block"><?= $game->getTitle() ?></span>
+                                <span class="d-inline-block text-muted forum-banner-author">by
+                                    <?= $game->getAuthor()->getUsername(); ?>
+                                </span>
+                            </h1>
 
-                        <h4 class="m-0 col-1"><span class="d-inline-block d-none d-md-block">
-                                Posts:
-                                <?= ForumService::$instance->getNumberOfPosts(GameService::$instance->getForumID($game)) ?>
-                            </span></h4>
+                            <h4 class="m-0 col-1"><span class="d-inline-block d-none d-md-block">
+                                    Posts:
+                                    <?= ForumService::$instance->getNumberOfPosts(GameService::$instance->getForumID($game)) ?>
+                                </span></h4>
 
-                        <div class="img-wrap col-4" style="width:100%; height: 200px">
-                            <img src="<?= $game->getFirstScreenshot() ?>" />
+                            <div class="img-wrap col-4" style="width:100%; height: 200px; background: url(<?= $game->getFirstScreenshot() ?>);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;"></div>
                         </div>
-                    </div>
 
-<?php
+    <?php
 
 
+                    }
+                    echo "</div>";
+                } else {
+                    require_once "components/ForumRenderer.component.php";
                 }
-            } else {
-                require_once "components/ForumRenderer.component.php";
             }
         }
     }
-}
-// INIT COMPONENT
-ForumMainPageComponent::$instance = new ForumMainPageComponent();
+    // INIT COMPONENT
+    ForumMainPageComponent::$instance = new ForumMainPageComponent();

@@ -81,18 +81,28 @@
   }
 
   .likeButton {
+    color: #90fdbd; 
+    font-size: 32px;
+  }
+
+  .likeButtonVoted {
     color: #2ecc71; 
-    font-size: 25px;
+    font-size: 32px;
   }
 
   .dislikeButton {
-    color: #de354c; 
-    font-size: 25px;
+    color: #fd788a; 
+    font-size: 32px;
+  }
+
+  .dislikeButtonVoted {
+    color:#de354c;
+    font-size: 32px;
   }
 
   .deleteButton {
     color: #de354c; 
-    font-size: 18px;
+    font-size: 22px;
   }
 
   .heading-quaternary {
@@ -104,3 +114,14 @@
     text-transform: uppercase;
 }
 
+.postDescription {
+  margin-top: 40px;
+  background:#F3F3F3; padding: 10px; 
+  color:#34383d;
+  
+  
+}
+
+.description{
+  margin-top: 35px;
+}

@@ -64,8 +64,17 @@ class PostRendererComponent
         <form id="ToggleCommentDislike" action="index.php?action=post&id=<?= $post->getId() ?>" method="POST"></form>
         <div id="thePost">
             <h1 class="heading-secondary"><?= $post->getTitle() ?></h1>
-            <h2 class="heading-quaternary"><?= $post->getUser()->getUsername() ?></h2>
-            <p><?= $post->getText() ?></p>
+
+            <div class="postDescription">
+                <div class="row">
+                    <h2 class="heading-tertiary col-9"><?= $post->getUser()->getUsername() ?></h2>
+                    <div class="col-3 bl-1 text-end">
+                        <span class="time"><?= $post->getDate() ?></span>
+
+                    </div>
+                    <p class="description col-12"><?= $post->getText() ?></p>
+                </div>
+            </div>
         </div>
 
         <?php
@@ -96,13 +105,16 @@ class PostRendererComponent
         }
 
         if (!empty($allComment)) {
+            echo "<div class='forum-list'>";
             foreach ($allComment as $comment) {
             ?>
-                <div class="row">
-                    <div class="post-banner md-12 mb-3 border-bottom rounded row" style="max-height: initial;">
+                <div class="forum" id="<?= $comment->getID() ?>">
+                    <div class="post-banner md-12 mb-3 rounded row" style="max-height: initial;">
                         <div class="userComments">
                             <div class="comment row">
                                 <div class="user col-9">
+                                    <img class="profile-picture--contain profile-picture--small" src="<?= ProfilePictureService::$instance->getPicture($comment->getAuthor()->getFK_PictureID())->getThumbnailPath() ?>" alt="profilePicture">
+
                                     <?= $comment->getAuthor()->getUsername() ?>
 
                                     <span class="h1 d-inline-block ">
@@ -111,7 +123,7 @@ class PostRendererComponent
                                         if (isset($_SESSION['UserID']) &&  $_SESSION['UserID'] != null) {
                                             if (UserService::$instance->getUser($_SESSION['UserID'])->getUserType()->getAccessStrength() >= UserType::Admin()->getAccessStrength()) {
                                         ?>
-                                                <form>
+                                                <form action="index.php?action=post&id=<?= $post->getID() ?>#<?= $comment->getID() ?>" method="POST">
                                                     <button type='submit' class='btn' value='<?= $comment->getId() ?>' form='DeleteComment' name='DeleteComment'>
                                                         <i class="fas fa-trash deleteButton"></i>
                                                     </button>
@@ -137,15 +149,19 @@ class PostRendererComponent
                                     if (isset($_SESSION['UserID']) &&  $_SESSION['UserID'] != null) {
                                         if (ForumService::$instance->isCommentRated($comment->getId(), $_SESSION['UserID'], 1)) {
                                     ?>
-                                            <button type='submit' class='btn' value='<?= $comment->getId() ?>' form='ToggleCommentLike' name='ToggleCommentLike'>
-                                                <i class="fas fa-plus likeButton"></i>
-                                            </button>
+                                            <form action="index.php?action=post&id=<?= $post->getID() ?>#<?= $comment->getID() ?>" method="POST">
+                                                <button type='submit' class='btn' value='<?= $comment->getId() ?>' name='ToggleCommentLike'>
+                                                    <i class="fas fa-plus likeButtonVoted"></i>
+                                                </button>
+                                            </form>
                                         <?php
                                         } else {
                                         ?>
-                                            <button type='submit' class='btn' value='<?= $comment->getId() ?>' form='ToggleCommentLike' name='ToggleCommentLike'>
-                                                <i class=" fas fa-plus likeButton"></i>
-                                            </button>
+                                            <form action="index.php?action=post&id=<?= $post->getID() ?>#<?= $comment->getID() ?>" method="POST">
+                                                <button type='submit' class='btn' value='<?= $comment->getId() ?>' name='ToggleCommentLike'>
+                                                    <i class=" fas fa-plus likeButton"></i>
+                                                </button>
+                                            </form>
                                     <?php
                                         }
                                     } else {
@@ -159,15 +175,19 @@ class PostRendererComponent
                                     if (isset($_SESSION['UserID']) &&  $_SESSION['UserID'] != null) {
                                         if (ForumService::$instance->isCommentRated($comment->getId(), $_SESSION['UserID'], 0)) {
                                     ?>
-                                            <button type='submit' class='btn' value='<?= $comment->getId() ?>' form='ToggleCommentDislike' name='ToggleCommentDislike'>
-                                                <i class="fas fa-minus" style="color: lightcoral; font-size: 25px;"></i>
-                                            </button>
+                                            <form action="index.php?action=post&id=<?= $post->getID() ?>#<?= $comment->getID() ?>" method="POST">
+                                                <button type='submit' class='btn' value='<?= $comment->getId() ?>' name='ToggleCommentDislike'>
+                                                    <i class="fas fa-minus dislikeButtonVoted"></i>
+                                                </button>
+                                            </form>
                                         <?php
                                         } else {
                                         ?>
-                                            <button type='submit' class='btn' value='<?= $comment->getId() ?>' form='ToggleCommentDislike' name='ToggleCommentDislike'>
-                                                <i class="fas fa-minus dislikeButton"></i>
-                                            </button>
+                                            <form action="index.php?action=post&id=<?= $post->getID() ?>#<?= $comment->getID() ?>" method="POST">
+                                                <button type='submit' class='btn' value='<?= $comment->getId() ?>' name='ToggleCommentDislike'>
+                                                    <i class="fas fa-minus dislikeButton"></i>
+                                                </button>
+                                            </form>
                                     <?php
                                         }
                                     } else {
@@ -183,6 +203,7 @@ class PostRendererComponent
                 </div>
 <?php
             }
+            echo "</div>";
         }
     }
 }
