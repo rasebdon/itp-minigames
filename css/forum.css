@@ -1,106 +1,230 @@
-.forum-banner {
-    cursor: pointer;
-    min-height: 7em;
-    position: relative;
+.forum:hover .heading-secondary {
+  text-shadow: 0px 0px 0 #de354c, -1px 1px 0 #932432, -2px 2px 0 #3c1874, -3px 3px 2px rgba(0, 0, 0, 0.31), -3px 3px 1px rgba(0, 0, 0, 0.5), 0px 0px 2px rgba(0, 0, 0, 0.2);
+  transform: skewX(-12deg) scale(1.01) translate(9px);
 }
 
-.forum-banner-author{
-    font-size: 0.50em;
+.forum-banner {
+  cursor: pointer;
+  position: relative;
+}
+
+.forum-banner-author {
+  font-size: 1.5rem;
+  margin-left: 1rem;
 }
 
 .upvote-display {
-    text-align: center;
-    right: 0px;
-    margin: 0;    
-    position: absolute;
-    top: 50%;
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%);
+  text-align: center;
+  right: 0px;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 
-.post-text-preview{
-    font-size: 0.90em;
+.post-text-preview {
+  font-size: 0.90em;
 }
 
-.post-banner{
-    cursor: pointer;
-    min-height: 7em;
-    position: relative;
-    max-height: 8em;
-    overflow:hidden
+.post-banner {
+  cursor: pointer;
+  min-height: 7em;
+  position: relative;
+  max-height: 8em;
+  overflow: hidden
 }
 
-.forum-header{
-    height: 10em;
-    position: relative;   
-    font-size: 20px;
-    
+.forum-header {
+  height: 10em;
+  position: relative;
+  font-size: 20px;
 }
 
-.custom-shadow{
-    color: white;
-    text-shadow:
-        0.07em 0 black,
-        0 0.07em black,
-        -0.07em 0 black,
-        0 -0.07em black;
+.custom-shadow {
+  color: white;
+  text-shadow: 0.07em 0 black, 0 0.07em black, -0.07em 0 black, 0 -0.07em black;
 }
 
-.forum-linktogame{
-    position: absolute;
-    bottom: 0em;
-    left: 0;
+.forum-linktogame {
+  position: absolute;
+  bottom: 0em;
+  left: 0;
 }
 
-.forum-center-backround{
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: center;
+.forum-center-backround {
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
 }
 
 .img-wrap {
-    width: 70%;
-    height: inherit;
-    position: relative;
-    display: inline-block;
-    overflow: hidden;
-    margin: 0;
-  }
-  
-  .img-wrap > img {
-    display: block;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    min-height: 100%;
-    min-width: 100%;
-    transform: translate(-50%, -50%);
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: center;
-  }
-
-  .likeButton {
-    color: #2ecc71; 
-    font-size: 25px;
-  }
-
-  .dislikeButton {
-    color: #de354c; 
-    font-size: 25px;
-  }
-
-  .deleteButton {
-    color: #de354c; 
-    font-size: 18px;
-  }
-
-  .heading-quaternary {
-    color: #16a085;
-    font-size: 2.4rem;
-    font-family: "Maven Pro", cursive;
-    font-weight: 600;
-    letter-spacing: 0.12rem;
-    text-transform: uppercase;
+  width: 70%;
+  height: inherit;
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  margin: 0;
 }
 
+.img-wrap>img {
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-height: 100%;
+  min-width: 100%;
+  transform: translate(-50%, -50%);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+}
+
+.likeButton {
+  color: #90fdbd;
+  font-size: 32px;
+}
+
+.likeButtonVoted {
+  color: #2ecc71;
+  font-size: 32px;
+}
+
+.dislikeButton {
+  color: #fd788a;
+  font-size: 32px;
+}
+
+.dislikeButtonVoted {
+  color: #de354c;
+  font-size: 32px;
+}
+
+.deleteButton {
+  color: #de354c;
+  font-size: 22px;
+}
+
+.heading-quaternary {
+  color: #16a085;
+  font-size: 2.4rem;
+  font-family: "Maven Pro", cursive;
+  font-weight: 600;
+  letter-spacing: 0.12rem;
+  text-transform: uppercase;
+}
+
+.postDescription {
+  margin-top: 40px;
+  background: #F3F3F3;
+  padding: 10px;
+  color: #34383d;
+}
+
+.description {
+  margin-top: 35px;
+}
+
+.forum-banner-image {
+  height: 20rem;
+  width: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.forum {
+  opacity: 0;
+  animation: moveInBottom 0.5s ease-out;
+  animation-fill-mode: forwards;
+  margin-bottom: 2rem;
+  padding: 3rem;
+  background-color: #F3F3F3;
+  color: #34383d;
+  border-radius: 2px;
+}
+
+.forum-list .forum:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.forum-list .forum:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+.forum-list .forum:nth-child(3) {
+  animation-delay: 0.6s;
+}
+
+.forum-list .forum:nth-child(4) {
+  animation-delay: 0.9s;
+}
+
+.forum-list .forum:nth-child(5) {
+  animation-delay: 1.2s;
+}
+
+.forum-list .forum:nth-child(6) {
+  animation-delay: 1.5s;
+}
+
+.forum-list .forum:nth-child(7) {
+  animation-delay: 1.8s;
+}
+
+.forum-list .forum:nth-child(8) {
+  animation-delay: 2.1s;
+}
+
+.forum-list .forum:nth-child(9) {
+  animation-delay: 2.4s;
+}
+
+.forum-list .forum:nth-child(10) {
+  animation-delay: 2.7s;
+}
+
+.forum-list .forum:nth-child(11) {
+  animation-delay: 3s;
+}
+
+.forum-list .forum:nth-child(12) {
+  animation-delay: 3.3s;
+}
+
+.forum-list .forum:nth-child(13) {
+  animation-delay: 3.6s;
+}
+
+.forum-list .forum:nth-child(14) {
+  animation-delay: 3.9s;
+}
+
+.forum-list .forum:nth-child(15) {
+  animation-delay: 4.2s;
+}
+
+.forum-list .forum:nth-child(16) {
+  animation-delay: 4.5s;
+}
+
+.forum-list .forum:nth-child(17) {
+  animation-delay: 4.8s;
+}
+
+.forum-list .forum:nth-child(18) {
+  animation-delay: 5.1s;
+}
+
+.forum-list .forum:nth-child(19) {
+  animation-delay: 5.4s;
+}
+
+.forum-list .forum:nth-child(20) {
+  animation-delay: 5.7s;
+}
+
+@media only screen and (max-width: 767px) {
+  .forum-list .forum {
+    padding: 1rem;
+  }
+}

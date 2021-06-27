@@ -46,21 +46,21 @@ class GameListComponent
                 <?php
                 for ($i = 0; $i < sizeof($games); $i++) {
                 ?>
-                <!--Script for game Rating -->
 
-                    <script>
-                        $(document).ready(function() {
-                            var options = {
-                                max_value: 5,
-                                step_size: 0.5,
-                                selected_symbol_type: 'fontawesome_star',
-                                readonly: true,
-                            }
-                            $(".rate").rate(options);
-                        });
-                    </script>
                     <div class="created-game">
-                        
+                        <!--Script for game Rating -->
+                        <script>
+                            $(document).ready(function() {
+                                var options = {
+                                    max_value: 5,
+                                    step_size: 0.5,
+                                    selected_symbol_type: 'fontawesome_star',
+                                    readonly: true,
+                                }
+                                $(".rate").rate(options);
+                            });
+                        </script>
+
                         <?php
                         $game = $games[$i];
 
@@ -82,7 +82,7 @@ class GameListComponent
 
                                 <hr>
                                 <div class="rating">
-                                    <div class="rate" data-rate-value=<?= $game->getRating() ?>></div>  
+                                    <div class="rate" data-rate-value=<?= $game->getRating() ?>></div>
                                 </div>
                                 <div class="created-game__actions">
                                     <a class="button button--primary" href="index.php?action=editGameInterface&id=<?= $game->getId() ?>">Edit</a>
