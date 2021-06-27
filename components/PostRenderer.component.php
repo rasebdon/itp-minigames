@@ -67,7 +67,13 @@ class PostRendererComponent
 
             <div class="postDescription">
                 <div class="row">
-                    <h2 class="heading-tertiary col-9"><?= $post->getUser()->getUsername() ?></h2>
+
+
+                    <h2 class="heading-tertiary col-9">
+                        <img class="profile-picture--contain profile-picture--small" src="<?= ProfilePictureService::$instance->getPicture($post->getUser()->getFK_PictureID())->getThumbnailPath() ?>" alt="profilePicture">
+
+                        <?= $post->getUser()->getUsername() ?>
+                    </h2>
                     <div class="col-3 bl-1 text-end">
                         <span class="time"><?= $post->getDate() ?></span>
 
@@ -109,7 +115,7 @@ class PostRendererComponent
             foreach ($allComment as $comment) {
             ?>
                 <div class="forum" id="<?= $comment->getID() ?>">
-                    <div class="post-banner md-12 mb-3 rounded row" style="max-height: initial;">
+                    <div class="post-banner md-12 mb-3 rounded" style="max-height: initial;">
                         <div class="userComments">
                             <div class="comment row">
                                 <div class="user col-9">
@@ -165,7 +171,7 @@ class PostRendererComponent
                                     <?php
                                         }
                                     } else {
-                                        echo '<i class="fa fa-arrow-circle-up" style="color:black"></i>';
+                                        echo ' <i class=" fas fa-plus likeButton"></i>';
                                     }
                                     ?>
                                     <!-- Number of Votes -->
@@ -191,7 +197,7 @@ class PostRendererComponent
                                     <?php
                                         }
                                     } else {
-                                        echo '<i class="fa fa-arrow-circle-down" style="color:black"></i>';
+                                        echo '<i class="fas fa-minus dislikeButton"></i>';
                                     }
                                     ?>
 

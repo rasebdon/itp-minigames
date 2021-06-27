@@ -70,7 +70,7 @@ class ForumRendererComponent
         <div class="forum-header col-md-6 px-0">
             <h1 class="heading-secondary"><?= $game->getTitle() ?></h1>
             <p class="mb-0 forum-linktogame">
-                <a href="index.php?action=viewGame&id=<?= $game->getId() ?>" class="button button--primary" style>View Game</a>
+                <a href="index.php?action=viewGame&id=<?= $game->getId() ?>" class="button button--primary" style="margin-bottom: 15px;">View Game</a>
             </p>
         </div>
 
@@ -92,7 +92,7 @@ class ForumRendererComponent
             <?php
             foreach ($posts as $post) {
             ?>
-                <div class="forum post-banner md-12 mb-3 border-bottom rounded row" id="<?= $post->getId() ?>" onclick="location.href='index.php?action=post&id=<?= $post->getId() ?>';">
+                <div class="forum post-banner md-12 mb-3 border-bottom rounded" id="<?= $post->getId() ?>" onclick="location.href='index.php?action=post&id=<?= $post->getId() ?>';">
                     <div class="col-10 bl-1">
                         <span class="h1 d-block "><?= $post->getTitle() ?>
                             <?php
@@ -132,7 +132,7 @@ class ForumRendererComponent
                         <?php
                             }
                         } else {
-                            echo '<i class="fa fa-arrow-circle-up" style="color:black"></i>';
+                            echo '<i class=" fas fa-plus likeButton"></i>';
                         }
                         ?>
                         <div><?= $post->getUpvotes() ?></div>
@@ -156,7 +156,7 @@ class ForumRendererComponent
                         <?php
                             }
                         } else {
-                            echo '<i class="fa fa-arrow-circle-down" style="color:black"></i>';
+                            echo '  <i class="fas fa-minus dislikeButton"></i>';
                         }
                         echo '</div>';
 
@@ -215,7 +215,7 @@ class ForumRendererComponent
                     <?php
                     foreach ($posts as $post) {
                     ?>
-                        <div class="forum post-banner md-12 mb-3 rounded row" onclick="location.href='index.php?action=post&id=<?= $post->getId() ?>';">
+                        <div class="forum post-banner md-12 mb-3 rounded" id="<?= $post->getId() ?>" onclick="location.href='index.php?action=post&id=<?= $post->getId() ?>';">
                             <div class="col-10 bl-1">
                                 <span class="h1 d-block "><?= $post->getTitle() ?>
                                     <?php
@@ -239,15 +239,19 @@ class ForumRendererComponent
                                 if (isset($_SESSION['UserID']) &&  $_SESSION['UserID'] != null) {
                                     if (ForumService::$instance->isPostRated($post->getId(), $_SESSION['UserID'], 1)) {
                                 ?>
-                                        <button type='submit' class='btn' value='<?= $post->getId() ?>' form='TogglePostLike' name='TogglePostLike'>
-                                            <i class="fas fa-plus likeButtonVoted"></i>
-                                        </button>
+                                        <form action="index.php?action=forum&id=1#<?= $post->getId() ?>" method="POST">
+                                            <button type='submit' class='btn' value='<?= $post->getId() ?>' name='TogglePostLike'>
+                                                <i class="fas fa-plus likeButtonVoted"></i>
+                                            </button>
+                                        </form>
                                     <?php
                                     } else {
                                     ?>
-                                        <button type='submit' class='btn' value='<?= $post->getId() ?>' form='TogglePostLike' name='TogglePostLike'>
-                                            <i class="fas fa-plus likeButton"></i>
-                                        </button>
+                                        <form action="index.php?action=forum&id=1#<?= $post->getId() ?>" method="POST">
+                                            <button type='submit' class='btn' value='<?= $post->getId() ?>' name='TogglePostLike'>
+                                                <i class="fas fa-plus likeButton"></i>
+                                            </button>
+                                        </form>
                                 <?php
                                     }
                                 } else {
@@ -259,15 +263,19 @@ class ForumRendererComponent
                                 if (isset($_SESSION['UserID']) &&  $_SESSION['UserID'] != null) {
                                     if (ForumService::$instance->isPostRated($post->getId(), $_SESSION['UserID'], 0)) {
                                 ?>
-                                        <button type='submit' class='btn' value='<?= $post->getId() ?>' form='TogglePostDislike' name='TogglePostDislike'>
-                                            <i class="fas fa-minus dislikeButtonVoted"></i>
-                                        </button>
+                                        <form action="index.php?action=forum&id=1#<?= $post->getId() ?>" method="POST">
+                                            <button type='submit' class='btn' value='<?= $post->getId() ?>' name='TogglePostDislike'>
+                                                <i class="fas fa-minus dislikeButtonVoted"></i>
+                                            </button>
+                                        </form>
                                     <?php
                                     } else {
                                     ?>
-                                        <button type='submit' class='btn' value='<?= $post->getId() ?>' form='TogglePostDislike' name='TogglePostDislike'>
-                                            <i class="fas fa-minus dislikeButton"></i>
-                                        </button>
+                                        <form action="index.php?action=forum&id=1#<?= $post->getId() ?>" method="POST">
+                                            <button type='submit' class='btn' value='<?= $post->getId() ?>' name='TogglePostDislike'>
+                                                <i class="fas fa-minus dislikeButton"></i>
+                                            </button>
+                                        </form>
                                 <?php
                                     }
                                 } else {
