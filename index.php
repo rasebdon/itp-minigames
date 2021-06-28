@@ -17,6 +17,7 @@ require_once "models/Picture.model.php";
 require_once "models/Post.model.php";
 require_once "models/Comment.model.php";
 require_once "models/Rating.model.php";
+require_once "models/Tickets.model.php";
 
 require_once "utility/Validation.class.php";
 
@@ -29,6 +30,7 @@ require_once "services/Game.service.php";
 require_once "services/Rating.service.php";
 require_once "services/Forum.service.php";
 require_once "services/Contact.service.php";
+require_once "services/TicketService.php";
 
 // GET LOGIN STATUS
 $loggedIn = false;
@@ -82,9 +84,11 @@ require_once "forms/formHandler.php";
     <link rel="stylesheet" type="text/css" href="css/forum.css">
     <link rel="stylesheet" type="text/css" href="css/rating.css">
     <link rel="stylesheet" type="text/css" href="css/impressum.css">
+    <link rel="stylesheet" type="text/css" href="css/supportTicket.css">
     <link rel="stylesheet" type="text/css" href="css/styleComp.css">
     <link rel="stylesheet" type="text/css" href="css/contact.css">
-
+    <link rel="stylesheet" type="text/css" href="css/guideline.css">
+    
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
 
@@ -112,6 +116,7 @@ require_once "forms/formHandler.php";
         require_once "components/GameRenderer.component.php";
         require_once "components/FrontPage.component.php";
         require_once "components/Imprint.component.php";
+        require_once "components/Guideline.component.php";
         require_once "components/Contact.component.php";
         require_once "components/ForumMainPage.component.php";
         require_once "components/PostRenderer.component.php";
@@ -133,6 +138,7 @@ require_once "forms/formHandler.php";
             if ($accessStrength >= UserType::Admin()->getAccessStrength()) {
                 require_once "components/UserAdministration.component.php";
                 require_once "components/GameVerification.component.php";
+                require_once "components/Ticket.component.php";
             }
         } else {
             // if someone isn't logged in

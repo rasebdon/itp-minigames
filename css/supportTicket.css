@@ -1,0 +1,12 @@
+.support-ticket-row{
+    padding: 0.5em 0 0.5em 0;
+    border: rgb(192, 192, 192) solid 1px;
+    border-left: none;
+    border-right: none;
+}
+.support-ticket-text{
+    color: #34383d;
+}
+.support-ticket-mailto{
+    padding: 15px;
+}
