@@ -176,6 +176,14 @@ class UserService
     public function setUserType(UserType $userType, int $uid) {
         $this->db->query("UPDATE user SET Usertype = ? WHERE UserID = ?", $userType->getTypeString(), $uid);
     }
+
+    public function getUserEmail($uid){
+        $query = "SELECT Email FROM `user` WHERE UserID = ?";
+
+        $this->db->query($query , $uid);
+        $email = $this->db->fetchArray();
+        return $email["Email"];
+    }
 }
 
 // INIT SERVICE

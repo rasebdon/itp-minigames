@@ -70,6 +70,9 @@ class NavigationComponent
                                     <li class="nav-side__list-item nav-side__list-item--game-verification">
                                         <a class="button--secondary" href="index.php?action=listGamesToVerify&amount=20&offset=0">Game Verification</a>
                                     </li>
+                                    <li class="nav-side__list-item nav-side__list-item--game-verification">
+                                        <a class="button--secondary" href="index.php?action=ticket">Support Tickets</a>
+                                    </li>
                                 <?php
                                 }
                             } else {
@@ -90,6 +93,9 @@ class NavigationComponent
                             </li>
                             <li class="nav-side__list-item nav-side__list-item--contact">
                                 <a href="index.php?action=contact">Contact</a>
+                            </li>
+                            <li class="nav-side__list-item nav-side__list-item--contact">
+                                <a href="index.php?action=guide">Guidelines</a>
                             </li>
                         </ul>
                     </div>
