@@ -195,7 +195,8 @@ body {
   border-radius: 1px;
   transition: all 0.2s ease;
   width: fit-content;
-  width: -moz-fit-content; }
+  width: -moz-fit-content;
+  outline: none; }
   .button i {
     margin-left: 1rem; }
   .button--primary {
@@ -208,7 +209,8 @@ body {
     display: block;
     height: 5rem;
     color: #F3F3F3;
-    border: 2px solid #de354c; }
+    border: 2px solid #de354c;
+    outline: none; }
     .button--secondary:after {
       background: #de354c;
       transform: translateX(-50%) translateY(-50%) rotate(-25deg); }
